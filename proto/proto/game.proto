@@ -1,0 +1,55 @@
+
+// 本协议支持字段类型以及范围
+// 类型       => 范围
+// byte       => -128 ~ 127
+// ubyte       => 0 ~ 255
+// short      => -32,768 ~ 32,767
+// ushort     => 0 ~ 65,535
+// int32      => -2,147,483,648 ~ 2,147,483,647
+// uint32     => 0 ~ 4,294,967,295
+// int64      => -9,223,372,036,854,775,808 ~ 9,223,372,036,854,775,807
+// string     => 转二进制长度len(ushort)(65535)
+// bytes      => 字节流
+
+// required   => 要求填写所有字段
+// optional   => 允许字段有默认值
+// repeated   => 数组（列表）类型
+
+//-------------------------------------
+// 结构体部分
+//-------------------------------------
+message p_test {
+    required int32 v1;
+    required int32 v2;
+}
+
+//-------------------------------------
+// 协议部分
+//-------------------------------------
+message m__proto__test__c2s {
+    required int32 msg_id [default = 1000];
+    required byte v1;
+    required short v2;
+    required ushort v3;
+    required int32 v4;
+    required uint32 v5;
+    required int64 v6;
+    required string v7;
+    required p_test v8;
+    repeated int32 v9;
+    repeated p_test v10;
+}
+
+message m__proto__test__s2c {
+    required int32 msg_id [default = 1001];
+    required byte v1;
+    required short v2;
+    required ushort v3;
+    required int32 v4;
+    required uint32 v5;
+    required int64 v6;
+    required string v7;
+    required p_test v8;
+    repeated int32 v9;
+    repeated p_test v10;
+}
