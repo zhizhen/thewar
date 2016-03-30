@@ -25,9 +25,17 @@ function SceneController:update(dt)
 	if self.time >= 2 then
 		for k, v in pairs(self.tanks) do
 			if #self.enermies ~= 0 then
-				--todo
 				local randomx = self.enermies[1].x + math.random(-50, 50)
 				local randomy = self.enermies[1].y + math.random(-50, 50)
+				print("random position:", randomx, randomy)
+				v:faceAndfire(randomx, randomy)
+			end
+		end
+
+		for k, v in pairs(self.enermies) do
+			if #self.tanks ~= 0 then
+				local randomx = self.tanks[1].x + math.random(-200, 200)
+				local randomy = self.tanks[1].y + math.random(-200, 200)
 				print("random position:", randomx, randomy)
 				v:faceAndfire(randomx, randomy)
 			end
@@ -37,17 +45,15 @@ function SceneController:update(dt)
 end
 
 function SceneController:createTank()
-	-- body
-
     for i = 1, 1 do
-        local tank = TankController:create(i * 200, 200, 0)
+        local tank = TankController:create(i * 300, 200, 0)
         table.insert(self.tanks, tank)
     end
 end
 
 function SceneController:createEnermy()
 	-- body
-	local tank = TankController:create(500, 600, 180)
+	local tank = TankController:create(400, 600, 180)
     table.insert(self.enermies, tank)
 end
 

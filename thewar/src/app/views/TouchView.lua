@@ -42,7 +42,7 @@ function TouchView:ctor()
     listenner:registerScriptHandler(function(touch, event)  
         local locationInNodeX = self:convertToNodeSpace(touch:getLocation()).x  
   
-        print("EVENT_TOUCH_ENDED")  
+        print("EVENT_TOUCH_ENDED")
         self.m_down = false
     end, cc.Handler.EVENT_TOUCH_ENDED )
 
