@@ -224,9 +224,7 @@
       "__id__": 4
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "0fe66df3-0e07-4d18-9eba-eedbbc00b101"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_useOriginalSize": true,
     "_sizeMode": 0,
