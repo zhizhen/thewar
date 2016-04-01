@@ -1,15 +1,12 @@
-var players = require('PlayerData').players;
 
 var Game = cc.Class({
     extends: cc.Component,
-
+    
     properties: {
-        tankPrefeb: cc.Prefab,
-        inGameUI: cc.Node,
-        tankLayer: cc.Node,
-        tankLayer1: cc.Node
+        mainUI: cc.Node,
     },
     
+    // 单例
     statics: {
         instance: null
     },
@@ -17,17 +14,17 @@ var Game = cc.Class({
     // use this for initialization
     onLoad: function () {
         Game.instance = this;
-        this.createPlayers();
+        var scene = require('SceneController');
+        var tank = require('TankController');
+        console.log("游戏启动！");
+        scene.changeScene('TestScene');
+        console.log("tank view create!");
+        tank.createTank();
+        tank.createEnemy();
     },
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
     // },
-    
-    createPlayers: function () {
-        var tankNode = cc.instantiate(this.tankPrefeb);
-        tankNode.position = cc.p(0, 0);
-        this.tankLayer.addChild(tankNode);
-    }
 });

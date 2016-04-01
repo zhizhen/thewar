@@ -34,9 +34,6 @@
     "_children": [
       {
         "__id__": 2
-      },
-      {
-        "__id__": 11
       }
     ],
     "_localZOrder": 0,
@@ -100,7 +97,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 10
+        "__id__": 11
+      },
+      {
+        "__id__": 12
       }
     ],
     "_prefab": null
@@ -333,6 +333,9 @@
     "_components": [
       {
         "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": null
@@ -359,6 +362,18 @@
     "_originalHeight": 0
   },
   {
+    "__type__": "2a752LFepFERLhkXF7bgb3H",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 8
+    },
+    "_enabled": true,
+    "tankPrefeb": {
+      "__uuid__": "41f6075f-8df6-4503-b672-12ba62c4e736"
+    }
+  },
+  {
     "__type__": "cc.Canvas",
     "_name": "",
     "_objFlags": 1835008,
@@ -371,76 +386,19 @@
       "width": 640,
       "height": 960
     },
-    "_fitWidth": false,
-    "_fitHeight": true
+    "_fitWidth": true,
+    "_fitHeight": false
   },
   {
-    "__type__": "cc.Node",
-    "_name": "Game",
-    "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_parent": {
-      "__id__": 1
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_children": [],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 320,
-      "y": 480
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_reorderChildDirty": false,
-    "_id": "f55c1iffc9In4jsssC8yAui",
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 12
-      }
-    ],
-    "_prefab": null
-  },
-  {
-    "__type__": "3c1913owlBHwrzX/1fKoTTX",
+    "__type__": "a5165WhjnhEXK6Ix+LlW0f8",
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 11
+      "__id__": 2
     },
     "_enabled": true,
-    "tankPrefeb": {
-      "__uuid__": "41f6075f-8df6-4503-b672-12ba62c4e736"
-    },
-    "inGameUI": null,
     "tankLayer": {
       "__id__": 8
-    },
-    "tankLayer1": null
+    }
   }
 ]
