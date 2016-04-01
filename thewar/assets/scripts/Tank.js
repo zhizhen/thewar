@@ -8,6 +8,7 @@ cc.Class({
     // use this for initialization
     onLoad: function () {
         console.log("tank view onload!");
+        this.create();
     },
 
     // called every frame, uncomment this function to activate update callback
@@ -15,12 +16,11 @@ cc.Class({
 
     // },
     
-    
     create: function () {
         var tankNode = cc.instantiate(this.tankPrefeb);
         tankNode.position = cc.p(-150, -400);
         console.log("tank view create!");
-        Game.instance.scene.view.tankLayer.addChild(tankNode);
+        this.node.addChild(tankNode);
         console.log("tank view create!");
     }
 });

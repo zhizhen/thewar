@@ -1,6 +1,4 @@
 
-var Scene = require('SceneController');
-var Tank = require('TankController');
 
 var Game = cc.Class({
     extends: cc.Component,
@@ -19,11 +17,7 @@ var Game = cc.Class({
         Game.instance = this;
         console.log("游戏启动！");
         
-        this.scene = new Scene();
-        this.scene.changeScene('TestScene');
-        this.tank = new Tank();
-        this.tank.createTank();
-        this.tank.createEnemy();
+        cc.director.loadScene('TestScene');
     },
 
     // called every frame, uncomment this function to activate update callback
