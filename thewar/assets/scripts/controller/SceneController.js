@@ -1,11 +1,14 @@
 // 场景控制器
 
-cc.Class({
-    
-    view: require('SceneView'),
-    
-    changeScene: function (sceneName) {
-        cc.director.loadScene(sceneName);
-    }
-    
-});
+function SceneController() {
+  this._view = require('SceneView');
+}
+
+SceneController.prototype = {
+  constructor: SceneController,
+  changeScene: function (sceneName) {
+      cc.director.loadScene(sceneName);
+  }
+};
+
+module.exports = SceneController;
