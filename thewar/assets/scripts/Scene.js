@@ -3,6 +3,10 @@ cc.Class({
 
     properties: {
         tankLayer: cc.Node,
+        tanks: {
+            default: [],
+            type: require("Tank")
+        }
     },
 
     // use this for initialization
