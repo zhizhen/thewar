@@ -224,7 +224,9 @@
       "__id__": 4
     },
     "_enabled": true,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "0fe66df3-0e07-4d18-9eba-eedbbc00b101"
+    },
     "_type": 0,
     "_useOriginalSize": true,
     "_sizeMode": 0,
@@ -369,6 +371,9 @@
     "_enabled": true,
     "tankPrefeb": {
       "__uuid__": "41f6075f-8df6-4503-b672-12ba62c4e736"
+    },
+    "bullet": {
+      "__uuid__": "ab14c090-abc5-4e05-b4d2-fdf992351961"
     }
   },
   {
