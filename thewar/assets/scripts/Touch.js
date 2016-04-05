@@ -18,9 +18,11 @@ cc.Class({
             
         }
         var end = function (event){
+            var location = event.touch.getLocation();
             console.log("touchend end:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y)
             var tank = require("Tank");
-            this.refToTank.move(event.touch.getLocation().x, event.touch.getLocation().y);
+            this.refToTank.faceAndfire(location.x, location.y);
+            // this.refToTank.move(event.touch.getLocation().x, event.touch.getLocation().y);
         }
         this.node.on(cc.Node.EventType.TOUCH_START, begin, this);
         this.node.on(cc.Node.EventType.TOUCH_MOVE, move, this);

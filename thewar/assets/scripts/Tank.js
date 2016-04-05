@@ -3,7 +3,6 @@ cc.Class({
 
     properties: {
         speed: 20,
-        // position: null,
         tankPrefeb: cc.Prefab,
         bullet: cc.Prefab
     },
@@ -22,7 +21,6 @@ cc.Class({
     
     create: function (x, y) {
         this.tankNode = cc.instantiate(this.tankPrefeb);
-        // this.position = cc.p(x, y);
         this.tankNode.position = cc.p(x, y);
         console.log("tank view create!");
         this.node.addChild(this.tankNode);
@@ -41,7 +39,9 @@ cc.Class({
 
     faceAndfire: function(x, y) {
         var gun = cc.find("tankInfo/vehicle/gun", this.tankNode);
-        var rotate = cc.rotateBy(1, 90, 0);
+        var old_pos = this.tankNode.position;
+        var angle = 180 * Math.atan((y - old_pos.y)/(x - old_pos.x)) / Math.PI;
+        var rotate = cc.rotateBy(1, angle, 0);
 
         var tmp = this
         gun.runAction(cc.sequence(rotate, cc.callFunc(function() {
