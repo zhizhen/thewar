@@ -2,25 +2,20 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //    default: null,
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
         refToTank: require('Tank')
     },
 
     // use this for initialization
     onLoad: function () {
+        // this.streak = cc.MotionStreak.create(0.3, 3, 30, cc.c3b(50, 220, 255), "blade.png");
+        // this.node.addChild(this.streak);
         var begin = function (event){
             console.log("touchend begin:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y)
         }
         var move = function (event){
             console.log("touchend move:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y)
+            // this.streak.setPosition(event.touch.getLocation().x, event.touch.getLocation().y)
+            
         }
         var end = function (event){
             console.log("touchend end:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y)
