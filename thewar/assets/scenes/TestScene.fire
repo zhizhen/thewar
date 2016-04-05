@@ -642,7 +642,7 @@
     "_enabled": true,
     "refToTank": {
       "__id__": 10
-    }
+   }
   },
   {
     "__type__": "cc.Canvas",
