@@ -17,8 +17,12 @@ var Game = cc.Class({
         Game.instance = this;
         console.log("游戏启动！");
         
-        cc.director.loadScene('TestScene');
     },
+    
+    start: function() {
+        
+        cc.director.loadScene('TestScene');
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
