@@ -17,21 +17,29 @@ cc.Class({
             if (isHit){
                 // console.log("start move!");
                 this.pre_move = [];
+                // this.touchID = event.touch.getID();
             }
             else{
                 // console.log("face target!");
+                this.pre_move = undefined;
                 this.refToTank.face(location.x, location.y);
             }
         }
         var move = function (event){
             // console.log("touchend move:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y);
             var location = event.touch.getLocation();
+            var touchID = event.touch.getID();
             // todo 移动车身，或者旋转炮塔
             if (this.pre_move !== undefined){
                 this.pre_move.push(location);
             }
             else{
-                this.refToTank.face(location.x, location.y);
+                // if (touchID !== this.touchID){
+                    this.refToTank.face(location.x, location.y);
+                // }
+                // else{
+                    // console.log("id:" + touchID + ";" + this.touchID);
+                // }
             }
         }
         var end = function (event){

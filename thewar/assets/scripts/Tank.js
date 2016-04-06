@@ -56,7 +56,7 @@ cc.Class({
         var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
         var turn_angle = Utils.fmod(180 * (degree - now_angle) / Math.PI, 360);
-        var rotate = cc.rotateBy(Math.abs(turn_angle) / this.gun_speed, turn_angle, 0);
+        var rotate = cc.rotateBy(Math.abs(turn_angle) / this.gun_speed, turn_angle, turn_angle);
         // 给 action 设置 tag
         rotate.setTag(ACTION_TAG);
         
