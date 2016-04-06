@@ -402,7 +402,7 @@
     },
     "_enabled": true,
     "move_speed": 20,
-    "gun_speed": 90,
+    "gun_speed": 50,
     "vehicle_angle": 0,
     "gun_angle": 0,
     "tankPrefeb": {
