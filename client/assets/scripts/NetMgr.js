@@ -1,10 +1,10 @@
 var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
-        this.prepareWebSocket();
+        this.connect();
     },
     
-    prepareWebSocket: function() {
+    connect: function() {
         this._ws = new WebSocket("ws://echo.websocket.org");
         this._ws.binaryType = "arraybuffer";
         this._ws.onopen = function(evt) {
