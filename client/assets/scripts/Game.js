@@ -1,4 +1,4 @@
-
+var NetMgr = require("NetMgr");
 
 var Game = cc.Class({
     extends: cc.Component,
@@ -22,10 +22,12 @@ var Game = cc.Class({
     start: function() {
         
         cc.director.loadScene('TestScene');
-    }
+    },
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
     // },
+    
+    
 });
