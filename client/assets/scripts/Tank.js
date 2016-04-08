@@ -6,6 +6,7 @@ cc.Class({
     properties: {
         move_speed: 20,
         gun_speed: 0, // 炮管每秒旋转角度
+        vehicle_speed: 0,
         tankPrefeb: cc.Prefab,
         bullet: cc.Prefab
     },
@@ -31,15 +32,21 @@ cc.Class({
         vehicle.rotationX = face;
     },
     
-    move: function (x, y) {
-        
+    move: function (position) {
+        var x = position.x;
+        var y = position.y;
         var old_pos = this.tankNode.position;
-        var angle = 180 * Math.atan((y - old_pos.y)/(x - old_pos.x)) / Math.PI;
-        var turn = cc.rotateBy(0.4, angle);
-        var move = cc.moveTo(2, x, y);
-        var spawn = cc.spawn(turn, move);
-        console.log("move to:" + x + "|" + y + "|" + angle);
-        this.tankNode.runAction(move);
+        var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
+        var vehicle_angle = vehicle.getRotation();
+        var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
+        var turn_angle = Utils.fmod(180 * (degree - vehicle_angle) / Math.PI, 360);
+        var rotate = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
+        // var turn = cc.rotateBy(0.4, angle);
+        // var move = cc.moveTo(2, x, y);
+        // var spawn = cc.spawn(turn, move);
+        console.log("move to:" + x + "|" + y + "|" + turn_angle);
+        // this.tankNode.runAction(rotate);
+        this.tankNode.position = position;
     },
 
     face: function(x, y) {

@@ -15,10 +15,10 @@ cc.Class({
     onLoad: function () {
         console.log("scene view onload!")
         
-        this.scheduleOnce(function () {
-                console.log("test scheduleonce!");
-                NetMgr.sendWebSocketBinary();
-            }, 1);
+        // this.scheduleOnce(function () {
+        //         console.log("test scheduleonce!");
+        //         NetMgr.sendWebSocketBinary();
+        //     }, 1);
     },
 
     // called every frame, uncomment this function to activate update callback

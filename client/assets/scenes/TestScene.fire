@@ -406,6 +406,7 @@
     "_enabled": true,
     "move_speed": 20,
     "gun_speed": 50,
+    "vehicle_speed": 50,
     "tankPrefeb": {
       "__uuid__": "41f6075f-8df6-4503-b672-12ba62c4e736"
     },
