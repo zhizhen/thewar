@@ -15,7 +15,7 @@ cc.Class({
     onLoad: function () {
         console.log("tank view onload!");
         this.create(200, 300, 0);
-        this.face(400, 600)
+        this.face(400, 600);
     },
 
     // called every frame, uncomment this function to activate update callback
