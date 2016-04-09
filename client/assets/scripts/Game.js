@@ -4,7 +4,7 @@ var Game = cc.Class({
     extends: cc.Component,
     
     properties: {
-        mainUI: cc.Node,
+        
     },
     
     // 单例
@@ -21,7 +21,6 @@ var Game = cc.Class({
     
     start: function() {
         
-        cc.director.loadScene('TestScene');
     },
 
     // called every frame, uncomment this function to activate update callback
