@@ -1441,122 +1441,6 @@ declare module cc {
 		WARN_FOR_WEB_PAGE = 0,
 		ERROR_FOR_WEB_PAGE = 0,	
 	}		
-		/** !#en Class for animation data handling.
-		!#zh 动画剪辑，用于存储动画数据。 */
-		export class AnimationClip extends Asset {		
-		constructor();		
-		/** !#en Duration of this animation.
-		!#zh 动画的持续时间。 */
-		duration : number;		
-		/** !#en FrameRate of this animation.
-		!#zh 动画的帧速率。 */
-		sample : number;		
-		/** !#en Speed of this animation.
-		!#zh 动画的播放速度。 */
-		speed : number;		
-		/** !#en WrapMode of this animation.
-		!#zh 动画的循环模式。 */
-		wrapMode : WrapMode;		
-		/** !#en Curve data.
-		!#zh 曲线数据。 */
-		curveData : any;		
-		/** !#en Event data.
-		!#zh 事件数据。 */
-		events : any[];	
-	}		
-		/** !#en
-		The AnimationState gives full control over animation playback process.
-		In most cases the Animation Component is sufficient and easier to use. Use the AnimationState if you need full control.
-		!#zh
-		AnimationState 完全控制动画播放过程。<br/>
-		大多数情况下 动画组件 是足够和易于使用的。如果您需要更多的动画控制接口，请使用 AnimationState。 */
-		export class AnimationState extends AnimationNode {		
-		constructor();		
-		/**  
-		*/
-		AnimationState(clip : AnimationClip, name? : string) : AnimationState;		
-		/** !#en The clip that is being played by this animation state.
-		!#zh 此动画状态正在播放的剪辑。 */
-		clip : AnimationClip;		
-		/** !#en The name of the playing animation.
-		!#zh 动画的名字 */
-		name : string;	
-	}		
-		/** undefined */
-		export class Playable {		
-		constructor();		
-		/** !#en Is playing or paused in play mode?
-		!#zh 当前是否正在播放。 */
-		isPlaying : boolean;		
-		/** !#en Is currently paused? This can be true even if in edit mode(isPlaying == false).
-		!#zh 当前是否正在暂停 */
-		isPaused : boolean;		
-		/** !#en Play this animation.
-		!#zh 播放动画。 
-		*/
-		play() : void;		
-		/** !#en Stop this animation.
-		!#zh 停止动画播放。 
-		*/
-		stop() : void;		
-		/** !#en Pause this animation.
-		!#zh 暂停动画。 
-		*/
-		pause() : void;		
-		/** !#en Resume this animation.
-		!#zh 重新播放动画。 
-		*/
-		resume() : void;		
-		/** !#en Perform a single frame step.
-		!#zh 执行一帧动画。 
-		*/
-		step() : void;	
-	}	
-	/** !#en Specifies how time is treated when it is outside of the keyframe range of an Animation.
-	!#zh 动画使用的循环模式。 */
-	export enum WrapMode {		
-		Default = 0,
-		Normal = 0,
-		Reverse = 0,
-		Loop = 0,
-		LoopReverse = 0,
-		PingPong = 0,
-		PingPongReverse = 0,	
-	}		
-		/** !#en The abstract interface for all playing animation.
-		!#zh 所有播放动画的抽象接口。 */
-		export class AnimationNodeBase extends Playable {		
-		constructor();		
-		/** !#en The curves list.
-		!#zh 曲线列表。 */
-		curves : AnimCurve[];		
-		/** !#en The start delay which represents the number of seconds from an animation's start time to the start of
-		the active interval.
-		!#zh 延迟多少秒播放。 */
-		delay : number;		
-		/** !#en The animation's iteration count property.
-		
-		A real number greater than or equal to zero (including positive infinity) representing the number of times
-		to repeat the animation node.
-		
-		Values less than zero and NaN values are treated as the value 1.0 for the purpose of timing model
-		calculations.
-		
-		!#zh 迭代次数，指动画播放多少次后结束, normalize time。 如 2.5（2次半） */
-		repeatCount : number;		
-		/** !#en The iteration duration of this animation in seconds. (length)
-		!#zh 单次动画的持续时间，秒。 */
-		duration : number;		
-		/** !#en The animation's playback speed. 1 is normal playback speed.
-		!#zh 播放速率。 */
-		speed : number;		
-		/** !#en Wrapping mode of the playing animation.
-		!#zh 动画循环方式。 */
-		wrapMode : WrapMode;		
-		/** !#en The current time of this animation in seconds.
-		!#zh 动画当前的时间，秒。 */
-		time : number;	
-	}		
 		/** !#en Base class cc.Action for action classes.
 		!#zh Action 类是所有动作类型的基类。 */
 		export class Action {		
@@ -1686,6 +1570,122 @@ declare module cc {
 		!#zh 永远地重复一个动作，有限次数内重复一个动作请使用 Repeat 动作。 
 		*/
 		repeatForever() : ActionInterval;	
+	}		
+		/** !#en Class for animation data handling.
+		!#zh 动画剪辑，用于存储动画数据。 */
+		export class AnimationClip extends Asset {		
+		constructor();		
+		/** !#en Duration of this animation.
+		!#zh 动画的持续时间。 */
+		duration : number;		
+		/** !#en FrameRate of this animation.
+		!#zh 动画的帧速率。 */
+		sample : number;		
+		/** !#en Speed of this animation.
+		!#zh 动画的播放速度。 */
+		speed : number;		
+		/** !#en WrapMode of this animation.
+		!#zh 动画的循环模式。 */
+		wrapMode : WrapMode;		
+		/** !#en Curve data.
+		!#zh 曲线数据。 */
+		curveData : any;		
+		/** !#en Event data.
+		!#zh 事件数据。 */
+		events : any[];	
+	}		
+		/** !#en
+		The AnimationState gives full control over animation playback process.
+		In most cases the Animation Component is sufficient and easier to use. Use the AnimationState if you need full control.
+		!#zh
+		AnimationState 完全控制动画播放过程。<br/>
+		大多数情况下 动画组件 是足够和易于使用的。如果您需要更多的动画控制接口，请使用 AnimationState。 */
+		export class AnimationState extends AnimationNode {		
+		constructor();		
+		/**  
+		*/
+		AnimationState(clip : AnimationClip, name? : string) : AnimationState;		
+		/** !#en The clip that is being played by this animation state.
+		!#zh 此动画状态正在播放的剪辑。 */
+		clip : AnimationClip;		
+		/** !#en The name of the playing animation.
+		!#zh 动画的名字 */
+		name : string;	
+	}		
+		/** undefined */
+		export class Playable {		
+		constructor();		
+		/** !#en Is playing or paused in play mode?
+		!#zh 当前是否正在播放。 */
+		isPlaying : boolean;		
+		/** !#en Is currently paused? This can be true even if in edit mode(isPlaying == false).
+		!#zh 当前是否正在暂停 */
+		isPaused : boolean;		
+		/** !#en Play this animation.
+		!#zh 播放动画。 
+		*/
+		play() : void;		
+		/** !#en Stop this animation.
+		!#zh 停止动画播放。 
+		*/
+		stop() : void;		
+		/** !#en Pause this animation.
+		!#zh 暂停动画。 
+		*/
+		pause() : void;		
+		/** !#en Resume this animation.
+		!#zh 重新播放动画。 
+		*/
+		resume() : void;		
+		/** !#en Perform a single frame step.
+		!#zh 执行一帧动画。 
+		*/
+		step() : void;	
+	}	
+	/** !#en Specifies how time is treated when it is outside of the keyframe range of an Animation.
+	!#zh 动画使用的循环模式。 */
+	export enum WrapMode {		
+		Default = 0,
+		Normal = 0,
+		Reverse = 0,
+		Loop = 0,
+		LoopReverse = 0,
+		PingPong = 0,
+		PingPongReverse = 0,	
+	}		
+		/** !#en The abstract interface for all playing animation.
+		!#zh 所有播放动画的抽象接口。 */
+		export class AnimationNodeBase extends Playable {		
+		constructor();		
+		/** !#en The curves list.
+		!#zh 曲线列表。 */
+		curves : AnimCurve[];		
+		/** !#en The start delay which represents the number of seconds from an animation's start time to the start of
+		the active interval.
+		!#zh 延迟多少秒播放。 */
+		delay : number;		
+		/** !#en The animation's iteration count property.
+		
+		A real number greater than or equal to zero (including positive infinity) representing the number of times
+		to repeat the animation node.
+		
+		Values less than zero and NaN values are treated as the value 1.0 for the purpose of timing model
+		calculations.
+		
+		!#zh 迭代次数，指动画播放多少次后结束, normalize time。 如 2.5（2次半） */
+		repeatCount : number;		
+		/** !#en The iteration duration of this animation in seconds. (length)
+		!#zh 单次动画的持续时间，秒。 */
+		duration : number;		
+		/** !#en The animation's playback speed. 1 is normal playback speed.
+		!#zh 播放速率。 */
+		speed : number;		
+		/** !#en Wrapping mode of the playing animation.
+		!#zh 动画循环方式。 */
+		wrapMode : WrapMode;		
+		/** !#en The current time of this animation in seconds.
+		!#zh 动画当前的时间，秒。 */
+		time : number;	
 	}		
 		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
 		!#zn
@@ -1893,234 +1893,6 @@ declare module cc {
 		!#zh 停止所有音乐和音效的播放。 
 		*/
 		end() : void;	
-	}		
-		/** Particle System base class. <br/>
-		Attributes of a Particle System:<br/>
-		 - emmision rate of the particles<br/>
-		 - Gravity Mode (Mode A): <br/>
-		 - gravity <br/>
-		 - direction <br/>
-		 - speed +-  variance <br/>
-		 - tangential acceleration +- variance<br/>
-		 - radial acceleration +- variance<br/>
-		 - Radius Mode (Mode B):      <br/>
-		 - startRadius +- variance    <br/>
-		 - endRadius +- variance      <br/>
-		 - rotate +- variance         <br/>
-		 - Properties common to all modes: <br/>
-		 - life +- life variance      <br/>
-		 - start spin +- variance     <br/>
-		 - end spin +- variance       <br/>
-		 - start size +- variance     <br/>
-		 - end size +- variance       <br/>
-		 - start color +- variance    <br/>
-		 - end color +- variance      <br/>
-		 - life +- variance           <br/>
-		 - blending function          <br/>
-		 - texture                    <br/>
-		<br/>
-		cocos2d also supports particles generated by Particle Designer (http://particledesigner.71squared.com/).<br/>
-		'Radius Mode' in Particle Designer uses a fixed emit rate of 30 hz. Since that can't be guarateed in cocos2d,  <br/>
-		cocos2d uses a another approach, but the results are almost identical.<br/>
-		cocos2d supports all the variables used by Particle Designer plus a bit more:  <br/>
-		 - spinning particles (supported when using ParticleSystem)       <br/>
-		 - tangential acceleration (Gravity mode)                               <br/>
-		 - radial acceleration (Gravity mode)                                   <br/>
-		 - radius direction (Radius mode) (Particle Designer supports outwards to inwards direction only) <br/>
-		It is possible to customize any of the above mentioned properties in runtime. Example:   <br/> */
-		export class ParticleSystem extends cc._RendererUnderSG {		
-		/** !#en Play particle in edit mode.
-		!#zh 在编辑器模式下预览粒子，启用后选中粒子时，粒子将自动播放。 */
-		preview : boolean;		
-		/** !#en
-		If set custom to true, then use custom properties insteadof read particle file.
-		!#zh 是否自定义粒子属性。 */
-		custom : boolean;		
-		/** !#en The plist file.
-		!#zh plist 格式的粒子配置文件。 */
-		file : string;		
-		/** . */
-		texture : Texture2D;		
-		/** !#en Current quantity of particles that are being simulated.
-		!#zh 当前播放的粒子数量。 */
-		particleCount : number;		
-		/** !#en Specify the source Blend Factor.
-		!#zh 指定原图混合模式。 */
-		srcBlendFactor : BlendFactor;		
-		/** !#en Specify the destination Blend Factor.
-		!#zh 指定目标的混合模式。 */
-		dstBlendFactor : BlendFactor;		
-		/** !#en If set to true, the particle system will automatically start playing on onLoad.
-		!#zh 如果设置为 true 运行时会自动发射粒子。 */
-		playOnLoad : boolean;		
-		/** !#en Indicate whether the owner node will be auto-removed when it has no particles left.
-		!#zh 粒子播放完毕后自动销毁所在的节点。 */
-		autoRemoveOnFinish : boolean;		
-		/** !#en Indicate whether the particle system is activated.
-		!#zh 是否激活粒子。 */
-		active : boolean;		
-		/** !#en Maximum particles of the system.
-		!#zh 粒子最大数量。 */
-		totalParticles : number;		
-		/** !#en How many seconds the emitter wil run. -1 means 'forever'.
-		!#zh 发射器生存时间，单位秒，-1表示持续发射。 */
-		duration : number;		
-		/** !#en Emission rate of the particles.
-		!#zh 每秒发射的粒子数目。 */
-		emissionRate : number;		
-		/** !#en Life of each particle setter.
-		!#zh 粒子的运行时间。 */
-		life : number;		
-		/** !#en Variation of life.
-		!#zh 粒子的运行时间变化范围。 */
-		lifeVar : number;		
-		/** !#en Start color of each particle.
-		!#zh 粒子初始颜色。 */
-		startColor : Color;		
-		/** !#en Variation of the start color.
-		!#zh 粒子初始颜色变化范围。 */
-		startColorVar : Color;		
-		/** !#en Ending color of each particle.
-		!#zh 粒子结束颜色。 */
-		endColor : Color;		
-		/** !#en Variation of the end color.
-		!#zh 粒子结束颜色变化范围。 */
-		endColorVar : Color;		
-		/** !#en Angle of each particle setter.
-		!#zh 粒子角度。 */
-		angle : number;		
-		/** !#en Variation of angle of each particle setter.
-		!#zh 粒子角度变化范围。 */
-		angleVar : number;		
-		/** !#en Start size in pixels of each particle.
-		!#zh 粒子的初始大小。 */
-		startSize : number;		
-		/** !#en Variation of start size in pixels.
-		!#zh 粒子初始大小的变化范围。 */
-		startSizeVar : number;		
-		/** !#en End size in pixels of each particle.
-		!#zh 粒子结束时的大小。 */
-		endSize : number;		
-		/** !#en Variation of end size in pixels.
-		!#zh 粒子结束大小的变化范围。 */
-		endSizeVar : number;		
-		/** !#en Start angle of each particle.
-		!#zh 粒子开始自旋角度。 */
-		startSpin : number;		
-		/** !#en Variation of start angle.
-		!#zh 粒子开始自旋角度变化范围。 */
-		startSpinVar : number;		
-		/** !#en End angle of each particle.
-		!#zh 粒子结束自旋角度。 */
-		endSpin : number;		
-		/** !#en Variation of end angle.
-		!#zh 粒子结束自旋角度变化范围。 */
-		endSpinVar : number;		
-		/** !#en Source position of the emitter.
-		!#zh 发射器位置。 */
-		sourcePos : Vec2;		
-		/** !#en Variation of source position.
-		!#zh 发射器位置的变化范围。（横向和纵向） */
-		posVar : Vec2;		
-		/** !#en Particles movement type.
-		!#zh 粒子位置类型。 */
-		positionType : ParticleSystem.PositionType;		
-		/** !#en Particles emitter modes.
-		!#zh 发射器类型。 */
-		emitterMode : ParticleSystem.EmitterMode;		
-		/** !#en Gravity of the emitter.
-		!#zh 重力。 */
-		gravity : Vec2;		
-		/** !#en Speed of the emitter.
-		!#zh 速度。 */
-		speed : number;		
-		/** !#en Variation of the speed.
-		!#zh 速度变化范围。 */
-		speedVar : number;		
-		/** !#en Tangential acceleration of each particle. Only available in 'Gravity' mode.
-		!#zh 每个粒子的切向加速度，即垂直于重力方向的加速度，只有在重力模式下可用。 */
-		tangentialAccel : number;		
-		/** !#en Variation of the tangential acceleration.
-		!#zh 每个粒子的切向加速度变化范围。 */
-		tangentialAccelVar : number;		
-		/** !#en Acceleration of each particle. Only available in 'Gravity' mode.
-		!#zh 粒子径向加速度，即平行于重力方向的加速度，只有在重力模式下可用。 */
-		radialAccel : number;		
-		/** !#en Variation of the radial acceleration.
-		!#zh 粒子径向加速度变化范围。 */
-		radialAccelVar : number;		
-		/** !#en Indicate whether the rotation of each particle equals to its direction. Only available in 'Gravity' mode.
-		!#zh 每个粒子的旋转是否等于其方向，只有在重力模式下可用。 */
-		rotationIsDir : boolean;		
-		/** !#en Starting radius of the particles. Only available in 'Radius' mode.
-		!#zh 初始半径，表示粒子出生时相对发射器的距离，只有在半径模式下可用。 */
-		startRadius : number;		
-		/** !#en Variation of the starting radius.
-		!#zh 初始半径变化范围。 */
-		startRadiusVar : number;		
-		/** !#en Ending radius of the particles. Only available in 'Radius' mode.
-		!#zh 结束半径，只有在半径模式下可用。 */
-		endRadius : number;		
-		/** !#en Variation of the ending radius.
-		!#zh 结束半径变化范围。 */
-		endRadiusVar : number;		
-		/** !#en Number of degress to rotate a particle around the source pos per second. Only available in 'Radius' mode.
-		!#zh 粒子每秒围绕起始点的旋转角度，只有在半径模式下可用。 */
-		rotatePerS : number;		
-		/** !#en Variation of the degress to rotate a particle around the source pos per second.
-		!#zh 粒子每秒围绕起始点的旋转角度变化范围。 */
-		rotatePerSVar : number;		
-		/** !#en The Particle emitter lives forever.
-		!#zh 表示发射器永久存在 */
-		DURATION_INFINITY : number;		
-		/** !#en The starting size of the particle is equal to the ending size.
-		!#zh 表示粒子的起始大小等于结束大小。 */
-		START_SIZE_EQUAL_TO_END_SIZE : number;		
-		/** !#en The starting radius of the particle is equal to the ending radius.
-		!#zh 表示粒子的起始半径等于结束半径。 */
-		START_RADIUS_EQUAL_TO_END_RADIUS : number;		
-		/** !#en Add a particle to the emitter.
-		!#zh 添加一个粒子到发射器中。 
-		*/
-		addParticle() : boolean;		
-		/** !#en Stop emitting particles. Running particles will continue to run until they die.
-		!#zh 停止发射器发射粒子，发射出去的粒子将继续运行，直至粒子生命结束。
-		
-		@example 
-		```js
-		// stop particle system.
-		myParticleSystem.stopSystem();
-		``` 
-		*/
-		stopSystem() : void;		
-		/** !#en Kill all living particles.
-		!#zh 杀死所有存在的粒子，然后重新启动粒子发射器。
-		
-		@example 
-		```js
-		// play particle system.
-		myParticleSystem.resetSystem();
-		``` 
-		*/
-		resetSystem() : void;		
-		/** !#en Whether or not the system is full.
-		!#zh 发射器中粒子是否大于等于设置的总粒子数量。 
-		*/
-		isFull() : boolean;		
-		/** !#en
-		<p> Sets a new CCSpriteFrame as particle.</br>
-		WARNING: this method is experimental. Use setTextureWithRect instead.
-		</p>
-		!#zh
-		<p> 设置一个新的精灵帧为粒子。</br>
-		警告：这个函数只是试验，请使用 setTextureWithRect 实现。
-		</p> 
-		*/
-		setDisplayFrame(spriteFrame : SpriteFrame) : void;		
-		/** !#en Sets a new texture with a rect. The rect is in texture position and size.
-		!#zh 设置一张新贴图和关联的矩形。 
-		*/
-		setTextureWithRect(texture : Texture2D, rect : Rect) : void;	
 	}		
 		/** cc.ActionManager is a class that can manage actions.<br/>
 		Normally you won't need to use this class directly. 99% of the cases you will use the CCNode interface,
@@ -2844,6 +2616,234 @@ declare module cc {
 		/** Minimum priority level for user scheduling. */
 		PRIORITY_NON_SYSTEM : number;	
 	}		
+		/** Particle System base class. <br/>
+		Attributes of a Particle System:<br/>
+		 - emmision rate of the particles<br/>
+		 - Gravity Mode (Mode A): <br/>
+		 - gravity <br/>
+		 - direction <br/>
+		 - speed +-  variance <br/>
+		 - tangential acceleration +- variance<br/>
+		 - radial acceleration +- variance<br/>
+		 - Radius Mode (Mode B):      <br/>
+		 - startRadius +- variance    <br/>
+		 - endRadius +- variance      <br/>
+		 - rotate +- variance         <br/>
+		 - Properties common to all modes: <br/>
+		 - life +- life variance      <br/>
+		 - start spin +- variance     <br/>
+		 - end spin +- variance       <br/>
+		 - start size +- variance     <br/>
+		 - end size +- variance       <br/>
+		 - start color +- variance    <br/>
+		 - end color +- variance      <br/>
+		 - life +- variance           <br/>
+		 - blending function          <br/>
+		 - texture                    <br/>
+		<br/>
+		cocos2d also supports particles generated by Particle Designer (http://particledesigner.71squared.com/).<br/>
+		'Radius Mode' in Particle Designer uses a fixed emit rate of 30 hz. Since that can't be guarateed in cocos2d,  <br/>
+		cocos2d uses a another approach, but the results are almost identical.<br/>
+		cocos2d supports all the variables used by Particle Designer plus a bit more:  <br/>
+		 - spinning particles (supported when using ParticleSystem)       <br/>
+		 - tangential acceleration (Gravity mode)                               <br/>
+		 - radial acceleration (Gravity mode)                                   <br/>
+		 - radius direction (Radius mode) (Particle Designer supports outwards to inwards direction only) <br/>
+		It is possible to customize any of the above mentioned properties in runtime. Example:   <br/> */
+		export class ParticleSystem extends cc._RendererUnderSG {		
+		/** !#en Play particle in edit mode.
+		!#zh 在编辑器模式下预览粒子，启用后选中粒子时，粒子将自动播放。 */
+		preview : boolean;		
+		/** !#en
+		If set custom to true, then use custom properties insteadof read particle file.
+		!#zh 是否自定义粒子属性。 */
+		custom : boolean;		
+		/** !#en The plist file.
+		!#zh plist 格式的粒子配置文件。 */
+		file : string;		
+		/** . */
+		texture : Texture2D;		
+		/** !#en Current quantity of particles that are being simulated.
+		!#zh 当前播放的粒子数量。 */
+		particleCount : number;		
+		/** !#en Specify the source Blend Factor.
+		!#zh 指定原图混合模式。 */
+		srcBlendFactor : BlendFactor;		
+		/** !#en Specify the destination Blend Factor.
+		!#zh 指定目标的混合模式。 */
+		dstBlendFactor : BlendFactor;		
+		/** !#en If set to true, the particle system will automatically start playing on onLoad.
+		!#zh 如果设置为 true 运行时会自动发射粒子。 */
+		playOnLoad : boolean;		
+		/** !#en Indicate whether the owner node will be auto-removed when it has no particles left.
+		!#zh 粒子播放完毕后自动销毁所在的节点。 */
+		autoRemoveOnFinish : boolean;		
+		/** !#en Indicate whether the particle system is activated.
+		!#zh 是否激活粒子。 */
+		active : boolean;		
+		/** !#en Maximum particles of the system.
+		!#zh 粒子最大数量。 */
+		totalParticles : number;		
+		/** !#en How many seconds the emitter wil run. -1 means 'forever'.
+		!#zh 发射器生存时间，单位秒，-1表示持续发射。 */
+		duration : number;		
+		/** !#en Emission rate of the particles.
+		!#zh 每秒发射的粒子数目。 */
+		emissionRate : number;		
+		/** !#en Life of each particle setter.
+		!#zh 粒子的运行时间。 */
+		life : number;		
+		/** !#en Variation of life.
+		!#zh 粒子的运行时间变化范围。 */
+		lifeVar : number;		
+		/** !#en Start color of each particle.
+		!#zh 粒子初始颜色。 */
+		startColor : Color;		
+		/** !#en Variation of the start color.
+		!#zh 粒子初始颜色变化范围。 */
+		startColorVar : Color;		
+		/** !#en Ending color of each particle.
+		!#zh 粒子结束颜色。 */
+		endColor : Color;		
+		/** !#en Variation of the end color.
+		!#zh 粒子结束颜色变化范围。 */
+		endColorVar : Color;		
+		/** !#en Angle of each particle setter.
+		!#zh 粒子角度。 */
+		angle : number;		
+		/** !#en Variation of angle of each particle setter.
+		!#zh 粒子角度变化范围。 */
+		angleVar : number;		
+		/** !#en Start size in pixels of each particle.
+		!#zh 粒子的初始大小。 */
+		startSize : number;		
+		/** !#en Variation of start size in pixels.
+		!#zh 粒子初始大小的变化范围。 */
+		startSizeVar : number;		
+		/** !#en End size in pixels of each particle.
+		!#zh 粒子结束时的大小。 */
+		endSize : number;		
+		/** !#en Variation of end size in pixels.
+		!#zh 粒子结束大小的变化范围。 */
+		endSizeVar : number;		
+		/** !#en Start angle of each particle.
+		!#zh 粒子开始自旋角度。 */
+		startSpin : number;		
+		/** !#en Variation of start angle.
+		!#zh 粒子开始自旋角度变化范围。 */
+		startSpinVar : number;		
+		/** !#en End angle of each particle.
+		!#zh 粒子结束自旋角度。 */
+		endSpin : number;		
+		/** !#en Variation of end angle.
+		!#zh 粒子结束自旋角度变化范围。 */
+		endSpinVar : number;		
+		/** !#en Source position of the emitter.
+		!#zh 发射器位置。 */
+		sourcePos : Vec2;		
+		/** !#en Variation of source position.
+		!#zh 发射器位置的变化范围。（横向和纵向） */
+		posVar : Vec2;		
+		/** !#en Particles movement type.
+		!#zh 粒子位置类型。 */
+		positionType : ParticleSystem.PositionType;		
+		/** !#en Particles emitter modes.
+		!#zh 发射器类型。 */
+		emitterMode : ParticleSystem.EmitterMode;		
+		/** !#en Gravity of the emitter.
+		!#zh 重力。 */
+		gravity : Vec2;		
+		/** !#en Speed of the emitter.
+		!#zh 速度。 */
+		speed : number;		
+		/** !#en Variation of the speed.
+		!#zh 速度变化范围。 */
+		speedVar : number;		
+		/** !#en Tangential acceleration of each particle. Only available in 'Gravity' mode.
+		!#zh 每个粒子的切向加速度，即垂直于重力方向的加速度，只有在重力模式下可用。 */
+		tangentialAccel : number;		
+		/** !#en Variation of the tangential acceleration.
+		!#zh 每个粒子的切向加速度变化范围。 */
+		tangentialAccelVar : number;		
+		/** !#en Acceleration of each particle. Only available in 'Gravity' mode.
+		!#zh 粒子径向加速度，即平行于重力方向的加速度，只有在重力模式下可用。 */
+		radialAccel : number;		
+		/** !#en Variation of the radial acceleration.
+		!#zh 粒子径向加速度变化范围。 */
+		radialAccelVar : number;		
+		/** !#en Indicate whether the rotation of each particle equals to its direction. Only available in 'Gravity' mode.
+		!#zh 每个粒子的旋转是否等于其方向，只有在重力模式下可用。 */
+		rotationIsDir : boolean;		
+		/** !#en Starting radius of the particles. Only available in 'Radius' mode.
+		!#zh 初始半径，表示粒子出生时相对发射器的距离，只有在半径模式下可用。 */
+		startRadius : number;		
+		/** !#en Variation of the starting radius.
+		!#zh 初始半径变化范围。 */
+		startRadiusVar : number;		
+		/** !#en Ending radius of the particles. Only available in 'Radius' mode.
+		!#zh 结束半径，只有在半径模式下可用。 */
+		endRadius : number;		
+		/** !#en Variation of the ending radius.
+		!#zh 结束半径变化范围。 */
+		endRadiusVar : number;		
+		/** !#en Number of degress to rotate a particle around the source pos per second. Only available in 'Radius' mode.
+		!#zh 粒子每秒围绕起始点的旋转角度，只有在半径模式下可用。 */
+		rotatePerS : number;		
+		/** !#en Variation of the degress to rotate a particle around the source pos per second.
+		!#zh 粒子每秒围绕起始点的旋转角度变化范围。 */
+		rotatePerSVar : number;		
+		/** !#en The Particle emitter lives forever.
+		!#zh 表示发射器永久存在 */
+		DURATION_INFINITY : number;		
+		/** !#en The starting size of the particle is equal to the ending size.
+		!#zh 表示粒子的起始大小等于结束大小。 */
+		START_SIZE_EQUAL_TO_END_SIZE : number;		
+		/** !#en The starting radius of the particle is equal to the ending radius.
+		!#zh 表示粒子的起始半径等于结束半径。 */
+		START_RADIUS_EQUAL_TO_END_RADIUS : number;		
+		/** !#en Add a particle to the emitter.
+		!#zh 添加一个粒子到发射器中。 
+		*/
+		addParticle() : boolean;		
+		/** !#en Stop emitting particles. Running particles will continue to run until they die.
+		!#zh 停止发射器发射粒子，发射出去的粒子将继续运行，直至粒子生命结束。
+		
+		@example 
+		```js
+		// stop particle system.
+		myParticleSystem.stopSystem();
+		``` 
+		*/
+		stopSystem() : void;		
+		/** !#en Kill all living particles.
+		!#zh 杀死所有存在的粒子，然后重新启动粒子发射器。
+		
+		@example 
+		```js
+		// play particle system.
+		myParticleSystem.resetSystem();
+		``` 
+		*/
+		resetSystem() : void;		
+		/** !#en Whether or not the system is full.
+		!#zh 发射器中粒子是否大于等于设置的总粒子数量。 
+		*/
+		isFull() : boolean;		
+		/** !#en
+		<p> Sets a new CCSpriteFrame as particle.</br>
+		WARNING: this method is experimental. Use setTextureWithRect instead.
+		</p>
+		!#zh
+		<p> 设置一个新的精灵帧为粒子。</br>
+		警告：这个函数只是试验，请使用 setTextureWithRect 实现。
+		</p> 
+		*/
+		setDisplayFrame(spriteFrame : SpriteFrame) : void;		
+		/** !#en Sets a new texture with a rect. The rect is in texture position and size.
+		!#zh 设置一张新贴图和关联的矩形。 
+		*/
+		setTextureWithRect(texture : Texture2D, rect : Rect) : void;	
+	}		
 		/** !#en Render the TMX layer.
 		!#zh 渲染 TMX layer。 */
 		export class TiledLayer extends _SGComponent {		
@@ -3420,6 +3420,212 @@ declare module cc {
 		!#zh 文本资源类。 */
 		export class TextAsset extends Asset {		
 		constructor();	
+	}		
+		/** !#en
+		EventTarget is an object to which an event is dispatched when something has occurred.
+		Entity are the most common event targets, but other objects can be event targets too.
+		
+		Event targets are an important part of the Fireball event model.
+		The event target serves as the focal point for how events flow through the scene graph.
+		When an event such as a mouse click or a keypress occurs, Fireball dispatches an event object
+		into the event flow from the root of the hierarchy. The event object then makes its way through
+		the scene graph until it reaches the event target, at which point it begins its return trip through
+		the scene graph. This round-trip journey to the event target is conceptually divided into three phases:
+		- The capture phase comprises the journey from the root to the last node before the event target's node
+		- The target phase comprises only the event target node
+		- The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the tree
+		See also: http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		
+		Event targets can implement the following methods:
+		 - _getCapturingTargets
+		 - _getBubblingTargets
+		
+		!#zh
+		事件目标是事件触发时，分派的事件对象，Node 是最常见的事件目标，
+		但是其他对象也可以是事件目标。<br/> */
+		export class EventTarget {		
+		/** !#en
+		Register an callback of a specific event type on the EventTarget.
+		This method is merely an alias to addEventListener.
+		!#zh
+		注册事件目标的特定事件类型回调，仅仅是 addEventListener 的别名。
+		@param type A string representing the event type to listen for.
+		@param callback The callback that will be invoked when the event is dispatched.
+		                             The callback is ignored if it is a duplicate (the callbacks are unique).
+		@param target The target to invoke the callback, can be null
+		@param useCapture When set to true, the capture argument prevents callback
+		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
+		
+		@example 
+		```js
+		node.on(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		``` 
+		*/
+		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : Function;		
+		/** !#en
+		Removes the callback previously registered with the same type, callback, target and or useCapture.
+		This method is merely an alias to removeEventListener.
+		!#zh
+		删除之前与同类型，回调，目标或 useCapture 注册的回调，仅仅是 removeEventListener 的别名。
+		@param type A string representing the event type being removed.
+		@param callback The callback to remove.
+		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
+		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
+		                             If not specified, useCapture defaults to false. If a callback was registered twice,
+		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
+		                             does not affect a non-capturing version of the same listener, and vice versa.
+		
+		@example 
+		```js
+		// register touchEnd eventListener
+		var touchEnd = node.on(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		// remove touchEnd eventListener
+		node.off(cc.Node.EventType.TOUCH_END, touchEnd, node);
+		``` 
+		*/
+		off(type : string, callback : Function, target : any, useCapture : boolean) : void;		
+		/** !#en Removes all callbacks previously registered with the same target.
+		!#zh 删除指定目标上的所有注册回调。
+		@param target The target to be searched for all related callbacks 
+		*/
+		targetOff(target : any) : void;		
+		/** !#en
+		Register an callback of a specific event type on the EventTarget,
+		the callback will remove itself after the first time it is triggered.
+		!#zh
+		注册事件目标的特定事件类型回调，回调会在第一时间被触发后删除自身。
+		@param type A string representing the event type to listen for.
+		@param callback The callback that will be invoked when the event is dispatched.
+		                             The callback is ignored if it is a duplicate (the callbacks are unique).
+		@param target The target to invoke the callback, can be null
+		@param useCapture When set to true, the capture argument prevents callback
+		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
+		
+		@example 
+		```js
+		node.once(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		``` 
+		*/
+		once(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
+		/** !#en
+		Dispatches an event into the event flow.
+		The event target is the EventTarget object upon which the dispatchEvent() method is called.
+		!#zh 分发事件到事件流中。
+		@param event The Event object that is dispatched into the event flow 
+		*/
+		dispatchEvent(event : Event) : boolean;		
+		/** !#en
+		Send an event to this object directly, this method will not propagate the event to any other objects.
+		The event will be created from the supplied message, you can get the "detail" argument from event.detail.
+		!#zh
+		该对象直接发送事件， 这种方法不会对事件传播到任何其他对象。
+		@param message the message to send
+		@param detail whatever argument the message needs 
+		*/
+		emit(message : string, detail? : any) : void;	
+	}		
+		/** !#en Base class of all kinds of events.
+		!#zh 包含事件相关信息的对象。 */
+		export class Event {		
+		constructor();		
+		/** 
+		@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+		@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+		*/
+		Event(type : string, bubbles : boolean) : Event;		
+		/** !#en The name of the event (case-sensitive), e.g. "click", "fire", or "submit".
+		!#zh 事件类型。 */
+		type : string;		
+		/** !#en Indicate whether the event bubbles up through the tree or not.
+		!#zh 表示该事件是否进行冒泡。 */
+		bubbles : boolean;		
+		/** !#en A reference to the target to which the event was originally dispatched.
+		!#zh 最初事件触发的目标 */
+		target : any;		
+		/** !#en A reference to the currently registered target for the event.
+		!#zh 当前目标 */
+		currentTarget : any;		
+		/** !#en
+		Indicates which phase of the event flow is currently being evaluated.
+		Returns an integer value represented by 4 constants:
+		 - Event.NONE = 0
+		 - Event.CAPTURING_PHASE = 1
+		 - Event.AT_TARGET = 2
+		 - Event.BUBBLING_PHASE = 3
+		The phases are explained in the [section 3.1, Event dispatch and DOM event flow]
+		(http://www.w3.org/TR/DOM-Level-3-Events/#event-flow), of the DOM Level 3 Events specification.
+		!#zh 事件阶段 */
+		eventPhase : number;		
+		/** !#en Reset the event for being stored in the object pool.
+		!#zh 重置对象池中存储的事件。 
+		*/
+		unuse() : string;		
+		/** !#en Reuse the event for being used again by the object pool.
+		!#zh 用于对象池再次使用的事件。 
+		*/
+		reuse() : string;		
+		/** !#en
+		If invoked when the cancelable attribute value is true, signals to the operation that caused event to be dispatched that it needs to be canceled.
+		!#zh 捕获阶段时，阻止传递给最终目标。 
+		*/
+		preventDefault() : void;		
+		/** !#en Stops propagation for current event.
+		!#zh 停止传递当前事件。 
+		*/
+		stopPropagation() : void;		
+		/** !#en Stops propagation for current event immediately,
+		the event won't even be dispatched to the listeners attached in the current target.
+		!#zh 立即停止当前事件的传递，事件甚至不会被分派到所连接的当前目标。 
+		*/
+		stopPropagationImmediate() : void;		
+		/** !#en Checks whether the event has been stopped.
+		!#zh 检查该事件是否已经停止传递. 
+		*/
+		isStopped() : boolean;		
+		/** !#en
+		<p>
+		    Gets current target of the event                                                            <br/>
+		    note: It only be available when the event listener is associated with node.                <br/>
+		         It returns 0 when the listener is associated with fixed priority.
+		</p>
+		!#zh 获取当前目标节点 
+		*/
+		getCurrentTarget() : Node;		
+		/** !#en Gets the event type.
+		!#zh 获取事件类型 
+		*/
+		getType() : string;		
+		/** !#en Code for event without type.
+		!#zh 没有类型的事件 */
+		NO_TYPE : string;		
+		/** !#en Events not currently dispatched are in this phase
+		!#zh 尚未派发事件阶段 */
+		NONE : number;		
+		/** !#en
+		The capturing phase comprises the journey from the root to the last node before the event target's node
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。 */
+		CAPTURING_PHASE : number;		
+		/** !#en
+		The target phase comprises only the event target node
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 目标阶段仅包括事件目标节点。 */
+		AT_TARGET : number;		
+		/** !#en
+		The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
+		BUBBLING_PHASE : number;	
 	}		
 		/** !#en The animation component is used to play back animations.
 		!#zh Animation 组件用于播放动画。你能指定动画剪辑到动画组件并从脚本控制播放。 */
@@ -4476,212 +4682,6 @@ declare module cc {
 		这样便于脚本或动画继续控制当前节点。
 		注意：onEnable 时所在的那一帧仍然会进行对齐。 */
 		isAlignOnce : boolean;	
-	}		
-		/** !#en
-		EventTarget is an object to which an event is dispatched when something has occurred.
-		Entity are the most common event targets, but other objects can be event targets too.
-		
-		Event targets are an important part of the Fireball event model.
-		The event target serves as the focal point for how events flow through the scene graph.
-		When an event such as a mouse click or a keypress occurs, Fireball dispatches an event object
-		into the event flow from the root of the hierarchy. The event object then makes its way through
-		the scene graph until it reaches the event target, at which point it begins its return trip through
-		the scene graph. This round-trip journey to the event target is conceptually divided into three phases:
-		- The capture phase comprises the journey from the root to the last node before the event target's node
-		- The target phase comprises only the event target node
-		- The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the tree
-		See also: http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		
-		Event targets can implement the following methods:
-		 - _getCapturingTargets
-		 - _getBubblingTargets
-		
-		!#zh
-		事件目标是事件触发时，分派的事件对象，Node 是最常见的事件目标，
-		但是其他对象也可以是事件目标。<br/> */
-		export class EventTarget {		
-		/** !#en
-		Register an callback of a specific event type on the EventTarget.
-		This method is merely an alias to addEventListener.
-		!#zh
-		注册事件目标的特定事件类型回调，仅仅是 addEventListener 的别名。
-		@param type A string representing the event type to listen for.
-		@param callback The callback that will be invoked when the event is dispatched.
-		                             The callback is ignored if it is a duplicate (the callbacks are unique).
-		@param target The target to invoke the callback, can be null
-		@param useCapture When set to true, the capture argument prevents callback
-		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
-		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
-		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
-		
-		@example 
-		```js
-		node.on(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		``` 
-		*/
-		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : Function;		
-		/** !#en
-		Removes the callback previously registered with the same type, callback, target and or useCapture.
-		This method is merely an alias to removeEventListener.
-		!#zh
-		删除之前与同类型，回调，目标或 useCapture 注册的回调，仅仅是 removeEventListener 的别名。
-		@param type A string representing the event type being removed.
-		@param callback The callback to remove.
-		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
-		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
-		                             If not specified, useCapture defaults to false. If a callback was registered twice,
-		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
-		                             does not affect a non-capturing version of the same listener, and vice versa.
-		
-		@example 
-		```js
-		// register touchEnd eventListener
-		var touchEnd = node.on(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		// remove touchEnd eventListener
-		node.off(cc.Node.EventType.TOUCH_END, touchEnd, node);
-		``` 
-		*/
-		off(type : string, callback : Function, target : any, useCapture : boolean) : void;		
-		/** !#en Removes all callbacks previously registered with the same target.
-		!#zh 删除指定目标上的所有注册回调。
-		@param target The target to be searched for all related callbacks 
-		*/
-		targetOff(target : any) : void;		
-		/** !#en
-		Register an callback of a specific event type on the EventTarget,
-		the callback will remove itself after the first time it is triggered.
-		!#zh
-		注册事件目标的特定事件类型回调，回调会在第一时间被触发后删除自身。
-		@param type A string representing the event type to listen for.
-		@param callback The callback that will be invoked when the event is dispatched.
-		                             The callback is ignored if it is a duplicate (the callbacks are unique).
-		@param target The target to invoke the callback, can be null
-		@param useCapture When set to true, the capture argument prevents callback
-		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
-		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
-		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
-		
-		@example 
-		```js
-		node.once(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		``` 
-		*/
-		once(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
-		/** !#en
-		Dispatches an event into the event flow.
-		The event target is the EventTarget object upon which the dispatchEvent() method is called.
-		!#zh 分发事件到事件流中。
-		@param event The Event object that is dispatched into the event flow 
-		*/
-		dispatchEvent(event : Event) : boolean;		
-		/** !#en
-		Send an event to this object directly, this method will not propagate the event to any other objects.
-		The event will be created from the supplied message, you can get the "detail" argument from event.detail.
-		!#zh
-		该对象直接发送事件， 这种方法不会对事件传播到任何其他对象。
-		@param message the message to send
-		@param detail whatever argument the message needs 
-		*/
-		emit(message : string, detail? : any) : void;	
-	}		
-		/** !#en Base class of all kinds of events.
-		!#zh 包含事件相关信息的对象。 */
-		export class Event {		
-		constructor();		
-		/** 
-		@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-		@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-		*/
-		Event(type : string, bubbles : boolean) : Event;		
-		/** !#en The name of the event (case-sensitive), e.g. "click", "fire", or "submit".
-		!#zh 事件类型。 */
-		type : string;		
-		/** !#en Indicate whether the event bubbles up through the tree or not.
-		!#zh 表示该事件是否进行冒泡。 */
-		bubbles : boolean;		
-		/** !#en A reference to the target to which the event was originally dispatched.
-		!#zh 最初事件触发的目标 */
-		target : any;		
-		/** !#en A reference to the currently registered target for the event.
-		!#zh 当前目标 */
-		currentTarget : any;		
-		/** !#en
-		Indicates which phase of the event flow is currently being evaluated.
-		Returns an integer value represented by 4 constants:
-		 - Event.NONE = 0
-		 - Event.CAPTURING_PHASE = 1
-		 - Event.AT_TARGET = 2
-		 - Event.BUBBLING_PHASE = 3
-		The phases are explained in the [section 3.1, Event dispatch and DOM event flow]
-		(http://www.w3.org/TR/DOM-Level-3-Events/#event-flow), of the DOM Level 3 Events specification.
-		!#zh 事件阶段 */
-		eventPhase : number;		
-		/** !#en Reset the event for being stored in the object pool.
-		!#zh 重置对象池中存储的事件。 
-		*/
-		unuse() : string;		
-		/** !#en Reuse the event for being used again by the object pool.
-		!#zh 用于对象池再次使用的事件。 
-		*/
-		reuse() : string;		
-		/** !#en
-		If invoked when the cancelable attribute value is true, signals to the operation that caused event to be dispatched that it needs to be canceled.
-		!#zh 捕获阶段时，阻止传递给最终目标。 
-		*/
-		preventDefault() : void;		
-		/** !#en Stops propagation for current event.
-		!#zh 停止传递当前事件。 
-		*/
-		stopPropagation() : void;		
-		/** !#en Stops propagation for current event immediately,
-		the event won't even be dispatched to the listeners attached in the current target.
-		!#zh 立即停止当前事件的传递，事件甚至不会被分派到所连接的当前目标。 
-		*/
-		stopPropagationImmediate() : void;		
-		/** !#en Checks whether the event has been stopped.
-		!#zh 检查该事件是否已经停止传递. 
-		*/
-		isStopped() : boolean;		
-		/** !#en
-		<p>
-		    Gets current target of the event                                                            <br/>
-		    note: It only be available when the event listener is associated with node.                <br/>
-		         It returns 0 when the listener is associated with fixed priority.
-		</p>
-		!#zh 获取当前目标节点 
-		*/
-		getCurrentTarget() : Node;		
-		/** !#en Gets the event type.
-		!#zh 获取事件类型 
-		*/
-		getType() : string;		
-		/** !#en Code for event without type.
-		!#zh 没有类型的事件 */
-		NO_TYPE : string;		
-		/** !#en Events not currently dispatched are in this phase
-		!#zh 尚未派发事件阶段 */
-		NONE : number;		
-		/** !#en
-		The capturing phase comprises the journey from the root to the last node before the event target's node
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。 */
-		CAPTURING_PHASE : number;		
-		/** !#en
-		The target phase comprises only the event target node
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 目标阶段仅包括事件目标节点。 */
-		AT_TARGET : number;		
-		/** !#en
-		The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
-		BUBBLING_PHASE : number;	
 	}		
 		/** !#en
 		<p>
@@ -7783,6 +7783,27 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* Node
+	*****************************************************/
+	
+	export module Node {		
+		/** !#en The event type supported by Node
+		!#zh Node 支持的事件类型 */
+		export enum EventType {			
+			TOUCH_START = 0,
+			TOUCH_MOVE = 0,
+			TOUCH_END = 0,
+			TOUCH_CANCEL = 0,
+			MOUSE_DOWN = 0,
+			MOUSE_MOVE = 0,
+			MOUSE_ENTER = 0,
+			MOUSE_LEAVE = 0,
+			MOUSE_UP = 0,
+			MOUSE_WHEEL = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* ParticleSystem
 	*****************************************************/
 	
@@ -7810,27 +7831,6 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* Node
-	*****************************************************/
-	
-	export module Node {		
-		/** !#en The event type supported by Node
-		!#zh Node 支持的事件类型 */
-		export enum EventType {			
-			TOUCH_START = 0,
-			TOUCH_MOVE = 0,
-			TOUCH_END = 0,
-			TOUCH_CANCEL = 0,
-			MOUSE_DOWN = 0,
-			MOUSE_MOVE = 0,
-			MOUSE_ENTER = 0,
-			MOUSE_LEAVE = 0,
-			MOUSE_UP = 0,
-			MOUSE_WHEEL = 0,		
-		}	
-	}	
-	
-	/****************************************************
 	* TiledMap
 	*****************************************************/
 	
@@ -7852,6 +7852,38 @@ declare module cc {
 			DIAGONAL = 0,
 			FLIPPED_ALL = 0,
 			FLIPPED_MASK = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The Custom event
+			!#zh 自定义事件 */
+			export class EventCustom extends Event {			
+			constructor();			
+			/** 
+			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			EventCustom(type : string, bubbles : boolean) : EventCustom;			
+			/** !#en A reference to the detailed data of the event
+			!#zh 事件的详细数据 */
+			detail : any;			
+			/** !#en Sets user data
+			!#zh 设置用户数据 
+			*/
+			setUserData(data : any) : void;			
+			/** !#en Gets user data
+			!#zh 获取用户数据 
+			*/
+			getUserData() : any;			
+			/** !#en Gets event name
+			!#zh 获取事件名称 
+			*/
+			getEventName() : string;		
 		}	
 	}	
 	
@@ -8122,38 +8154,6 @@ declare module cc {
 			CUSTOM = 0,
 			TRIMMED = 0,
 			RAW = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The Custom event
-			!#zh 自定义事件 */
-			export class EventCustom extends Event {			
-			constructor();			
-			/** 
-			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			EventCustom(type : string, bubbles : boolean) : EventCustom;			
-			/** !#en A reference to the detailed data of the event
-			!#zh 事件的详细数据 */
-			detail : any;			
-			/** !#en Sets user data
-			!#zh 设置用户数据 
-			*/
-			setUserData(data : any) : void;			
-			/** !#en Gets user data
-			!#zh 获取用户数据 
-			*/
-			getUserData() : any;			
-			/** !#en Gets event name
-			!#zh 获取事件名称 
-			*/
-			getEventName() : string;		
 		}	
 	}	
 	

@@ -2,6 +2,7 @@ var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
         // this.connect();
+        
     },
     
     connect: function() {
