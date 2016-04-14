@@ -1,41 +1,58 @@
+// var http = require("http"),
+//     fs = require("fs"),
+//     path = require("path"),
+//     open = require("open"),
+//     ProtoBuf = require("protobufjs");
+
 var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
-        // this.connect();
+        this.connect();
         
     },
     
     connect: function() {
-        this._ws = new WebSocket("ws://echo.websocket.org");
-        this._ws.binaryType = "arraybuffer";
-        this._ws.onopen = function(evt) {
-            console.log("Websocket Send Binary WS was opened.");
-        };
-        this._ws.onmessage = function(evt) {
-            var binary = new Uint16Array(evt.data);
-            var binaryStr = 'response bin msg: ';
+        if (cc.sys.isNative){
+            window.io = SocketIO;
+        }
+        else{
+            require('socket.io');
+        }
+        
+        var socket = io('http://localhost:8000');
+        socket.on('connected', function(msg){
+            console.log("msg:" + msg);
+        })
+        // this._ws = new WebSocket("ws://echo.websocket.org");
+        // this._ws.binaryType = "arraybuffer";
+        // this._ws.onopen = function(evt) {
+        //     console.log("Websocket Send Binary WS was opened.");
+        // };
+        // this._ws.onmessage = function(evt) {
+        //     var binary = new Uint16Array(evt.data);
+        //     var binaryStr = 'response bin msg: ';
             
-            var str = '';
-            for (var i = 0; i < binary.length; i ++) {
-                if (binary[i] === 0){
-                    str += "\'\\0\'";
-                }
-                else{
-                    var hexChar = '0x' + binary[i].toString('16').toUpperCase();
-                    str += String.fromCharCode(hexChar);
-                }
-            }
+        //     var str = '';
+        //     for (var i = 0; i < binary.length; i ++) {
+        //         if (binary[i] === 0){
+        //             str += "\'\\0\'";
+        //         }
+        //         else{
+        //             var hexChar = '0x' + binary[i].toString('16').toUpperCase();
+        //             str += String.fromCharCode(hexChar);
+        //         }
+        //     }
             
-            binaryStr += str;
-            console.log("WebSocket Response get:" + binaryStr);
-        };
-        this._ws.onerror = function(evt) {
-            console.log("WebSocket sendBinary Error was fired. ");
-        };
-        this._ws.onclose = function(evt) {
-            console.log("WebSocket websocket instance closed. ");
-            self._ws = null;
-        };
+        //     binaryStr += str;
+        //     console.log("WebSocket Response get:" + binaryStr);
+        // };
+        // this._ws.onerror = function(evt) {
+        //     console.log("WebSocket sendBinary Error was fired. ");
+        // };
+        // this._ws.onclose = function(evt) {
+        //     console.log("WebSocket websocket instance closed. ");
+        //     self._ws = null;
+        // };
         
         // this.sendWebSocketBinary();
     },
