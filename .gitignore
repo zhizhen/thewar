@@ -23,3 +23,8 @@ thewar/frameworks/runtime-src/proj.android-studio/.idea
 thewar/frameworks/runtime-src/proj.android-studio/app/build
 thewar/frameworks/runtime-src/proj.android-studio/app/libs/armeabi
 thewar/frameworks/runtime-src/proj.android-studio/app/obj
+
+
+
+server/web-server/node_modules/*
+server/game-server/node_modules/*

@@ -1,9 +1,4 @@
-// var http = require("http"),
-//     fs = require("fs"),
-//     path = require("path"),
-//     open = require("open"),
-//     ProtoBuf = require("protobufjs");
-
+var boot = require('boot')
 var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
@@ -12,69 +7,23 @@ var NetMgr = cc.Class({
     },
     
     connect: function() {
-        if (cc.sys.isNative){
-            window.io = SocketIO;
-        }
-        else{
-            require('socket.io');
-        }
-        
-        var socket = io('http://localhost:8000');
-        socket.on('connected', function(msg){
-            console.log("msg:" + msg);
-        })
-        // this._ws = new WebSocket("ws://echo.websocket.org");
-        // this._ws.binaryType = "arraybuffer";
-        // this._ws.onopen = function(evt) {
-        //     console.log("Websocket Send Binary WS was opened.");
-        // };
-        // this._ws.onmessage = function(evt) {
-        //     var binary = new Uint16Array(evt.data);
-        //     var binaryStr = 'response bin msg: ';
-            
-        //     var str = '';
-        //     for (var i = 0; i < binary.length; i ++) {
-        //         if (binary[i] === 0){
-        //             str += "\'\\0\'";
-        //         }
-        //         else{
-        //             var hexChar = '0x' + binary[i].toString('16').toUpperCase();
-        //             str += String.fromCharCode(hexChar);
-        //         }
-        //     }
-            
-        //     binaryStr += str;
-        //     console.log("WebSocket Response get:" + binaryStr);
-        // };
-        // this._ws.onerror = function(evt) {
-        //     console.log("WebSocket sendBinary Error was fired. ");
-        // };
-        // this._ws.onclose = function(evt) {
-        //     console.log("WebSocket websocket instance closed. ");
-        //     self._ws = null;
-        // };
-        
-        // this.sendWebSocketBinary();
-    },
-    
-    sendWebSocketBinary: function(sender) {
-        if (this._ws.readyState === WebSocket.OPEN){
-            console.log('WebSocket\nSend Binary WS is waiting...');
-            var buf = "Hello WebSocket中文,\0 I'm\0 a\0 binary\0 message\0.";
-            
-            var arrData = new Uint16Array(buf.length);
-            for (var i = 0; i < buf.length; i++) {
-                arrData[i] = buf.charCodeAt(i);
-            }
-            
-            this._ws.send(arrData.buffer);
-        }
-        else {
-            console.log("send binary websocket instance wasn't ready...");
-            // this.scheduleOnce(function () {
-            //     this.sendWebSocketBinary();
-            // }, 1);
-        }
+        alert("on start");
+        var host = '127.0.0.1';
+        var port = '3010';
+        pomelo.init({
+            host: host,
+            port: port,
+            user: {},
+            log: true,
+            handshakeCallback : function(){}
+        }, function() {
+            console.log('success');
+            pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
+                alert(data.msg);
+                // cc.director.loadScene('main');
+            });
+           // cc.director.loadScene('main');
+        });
     }
 });
 
