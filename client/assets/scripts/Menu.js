@@ -7,7 +7,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.playGame();
+        // this.playGame();
     },
     
     playGame: function() {

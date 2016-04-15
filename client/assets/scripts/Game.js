@@ -20,7 +20,9 @@ var Game = cc.Class({
     },
     
     start: function() {
-        
+        console.log("send");
+        NetMgr.send("hello pomeloo!!");
+        console.log("sended");
     },
 
     // called every frame, uncomment this function to activate update callback

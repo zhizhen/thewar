@@ -3,7 +3,6 @@ var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
         this.connect();
-        
     },
     
     connect: function() {
@@ -18,12 +17,16 @@ var NetMgr = cc.Class({
             handshakeCallback : function(){}
         }, function() {
             console.log('success');
-            pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-                alert(data.msg);
+            // pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
+                // alert(data.msg);
                 // cc.director.loadScene('main');
-            });
+            // });
            // cc.director.loadScene('main');
         });
+    },
+    
+    send: function(Msg) {
+        pomelo.notify("connector.entryHandler.entry", Msg);
     }
 });
 
