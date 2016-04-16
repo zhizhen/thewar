@@ -1652,7 +1652,7 @@
       "width": 640,
       "height": 960
     },
-    "_fitWidth": false,
-    "_fitHeight": true
+    "_fitWidth": true,
+    "_fitHeight": false
   }
 ]

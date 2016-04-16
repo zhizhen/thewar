@@ -1,6 +1,7 @@
 *.sdf
 *.o
 *.a
+*.log
 
 proto/lua
 proto/erlang
