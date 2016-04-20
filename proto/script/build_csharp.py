@@ -217,7 +217,7 @@ class ProtoNifGenerator:
 		code += "    }\n"
 
 
-		code += "    public override void write(ByteArray, byteArray)\n"
+		code += "    public override void write(ByteArray byteArray)\n"
 		code += "    {\n"
 		#
 
@@ -241,7 +241,7 @@ class ProtoNifGenerator:
 			elif dataType.split("_")[0] == "p":
 				code += "\n        %s.write(byteArray);\n" % field.name
 			else:
-				code += "        byteArray.Write%s(%s)" % (dataType, field.name)
+				code += "        byteArray.Write%s(%s);\n" % (dataType, field.name)
 		code += "    }\n"
 
 		code += "}\n"
@@ -310,7 +310,7 @@ class ProtoNifGenerator:
 					code += "        byteArray.Writeshort(sLen);\n"
 					code += "        for (i = 0; i < sLen; i++) {\n"
 					if dataType.split("_")[0] == "p":
-						code += "            %s[i].write(byteArray);\n"
+						code += "            %s[i].write(byteArray);\n" % field.name
 					else:
 						code += "            byteArray.Write%s(%s[i]);\n" % (dataType, field.name)
 					code += "        }"
@@ -365,7 +365,7 @@ class ProtoNifGenerator:
 		code += "using System.Collections.Generic;\n"
 		code += "namespace Engine \n"
 		code += "{\n"
-		code += "    public class ProtoMap : Singleton<ProtoMap>\n"
+		code += "    public class ProtoMap\n"
 		code += "    {\n"
 		code += "        private Dictionary<int, Type> m_DicProtoType;\n"
 		code += "        public ProtoBase GetProto(int uiProtoID)\n"
