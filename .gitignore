@@ -4,6 +4,7 @@
 *.log
 
 proto/lua
+proto/csharp
 proto/erlang
 
 client/obj
