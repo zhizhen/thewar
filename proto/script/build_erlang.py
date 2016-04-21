@@ -171,6 +171,7 @@ class ProtoNifGenerator:
 
         code += "-export([\n"
         code += "    encode_bytes/2,\n"
+        code += "    encode_ubytes/2,\n"
         code += "    encode_shorts/2,\n"
         code += "    encode_ushorts/2,\n"
         code += "    encode_int32s/2,\n"
@@ -183,6 +184,7 @@ class ProtoNifGenerator:
 
         code += "-export([\n"
         code += "    decode_bytes/2,\n"
+        code += "    decode_ubytes/2,\n"
         code += "    decode_shorts/2,\n"
         code += "    decode_ushorts/2,\n"
         code += "    decode_int32s/2,\n"
@@ -230,7 +232,7 @@ class ProtoNifGenerator:
         code += "    MsgId = element(2, RecordData),\n"
         code += "    FuncName = string:concat(\"encode_\", integer_to_list(MsgId)),\n"
         code += "    Bin = apply('game_pb', list_to_atom(FuncName), [RecordData]),\n"
-        code += "    {ok, Bin}\n"
+        code += "    {ok, Bin}.\n"
         code += "\n"
         code += "decode(BinData) ->\n"
         code += "    <<MsgId:32, _/binary>> = BinData,\n"
