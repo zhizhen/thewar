@@ -425,17 +425,19 @@ class ProtoNifGenerator:
             default = field.default if field.default else 'undefined'
 
             if type == 'required':
+                code += "    %s =\n" % vNameFinal
                 code += "    case %s =:= undefined of\n" % vName
                 code += "        true ->\n"
 
                 if default == 'undefined':
-                    code += "            %s = undefined,\n" % vNameFinal
-                    code += "            throw({required_field_not_assigned, %s, %s});\n" % (messageName, name)
+                    #code += "            %s = undefined,\n" % vNameFinal
+                    code += "            throw({required_field_not_assigned, %s, %s}),\n" % (messageName, name)
+                    code += "            undefined;\n"
                 else:
-                    code += "            %s = %s;\n" % (vNameFinal, default)
+                    code += "            %s;\n" % default
 
                 code += "        false ->\n"
-                code += "            %s = %s\n" % (vNameFinal, vName)
+                code += "            %s\n" % vName
 
 
                 code += "    end,\n"
@@ -505,10 +507,16 @@ class ProtoNifGenerator:
             else:
                 if dataType == 'byte':
                     assignCode += "%s:8/signed," % (vNameFinal)
+                elif dataType == 'ubyte':
+                    assignCode += "%s:8/unsigned," % (vNameFinal)
                 elif dataType == 'short':
                     assignCode += "%s:16/signed," % (vNameFinal)
+                elif dataType == 'ushort':
+                    assignCode += "%s:16/unsigned," % (vNameFinal)
                 elif dataType == 'int32':
                     assignCode += "%s:32/signed," % (vNameFinal)
+                elif dataType == 'uint32':
+                    assignCode += "%s:32/unsigned," % (vNameFinal)
                 elif dataType == 'int64':
                     assignCode += "%s:64/signed," % (vNameFinal)
                 elif dataType == 'double' or dataType == 'float':
@@ -536,7 +544,7 @@ class ProtoNifGenerator:
                         #复杂结构体:   bin长度  ,  bin
                         assignCode += "BinLen_%s:32, %s/binary," % (name, binVName)
                     else:
-                        print ("未知的数据类型: ", dataType)
+                        print ("unkown data type: ", dataType)
 
         assignCode = self.trim(assignCode, ",") + ">>;"
         code += declareCode + assignCode + "\n\n"

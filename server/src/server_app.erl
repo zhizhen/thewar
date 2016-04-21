@@ -10,6 +10,16 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
+    case mnesia:system_info(tables) of
+        [schema] ->
+            io:format("==============================================~n"),
+            io:format(" REBUILD CORE ...~n"),
+            schema:rebuild_schema(),
+            schema:rebuild_score_and_data(),
+            io:format(" REBUILD CORE SUCCESSFUL~n");
+        _ ->
+            ok
+    end,
     server_sup:start_link().
 
 stop(_State) ->

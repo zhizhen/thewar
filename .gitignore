@@ -17,3 +17,6 @@ client/client.sln
 client/client.userprefs
 
 *.beam
+*.app
+server/rel/server
+server/.rebar

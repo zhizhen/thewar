@@ -22,6 +22,7 @@
 
 -export([
     encode_bytes/2,
+    encode_ubytes/2,
     encode_shorts/2,
     encode_ushorts/2,
     encode_int32s/2,
@@ -34,6 +35,7 @@
 
 -export([
     decode_bytes/2,
+    decode_ubytes/2,
     decode_shorts/2,
     decode_ushorts/2,
     decode_int32s/2,
@@ -171,19 +173,21 @@ decode_bools(Bin, List) ->
     decode_bools(Bin2, [Bool|List]).
 encode_p_test(Record) when is_record(Record, p_test) ->
     #p_test{v1=V1,v2=V2} = Record,
+    V1Final =
     case V1 =:= undefined of
         true ->
-            V1Final = undefined,
-            throw({required_field_not_assigned, p_test, v1});
+            throw({required_field_not_assigned, p_test, v1}),
+            undefined;
         false ->
-            V1Final = V1
+            V1
     end,
+    V2Final =
     case V2 =:= undefined of
         true ->
-            V2Final = undefined,
-            throw({required_field_not_assigned, p_test, v2});
+            throw({required_field_not_assigned, p_test, v2}),
+            undefined;
         false ->
-            V2Final = V2
+            V2
     end,
     <<V1Final:32/signed,V2Final:32/signed>>;
 
@@ -198,67 +202,76 @@ decode_p_test(_) ->
 
 encode_1000(Record) when is_record(Record, m__proto__test__c2s) ->
     #m__proto__test__c2s{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
+    Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            Msg_idFinal = 1000;
+            1000;
         false ->
-            Msg_idFinal = Msg_id
+            Msg_id
     end,
+    V1Final =
     case V1 =:= undefined of
         true ->
-            V1Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v1});
+            throw({required_field_not_assigned, m__proto__test__c2s, v1}),
+            undefined;
         false ->
-            V1Final = V1
+            V1
     end,
+    V2Final =
     case V2 =:= undefined of
         true ->
-            V2Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v2});
+            throw({required_field_not_assigned, m__proto__test__c2s, v2}),
+            undefined;
         false ->
-            V2Final = V2
+            V2
     end,
+    V3Final =
     case V3 =:= undefined of
         true ->
-            V3Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v3});
+            throw({required_field_not_assigned, m__proto__test__c2s, v3}),
+            undefined;
         false ->
-            V3Final = V3
+            V3
     end,
+    V4Final =
     case V4 =:= undefined of
         true ->
-            V4Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v4});
+            throw({required_field_not_assigned, m__proto__test__c2s, v4}),
+            undefined;
         false ->
-            V4Final = V4
+            V4
     end,
+    V5Final =
     case V5 =:= undefined of
         true ->
-            V5Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v5});
+            throw({required_field_not_assigned, m__proto__test__c2s, v5}),
+            undefined;
         false ->
-            V5Final = V5
+            V5
     end,
+    V6Final =
     case V6 =:= undefined of
         true ->
-            V6Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v6});
+            throw({required_field_not_assigned, m__proto__test__c2s, v6}),
+            undefined;
         false ->
-            V6Final = V6
+            V6
     end,
+    V7Final =
     case V7 =:= undefined of
         true ->
-            V7Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v7});
+            throw({required_field_not_assigned, m__proto__test__c2s, v7}),
+            undefined;
         false ->
-            V7Final = V7
+            V7
     end,
+    V8Final =
     case V8 =:= undefined of
         true ->
-            V8Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__c2s, v8});
+            throw({required_field_not_assigned, m__proto__test__c2s, v8}),
+            undefined;
         false ->
-            V8Final = V8
+            V8
     end,
     case V9 =:= undefined of
         true ->
@@ -282,7 +295,7 @@ encode_1000(Record) when is_record(Record, m__proto__test__c2s) ->
     V10_bin = encode_p_tests(V10Final, <<>>),
     SizeV10Final = erlang:length(V10Final),
     BinLen_v10 = erlang:byte_size(V10_bin),
-    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V4Final:32/signed,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
+    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
 
 encode_1000(_) -> <<>>.
 
@@ -303,67 +316,76 @@ decode_1000(_) ->
 
 encode_1001(Record) when is_record(Record, m__proto__test__s2c) ->
     #m__proto__test__s2c{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
+    Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            Msg_idFinal = 1001;
+            1001;
         false ->
-            Msg_idFinal = Msg_id
+            Msg_id
     end,
+    V1Final =
     case V1 =:= undefined of
         true ->
-            V1Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v1});
+            throw({required_field_not_assigned, m__proto__test__s2c, v1}),
+            undefined;
         false ->
-            V1Final = V1
+            V1
     end,
+    V2Final =
     case V2 =:= undefined of
         true ->
-            V2Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v2});
+            throw({required_field_not_assigned, m__proto__test__s2c, v2}),
+            undefined;
         false ->
-            V2Final = V2
+            V2
     end,
+    V3Final =
     case V3 =:= undefined of
         true ->
-            V3Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v3});
+            throw({required_field_not_assigned, m__proto__test__s2c, v3}),
+            undefined;
         false ->
-            V3Final = V3
+            V3
     end,
+    V4Final =
     case V4 =:= undefined of
         true ->
-            V4Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v4});
+            throw({required_field_not_assigned, m__proto__test__s2c, v4}),
+            undefined;
         false ->
-            V4Final = V4
+            V4
     end,
+    V5Final =
     case V5 =:= undefined of
         true ->
-            V5Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v5});
+            throw({required_field_not_assigned, m__proto__test__s2c, v5}),
+            undefined;
         false ->
-            V5Final = V5
+            V5
     end,
+    V6Final =
     case V6 =:= undefined of
         true ->
-            V6Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v6});
+            throw({required_field_not_assigned, m__proto__test__s2c, v6}),
+            undefined;
         false ->
-            V6Final = V6
+            V6
     end,
+    V7Final =
     case V7 =:= undefined of
         true ->
-            V7Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v7});
+            throw({required_field_not_assigned, m__proto__test__s2c, v7}),
+            undefined;
         false ->
-            V7Final = V7
+            V7
     end,
+    V8Final =
     case V8 =:= undefined of
         true ->
-            V8Final = undefined,
-            throw({required_field_not_assigned, m__proto__test__s2c, v8});
+            throw({required_field_not_assigned, m__proto__test__s2c, v8}),
+            undefined;
         false ->
-            V8Final = V8
+            V8
     end,
     case V9 =:= undefined of
         true ->
@@ -387,7 +409,7 @@ encode_1001(Record) when is_record(Record, m__proto__test__s2c) ->
     V10_bin = encode_p_tests(V10Final, <<>>),
     SizeV10Final = erlang:length(V10Final),
     BinLen_v10 = erlang:byte_size(V10_bin),
-    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V4Final:32/signed,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
+    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
 
 encode_1001(_) -> <<>>.
 
