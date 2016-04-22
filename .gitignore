@@ -16,5 +16,7 @@ client/Assembly-UnityScript.unityproj
 client/client.sln
 client/client.userprefs
 
-server/web-server/node_modules/*
-server/game-server/node_modules/*
+*.beam
+*.app
+server/rel/server
+server/.rebar
