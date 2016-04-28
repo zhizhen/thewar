@@ -171,7 +171,6 @@ class ProtoNifGenerator:
 
         code += "-export([\n"
         code += "    encode_bytes/2,\n"
-        code += "    encode_ubytes/2,\n"
         code += "    encode_shorts/2,\n"
         code += "    encode_ushorts/2,\n"
         code += "    encode_int32s/2,\n"
@@ -184,7 +183,6 @@ class ProtoNifGenerator:
 
         code += "-export([\n"
         code += "    decode_bytes/2,\n"
-        code += "    decode_ubytes/2,\n"
         code += "    decode_shorts/2,\n"
         code += "    decode_ushorts/2,\n"
         code += "    decode_int32s/2,\n"
@@ -232,7 +230,7 @@ class ProtoNifGenerator:
         code += "    MsgId = element(2, RecordData),\n"
         code += "    FuncName = string:concat(\"encode_\", integer_to_list(MsgId)),\n"
         code += "    Bin = apply('game_pb', list_to_atom(FuncName), [RecordData]),\n"
-        code += "    {ok, Bin}.\n"
+        code += "    {ok, Bin}\n"
         code += "\n"
         code += "decode(BinData) ->\n"
         code += "    <<MsgId:32, _/binary>> = BinData,\n"
@@ -425,19 +423,17 @@ class ProtoNifGenerator:
             default = field.default if field.default else 'undefined'
 
             if type == 'required':
-                code += "    %s =\n" % vNameFinal
                 code += "    case %s =:= undefined of\n" % vName
                 code += "        true ->\n"
 
                 if default == 'undefined':
-                    #code += "            %s = undefined,\n" % vNameFinal
-                    code += "            throw({required_field_not_assigned, %s, %s}),\n" % (messageName, name)
-                    code += "            undefined;\n"
+                    code += "            %s = undefined,\n" % vNameFinal
+                    code += "            throw({required_field_not_assigned, %s, %s});\n" % (messageName, name)
                 else:
-                    code += "            %s;\n" % default
+                    code += "            %s = %s;\n" % (vNameFinal, default)
 
                 code += "        false ->\n"
-                code += "            %s\n" % vName
+                code += "            %s = %s\n" % (vNameFinal, vName)
 
 
                 code += "    end,\n"
@@ -507,16 +503,10 @@ class ProtoNifGenerator:
             else:
                 if dataType == 'byte':
                     assignCode += "%s:8/signed," % (vNameFinal)
-                elif dataType == 'ubyte':
-                    assignCode += "%s:8/unsigned," % (vNameFinal)
                 elif dataType == 'short':
                     assignCode += "%s:16/signed," % (vNameFinal)
-                elif dataType == 'ushort':
-                    assignCode += "%s:16/unsigned," % (vNameFinal)
                 elif dataType == 'int32':
                     assignCode += "%s:32/signed," % (vNameFinal)
-                elif dataType == 'uint32':
-                    assignCode += "%s:32/unsigned," % (vNameFinal)
                 elif dataType == 'int64':
                     assignCode += "%s:64/signed," % (vNameFinal)
                 elif dataType == 'double' or dataType == 'float':
@@ -544,7 +534,7 @@ class ProtoNifGenerator:
                         #复杂结构体:   bin长度  ,  bin
                         assignCode += "BinLen_%s:32, %s/binary," % (name, binVName)
                     else:
-                        print ("unkown data type: ", dataType)
+                        print ("未知的数据类型: ", dataType)
 
         assignCode = self.trim(assignCode, ",") + ">>;"
         code += declareCode + assignCode + "\n\n"

@@ -1,9 +1,5 @@
-fileFormatVersion: 2
-guid: c47dcb03d10908544b65f7c2e042cee2
-folderAsset: yes
-timeCreated: 1461050408
-licenseType: Pro
-DefaultImporter:
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+{
+  "ver": "1.0.0",
+  "uuid": "ba62dfba-8948-4168-b4b3-aabc14f79164",
+  "subMetas": {}
+}
