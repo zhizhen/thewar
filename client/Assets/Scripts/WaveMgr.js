@@ -30,7 +30,7 @@ cc.Class({
     },
 
     startWave () {
-        this.game.inGameUI.showWave(2);
+        this.game.inGameUI.showWave(1);
         
     }
 });
