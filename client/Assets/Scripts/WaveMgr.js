@@ -1,11 +1,29 @@
+const Spawn = require('Spawn');
 
 const Wave = cc.Class({
     name: 'Wave',
     properties: {
-        
+        spawns: {
+            default: [],
+            type: Spawn
+        }
     },
     init () {
-        
+        this.totalFoes = 0;
+        this.spawnIdx = 0;
+        for (let i = 0; i < this.spawns.length; ++i) {
+            if (this.spawns[i].isCompany === false) {
+                this.totalFoes += this.spawns[i].total;
+            }
+        }
+    },
+    getNextSpawn () {
+        this.spawnIdx ++;
+        if (this.spawnIdx < this.spawns.length) {
+            return this.spawns[this.spawnIdx];
+        } else {
+            return null;
+        }
     }
 });
 
@@ -25,12 +43,29 @@ cc.Class({
     // use this for initialization
     init (game) {
         this.game = game;
+        this.waveIdx = this.startWaveIdx;
+        this.currentWave = this.waves[this.waveIdx];
         // this.waveProgress = this.waveProgress.getComponent('WaveProgress');
         // this.waveProgress.init(this);
     },
+    
+    startSpawn () {
+        this.schedule(this.spawnFoe, this.currentSpawn.spawnInterval);
+    },
 
     startWave () {
-        this.game.inGameUI.showWave(1);
+        this.currentSpawn = this.currentWave.spawns[this.currentWave.spawnIdx];
+        this.startSpawn();
+        this.game.inGameUI.showWave(this.waveIdx + 1);
         
+    },
+    
+    spawnFoe () {
+        if (this.currentSpawn.finished) {
+            this.endSpawn();
+            return;
+        }
+        
+        let newFoe = this.currentSpawn.spawn(this.game.poolMgr);
     }
 });
