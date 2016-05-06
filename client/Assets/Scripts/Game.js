@@ -4,6 +4,7 @@ var Game = cc.Class({
     extends: cc.Component,
     
     properties: {
+        tank: cc.Node,
         inGameUI: cc.Node,
         waveMgr: cc.Node,
         poolMgr: cc.Node,
@@ -19,6 +20,9 @@ var Game = cc.Class({
     onLoad: function () {
         Game.instance = this;
         console.log("游戏启动！");
+        this.tank = this.tank.getComponent('Tank');
+        this.tank.init(this);
+        this.tank.node.active = true;
         this.poolMgr = this.poolMgr.getComponent('PoolMgr');
         this.poolMgr.init(this);
         this.waveMgr = this.waveMgr.getComponent('WaveMgr');

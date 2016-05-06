@@ -2,7 +2,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        refToTank: require('Tank')
+        tank: cc.Node
     },
 
     // use this for initialization
@@ -10,6 +10,7 @@ cc.Class({
         this.move = null;
         this.face = null;
         this.pre_move = new Array();
+        this.tank = this.tank.getComponent('Tank');
         var begin = function (event){
             // 模拟器，手机上能多点触摸，浏览器取到的是undefined
             var touchID = event.touch.getID();
@@ -18,7 +19,7 @@ cc.Class({
             // console.log("touchend begin:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y);
             // todo 判断，如果点击区域是车身，则接下来move是移动
             // 否则，则是炮塔转动到瞄准该位置
-            var isHit = this.refToTank.isHit(location);
+            var isHit = this.tank.isHit(location);
             if (isHit){
                 // console.log("start move!");
                 this.move = touchID;
@@ -26,7 +27,7 @@ cc.Class({
             else{
                 // console.log("face target!");
                 this.face = touchID;
-                this.refToTank.face(location.x, location.y);
+                this.tank.face(location.x, location.y);
             }
         };
         var move = function (event){
@@ -37,7 +38,7 @@ cc.Class({
 
             if (touchID === this.face){
                 cc.log("move face!");
-                this.refToTank.face(location.x, location.y);
+                this.tank.face(location.x, location.y);
             }
             else if(touchID === this.move){
                 this.pre_move.unshift(location);
@@ -55,7 +56,7 @@ cc.Class({
                 this.move = null;
             }
             else{
-                this.refToTank.fire();
+                this.tank.fire();
                 this.face = null;
             }
         };
@@ -69,7 +70,7 @@ cc.Class({
         // console.log("touch tick!" + dt);
         if(this.pre_move.length !== 0){
             var location = this.pre_move.pop();
-            this.refToTank.move(location);
+            this.tank.move(location);
         }
     },
 });

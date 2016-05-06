@@ -9,7 +9,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "tankPrefab",
+    "_name": "tank",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -54,9 +54,13 @@
     "_reorderChildDirty": false,
     "_id": "",
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 10
+      }
+    ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 11
     }
   },
   {
@@ -237,7 +241,6 @@
       "__uuid__": "1af523d7-d82f-48c4-99a2-73bb1d17726f"
     },
     "_type": 0,
-    "_useOriginalSize": true,
     "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
@@ -258,7 +261,7 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "4c11a57yupBYpfP6BxWuuQK"
+    "fileId": "3efe239EXZBhavApf82Fgql"
   },
   {
     "__type__": "cc.Sprite",
@@ -272,7 +275,6 @@
       "__uuid__": "01f1b383-4896-4883-ba07-2bfab5eb2102"
     },
     "_type": 0,
-    "_useOriginalSize": true,
     "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
@@ -293,7 +295,7 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "e2229MCmh1JuoRMluSw/mtY"
+    "fileId": "bc6163UK1VNhZEv6Ithsh5V"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -301,7 +303,21 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "8b761LtdDpJZpeXZQTzjWuJ"
+    "fileId": "acc9009DU9FCoKfToyQCe80"
+  },
+  {
+    "__type__": "ca9fcP+/c1CQaRQyIGCPqY9",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "move_speed": 20,
+    "gun_speed": 0,
+    "vehicle_speed": 0,
+    "tankPrefeb": null,
+    "bullet": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -309,6 +325,6 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "1097fxffvJKTIpTRFP0rjXO"
+    "fileId": "10fd2HvXxtJB6RgVl4bwtTM"
   }
 ]

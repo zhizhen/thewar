@@ -12,8 +12,9 @@ cc.Class({
     },
 
     // use this for initialization
-    onLoad: function () {
+    init: function (game) {
         console.log("tank view onload!");
+        this.game = game;
         this.create(200, 300, 0);
         this.face(400, 600);
     },
@@ -24,19 +25,19 @@ cc.Class({
     // },
     
     create: function (x, y, face) {
-        this.tankNode = cc.instantiate(this.tankPrefeb);
-        this.tankNode.position = cc.p(x, y);
+        // this.tankNode = cc.instantiate(this.tankPrefeb);
+        this.node.position = cc.p(x, y);
         // console.log("tank view create!");
-        this.node.addChild(this.tankNode);
-        var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
-        vehicle.rotationX = face;
+        // this.node.addChild(this.tankNode);
+        // var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
+        // vehicle.rotationX = face;
     },
     
     move: function (position) {
         var x = position.x;
         var y = position.y;
-        var old_pos = this.tankNode.position;
-        var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
+        var old_pos = this.node.position;
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
         var vehicle_angle = vehicle.getRotation();
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
         var turn_angle = Utils.fmod(180 * (degree - vehicle_angle) / Math.PI, 360);
@@ -45,19 +46,19 @@ cc.Class({
         // var move = cc.moveTo(2, x, y);
         // var spawn = cc.spawn(turn, move);
         console.log("move to:" + x + "|" + y + "|" + turn_angle);
-        // this.tankNode.runAction(rotate);
-        this.tankNode.position = position;
+        // this.node.runAction(rotate);
+        this.node.position = position;
     },
 
     face: function(x, y) {
-        var gun = cc.find("tankInfo/vehicle/gun", this.tankNode);
-        var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
+        var gun = cc.find("tankInfo/vehicle/gun", this.node);
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
         var ACTION_TAG = 1;
         // 通过 tag 停止一个动作
         gun.stopActionByTag(ACTION_TAG);
         
-        var old_pos = cc.p(this.tankNode.position.x + gun.position.x, 
-            this.tankNode.position.y + gun.position.y);
+        var old_pos = cc.p(this.node.position.x + gun.position.x, 
+            this.node.position.y + gun.position.y);
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
         var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
@@ -80,14 +81,14 @@ cc.Class({
     
     fire: function() {
         console.log("fire the hole!");
-        var bullet = cc.instantiate(this.bullet);
-        bullet.position = cc.p(320, 480);
-        this.node.addChild(bullet);
+        // var bullet = cc.instantiate(this.bullet);
+        // bullet.position = cc.p(320, 480);
+        // this.node.addChild(bullet);
     },
     
     isHit: function(p) {
-        var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
-        var location = this.tankNode.position;
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
+        var location = this.node.position;
         var vehicle_angle = vehicle.getRotation();
         var face = 180 * vehicle_angle / Math.PI;
         var unit_vect_h = cc.p(Math.sin(face), Math.cos(face));
