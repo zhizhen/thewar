@@ -43,6 +43,7 @@ cc.Class({
     // use this for initialization
     init (game) {
         this.game = game;
+        this.foeGroup = game.foeGroup;
         this.waveIdx = this.startWaveIdx;
         this.currentWave = this.waves[this.waveIdx];
         // this.waveProgress = this.waveProgress.getComponent('WaveProgress');
@@ -69,9 +70,16 @@ cc.Class({
         
         let newFoe = this.currentSpawn.spawn(this.game.poolMgr);
         if (newFoe) {
+            console.log(this.foeGroup);
             this.foeGroup.addChild(newFoe);
             newFoe.setPosition(this.getNewFoePosition());
-            newFoe.geComponent('Foe').init(this);
+            // newFoe.geComponent('Foe').init(this);
         }
+    },
+    
+    getNewFoePosition () {
+        var randX = cc.randomMinus1To1() * (this.foeGroup.width - this.spawnMargin) / 2;
+        var randY = cc.randomMinus1To1() * (this.foeGroup.height - this.spawnMargin) / 2;
+        return cc.p(randX, randY);
     }
 });

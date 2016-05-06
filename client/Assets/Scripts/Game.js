@@ -6,7 +6,8 @@ var Game = cc.Class({
     properties: {
         inGameUI: cc.Node,
         waveMgr: cc.Node,
-        poolMgr: cc.Node
+        poolMgr: cc.Node,
+        foeGroup: cc.Node
     },
     
     // 单例

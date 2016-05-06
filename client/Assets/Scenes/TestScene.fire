@@ -295,7 +295,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "tankLayer",
+    "_name": "foeGroup",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1129,6 +1129,9 @@
     },
     "poolMgr": {
       "__id__": 31
+    },
+    "foeGroup": {
+      "__id__": 8
     }
   },
   {
