@@ -1106,6 +1106,9 @@
       },
       {
         "__id__": 33
+      },
+      {
+        "__id__": 38
       }
     ],
     "_prefab": null
@@ -1122,6 +1125,9 @@
       "__id__": 14
     },
     "waveMgr": {
+      "__id__": 31
+    },
+    "poolMgr": {
       "__id__": 31
     }
   },
@@ -1173,5 +1179,34 @@
   {
     "__type__": "Wave",
     "spawns": []
+  },
+  {
+    "__type__": "d275a5+kOxEbKFKHbmMTz8e",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 31
+    },
+    "_enabled": true,
+    "foePools": [
+      {
+        "__id__": 39
+      },
+      {
+        "__id__": 40
+      }
+    ]
+  },
+  {
+    "__type__": "NodePool",
+    "prefab": {
+      "__uuid__": "41f6075f-8df6-4503-b672-12ba62c4e736"
+    },
+    "size": 1
+  },
+  {
+    "__type__": "NodePool",
+    "prefab": null,
+    "size": 0
   }
 ]

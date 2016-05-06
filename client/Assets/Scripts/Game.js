@@ -5,7 +5,8 @@ var Game = cc.Class({
     
     properties: {
         inGameUI: cc.Node,
-        waveMgr: cc.Node
+        waveMgr: cc.Node,
+        poolMgr: cc.Node
     },
     
     // 单例
@@ -17,6 +18,8 @@ var Game = cc.Class({
     onLoad: function () {
         Game.instance = this;
         console.log("游戏启动！");
+        this.poolMgr = this.poolMgr.getComponent('PoolMgr');
+        this.poolMgr.init(this);
         this.waveMgr = this.waveMgr.getComponent('WaveMgr');
         this.waveMgr.init(this);
     },

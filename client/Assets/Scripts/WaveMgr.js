@@ -54,6 +54,7 @@ cc.Class({
     },
 
     startWave () {
+        this.currentWave.init();
         this.currentSpawn = this.currentWave.spawns[this.currentWave.spawnIdx];
         this.startSpawn();
         this.game.inGameUI.showWave(this.waveIdx + 1);
@@ -67,5 +68,10 @@ cc.Class({
         }
         
         let newFoe = this.currentSpawn.spawn(this.game.poolMgr);
+        if (newFoe) {
+            this.foeGroup.addChild(newFoe);
+            newFoe.setPosition(this.getNewFoePosition());
+            newFoe.geComponent('Foe').init(this);
+        }
     }
 });
