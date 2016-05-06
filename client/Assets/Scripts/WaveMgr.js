@@ -73,7 +73,7 @@ cc.Class({
             console.log(this.foeGroup);
             this.foeGroup.addChild(newFoe);
             newFoe.setPosition(this.getNewFoePosition());
-            // newFoe.getComponent('Foe').init(this);
+            newFoe.getComponent('Foe').init(this);
         }
     },
     

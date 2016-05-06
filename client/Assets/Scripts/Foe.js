@@ -18,7 +18,7 @@ cc.Class({
         }
     },
     
-    init (vaveMgr) {
+    init (waveMgr) {
         cc.log("foe init!");
         this.waveMgr = waveMgr;
     }
