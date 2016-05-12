@@ -73,13 +73,14 @@ cc.Class({
             console.log(this.foeGroup);
             this.foeGroup.addChild(newFoe);
             newFoe.setPosition(this.getNewFoePosition());
-            newFoe.getComponent('Foe').init(this);
+            newFoe.getComponent('Tank').init(this);
         }
     },
     
     getNewFoePosition () {
-        var randX = cc.randomMinus1To1() * (this.foeGroup.width - this.spawnMargin) / 2;
-        var randY = cc.randomMinus1To1() * (this.foeGroup.height - this.spawnMargin) / 2;
+        var randX = cc.random0To1() * (this.foeGroup.width - this.spawnMargin);
+        var randY = cc.random0To1() * (this.foeGroup.height - this.spawnMargin);
+        cc.log("set tank position:", cc.randomMinus1To1(), randX, randY);
         return cc.p(randX, randY);
     }
 });

@@ -261,7 +261,7 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "66c9cfDHxJBcKFbjQdZSSCq"
+    "fileId": "c86afbgIcxAcpQFr6R2utp8"
   },
   {
     "__type__": "cc.Sprite",
@@ -295,7 +295,7 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "4a4cfelv/lP7KHuNjNmYhg7"
+    "fileId": "ca156HGExtDdZnsIUUqYRs9"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -303,18 +303,21 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "08f06vhU9RA94DS4dgwUmRE"
+    "fileId": "f681aspPgpDVraVatzjM75A"
   },
   {
-    "__type__": "77ceaErRgJMw5Fefb17O9or",
+    "__type__": "ca9fcP+/c1CQaRQyIGCPqY9",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "foeType": 0,
-    "atkType": 0
+    "move_speed": 20,
+    "gun_speed": 30,
+    "vehicle_speed": 0,
+    "tankPrefeb": null,
+    "bullet": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -322,6 +325,6 @@
       "__id__": 1
     },
     "asset": null,
-    "fileId": "21578kQVPVDqq9blCXvjv2u"
+    "fileId": "643800SYfxN6p/wPBS+de4U"
   }
 ]
