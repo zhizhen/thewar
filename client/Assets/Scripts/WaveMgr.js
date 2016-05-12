@@ -70,7 +70,6 @@ cc.Class({
         
         let newFoe = this.currentSpawn.spawn(this.game.poolMgr);
         if (newFoe) {
-            console.log(this.foeGroup);
             this.foeGroup.addChild(newFoe);
             newFoe.setPosition(this.getNewFoePosition());
             newFoe.getComponent('Tank').init(this);

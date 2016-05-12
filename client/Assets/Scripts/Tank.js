@@ -15,7 +15,7 @@ cc.Class({
     init: function (game) {
         console.log("tank view onload!");
         this.game = game;
-        this.create(200, 300, 0);
+        // this.create(200, 300, 0);
         this.face(400, 600);
     },
 
