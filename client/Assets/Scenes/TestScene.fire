@@ -1461,6 +1461,11 @@
       {
         "__id__": 49
       }
+    ],
+    "projectilePools": [
+      {
+        "__id__": 50
+      }
     ]
   },
   {
@@ -1474,5 +1479,12 @@
     "__type__": "NodePool",
     "prefab": null,
     "size": 0
+  },
+  {
+    "__type__": "NodePool",
+    "prefab": {
+      "__uuid__": "ab14c090-abc5-4e05-b4d2-fdf992351961"
+    },
+    "size": 5
   }
 ]

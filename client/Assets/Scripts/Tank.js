@@ -74,6 +74,7 @@ cc.Class({
     
     fire: function() {
         console.log("fire the hole!");
+        this.game.waveMgr.spawnProjectile(this.projectileType, this.node.position);
         // var bullet = cc.instantiate(this.bullet);
         // bullet.position = cc.p(320, 480);
         // this.node.addChild(bullet);

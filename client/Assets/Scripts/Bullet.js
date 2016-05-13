@@ -15,12 +15,9 @@ cc.Class({
     },
 
     // use this for initialization
-    onLoad: function () {
-        console.log("on create bullet!");
-        var bullet = cc.instantiate(this.bullet);
-        bullet.position = cc.p(-150, -400);
-        this.node.addChild(bullet);
-    },
+    init (waveMgr, dir) {
+        cc.log("bullet init!");
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

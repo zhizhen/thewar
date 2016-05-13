@@ -77,6 +77,17 @@ cc.Class({
         }
     },
     
+    spawnProjectile (projectileType, pos, dir) {
+        let newProjectile = this.game.poolMgr.requestProjectile(projectileType);
+        if (newProjectile) {
+            this.foeGroup.addChild(newProjectile);
+            newProjectile.setPosition(pos);
+            newProjectile.getComponent('Bullet').init(this, dir);
+        } else {
+            cc.log("requesting too many projectiles! please increase size");
+        }
+    },
+    
     getNewFoePosition () {
         var randX = cc.random0To1() * (this.foeGroup.width - this.spawnMargin);
         var randY = cc.random0To1() * (this.foeGroup.height - this.spawnMargin);
