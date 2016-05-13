@@ -71,8 +71,9 @@ cc.Class({
         let newFoe = this.currentSpawn.spawn(this.game.poolMgr);
         if (newFoe) {
             this.foeGroup.addChild(newFoe);
-            newFoe.setPosition(this.getNewFoePosition());
-            newFoe.getComponent('Tank').init(this);
+            // newFoe.setPosition(this.getNewFoePosition());
+            var born = this.getNewFoePosition();
+            newFoe.getComponent('Tank').init(this, born.x, born.y, 180);
         }
     },
     

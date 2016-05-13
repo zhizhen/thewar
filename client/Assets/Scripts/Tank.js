@@ -12,10 +12,12 @@ cc.Class({
     },
 
     // use this for initialization
-    init: function (game) {
+    init: function (game, x, y, face) {
         console.log("tank view onload!");
         this.game = game;
-        // this.create(200, 300, 0);
+        this.node.position = cc.p(x, y);
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
+        vehicle.rotation = face;
         this.face(400, 600);
     },
 
@@ -23,15 +25,6 @@ cc.Class({
     // update: function (dt) {
 
     // },
-    
-    create: function (x, y, face) {
-        // this.tankNode = cc.instantiate(this.tankPrefeb);
-        this.node.position = cc.p(x, y);
-        // console.log("tank view create!");
-        // this.node.addChild(this.tankNode);
-        // var vehicle = cc.find("tankInfo/vehicle", this.tankNode);
-        // vehicle.rotationX = face;
-    },
     
     move: function (position) {
         var x = position.x;
