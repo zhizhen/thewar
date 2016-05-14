@@ -86,7 +86,7 @@ cc.Class({
         var dx = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
         var dy = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
         var pos = cc.p(gun_pos.x + dx, gun_pos.y + dy);
-        this.game.waveMgr.spawnProjectile(this.projectileType, pos);
+        this.game.waveMgr.spawnProjectile(this.projectileType, pos, now_angle);
     },
     
     isHit: function(p) {

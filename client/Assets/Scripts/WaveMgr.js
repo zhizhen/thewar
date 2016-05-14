@@ -77,12 +77,12 @@ cc.Class({
         }
     },
     
-    spawnProjectile (projectileType, pos, dir) {
+    spawnProjectile (projectileType, pos, angle) {
         let newProjectile = this.game.poolMgr.requestProjectile(projectileType);
         if (newProjectile) {
             this.foeGroup.addChild(newProjectile);
             newProjectile.setPosition(pos);
-            newProjectile.getComponent('Bullet').init(this, dir);
+            newProjectile.getComponent('Bullet').init(this, angle);
         } else {
             cc.log("requesting too many projectiles! please increase size");
         }
