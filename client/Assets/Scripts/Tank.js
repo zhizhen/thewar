@@ -74,10 +74,19 @@ cc.Class({
     
     fire: function() {
         console.log("fire the hole!");
-        this.game.waveMgr.spawnProjectile(this.projectileType, this.node.position);
-        // var bullet = cc.instantiate(this.bullet);
-        // bullet.position = cc.p(320, 480);
-        // this.node.addChild(bullet);
+        var gun = cc.find("tankInfo/vehicle/gun", this.node);
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
+        
+        var gun_angle = gun.getRotation();
+        var vehicle_angle = vehicle.getRotation();
+        var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
+        
+        var anchor = gun.getAnchorPoint();
+        var gun_pos = cc.pAdd(gun.position, this.node.position);
+        var dx = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var dy = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var pos = cc.p(gun_pos.x + dx, gun_pos.y + dy);
+        this.game.waveMgr.spawnProjectile(this.projectileType, pos);
     },
     
     isHit: function(p) {
