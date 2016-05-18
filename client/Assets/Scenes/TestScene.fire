@@ -938,7 +938,9 @@
     "gun_speed": 40,
     "vehicle_speed": 0,
     "tankPrefeb": null,
-    "bullet": null
+    "bullet": {
+      "__uuid__": "ab14c090-abc5-4e05-b4d2-fdf992351961"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

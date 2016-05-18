@@ -74,9 +74,13 @@ cc.Class({
     
     fire: function() {
         console.log("fire the hole!");
+        
         var gun = cc.find("tankInfo/vehicle/gun", this.node);
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         
+        var ACTION_TAG = 1;
+        // 通过 tag 停止一个动作
+        gun.stopActionByTag(ACTION_TAG);
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
         var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
@@ -87,6 +91,14 @@ cc.Class({
         var dy = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
         var pos = cc.p(gun_pos.x + dx, gun_pos.y + dy);
         this.game.waveMgr.spawnProjectile(this.projectileType, pos, now_angle);
+        
+        // 炮塔后座力
+        var gun_bx = gun.position.x - dx / 20;
+        var gun_by = gun.position.y - dy / 20;
+        var backward = cc.moveTo(0.05, cc.p(gun_bx, gun_by));
+        var recover = cc.moveTo(0.5, cc.p(gun.position.x, gun.position.y));
+        var sequence = cc.sequence(backward, recover);
+        gun.runAction(sequence);
     },
     
     isHit: function(p) {
