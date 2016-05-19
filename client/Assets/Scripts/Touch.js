@@ -15,10 +15,7 @@ cc.Class({
             // 模拟器，手机上能多点触摸，浏览器取到的是undefined
             var touchID = event.touch.getID();
             var location = event.touch.getLocation();
-            // touch.setTouchInfo(touch.__proto__._id, location.x, location.y);
-            // console.log("touchend begin:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y);
-            // todo 判断，如果点击区域是车身，则接下来move是移动
-            // 否则，则是炮塔转动到瞄准该位置
+            // 判断，如果点击区域是车身，则接下来move是移动、否则，则是炮塔转动到瞄准该位置
             var isHit = this.tank.isHit(location);
             if (isHit){
                 // console.log("start move!");
@@ -34,7 +31,6 @@ cc.Class({
             var location = event.touch.getLocation();
             var touchID = event.touch.getID();
             console.log("touchend move,touch id:" + touchID + ";:"+this.move +"|"+this.face);
-            // todo 移动车身，或者旋转炮塔
 
             if (touchID === this.face){
                 cc.log("move face!");
@@ -48,9 +44,7 @@ cc.Class({
         var end = function (event){
             var touchID = event.touch.getID();
             var location = event.touch.getLocation();
-            // console.log("touchend end:"+event.touch.getLocation().x +"|"+event.touch.getLocation().y)
-            // todo 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
-            // console.log("pre move:" + this.pre_move);
+            // 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
             if (touchID === this.move){
                 console.log("end move touch,x:" + location.x + ",y:" + location.y);
                 this.move = null;
