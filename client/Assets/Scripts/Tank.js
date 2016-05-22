@@ -7,18 +7,17 @@ cc.Class({
         move_speed: 20,
         gun_speed: 0, // 炮管每秒旋转角度
         vehicle_speed: 0,
-        tankPrefeb: cc.Prefab,
         bullet: cc.Prefab
     },
 
     // use this for initialization
     init: function (game, x, y, face) {
-        console.log("tank view onload!");
+        cc.log("tank view onload!", x, y);
         this.game = game;
         this.node.position = cc.p(x, y);
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         vehicle.rotation = face;
-        this.face(400, 600);
+        // this.face(400, 600);
     },
 
     // called every frame, uncomment this function to activate update callback

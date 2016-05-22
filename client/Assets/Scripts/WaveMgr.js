@@ -91,7 +91,6 @@ cc.Class({
     getNewFoePosition () {
         var randX = cc.random0To1() * (this.foeGroup.width - this.spawnMargin);
         var randY = cc.random0To1() * (this.foeGroup.height - this.spawnMargin);
-        cc.log("set tank position:", cc.randomMinus1To1(), randX, randY);
         return cc.p(randX, randY);
     }
 });
