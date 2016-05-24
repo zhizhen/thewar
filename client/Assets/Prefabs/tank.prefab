@@ -591,9 +591,8 @@
     },
     "_enabled": true,
     "move_speed": 20,
-    "gun_speed": 0,
-    "vehicle_speed": 0,
-    "tankPrefeb": null,
+    "gun_speed": 40,
+    "vehicle_speed": 10,
     "bullet": null
   },
   {

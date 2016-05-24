@@ -396,7 +396,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "31db7cp8tJCBYnxRCFsxHbV",
+    "_id": "d63f1UaaUxA2qIi4si123U3",
     "_active": true,
     "_components": [
       {
@@ -463,7 +463,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "18298FgWvlFEJjAwKj5lV/D",
+    "_id": "36b499rKzFLNKfHdTLUepeC",
     "_active": true,
     "_components": [],
     "_prefab": {
@@ -517,7 +517,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "d5b9fIalGZNU4jyUOTJerBs",
+    "_id": "5b983lmbwlFSo9qvwD41xtO",
     "_active": true,
     "_components": [
       {
@@ -571,7 +571,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "7aadcotNhhOiqRhqKSE9xXT",
+    "_id": "b18c4IOj7pDNJllATLX7GTz",
     "_active": true,
     "_components": [
       {
@@ -697,7 +697,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "a7f44O89XxNrbCcoGH6oMiM",
+    "_id": "ddc78XJD7ZKJa+S91xWxjEh",
     "_active": true,
     "_components": [
       {
@@ -787,7 +787,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "9ac557cXcBCGIp2vM3KLJD2",
+    "_id": "40a74MdVltE6qnPX+PhllYE",
     "_active": true,
     "_components": [
       {
@@ -877,7 +877,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_reorderChildDirty": false,
-    "_id": "8f2d1lohNNDg56Fybb4xFPE",
+    "_id": "4ad27Lt/z9AO4bAcXf5LRSw",
     "_active": true,
     "_components": [
       {
@@ -936,11 +936,8 @@
     "_enabled": true,
     "move_speed": 20,
     "gun_speed": 40,
-    "vehicle_speed": 0,
-    "tankPrefeb": null,
-    "bullet": {
-      "__uuid__": "ab14c090-abc5-4e05-b4d2-fdf992351961"
-    }
+    "vehicle_speed": 10,
+    "bullet": null
   },
   {
     "__type__": "cc.PrefabInfo",

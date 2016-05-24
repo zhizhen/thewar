@@ -30,15 +30,15 @@ cc.Class({
         var move = function (event){
             var location = event.touch.getLocation();
             var touchID = event.touch.getID();
-            console.log("touchend move,touch id:" + touchID + ";:"+this.move +"|"+this.face);
+            // console.log("touchend move,touch id:" + touchID + ";:"+this.move +"|"+this.face);
 
             if (touchID === this.face){
-                cc.log("move face!");
+                // cc.log("move face!");
                 this.tank.face(location.x, location.y);
             }
             else if(touchID === this.move){
                 this.pre_move.unshift(location);
-                console.log("id:" + touchID + ";" + this.touchID);
+                // console.log("id:" + touchID + ";" + this.touchID);
             }
         };
         var end = function (event){
@@ -46,7 +46,7 @@ cc.Class({
             var location = event.touch.getLocation();
             // 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
             if (touchID === this.move){
-                console.log("end move touch,x:" + location.x + ",y:" + location.y);
+                // console.log("end move touch,x:" + location.x + ",y:" + location.y);
                 this.move = null;
             }
             else{

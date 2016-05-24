@@ -21,11 +21,20 @@ cc.Class({
     },
 
     // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
+    update: function (dt) {
 
-    // },
+        if (this.target !== undefined){
+            var old_pos = this.node.position;
+            var vect = cc.p(this.target.x - old_pos.x, this.target.y - old_pos.y);
+            var distance = cc.pDistance(old_pos, this.target);
+            var unit = cc.p(vect.x / distance, vect.y / distance);
+            this.node.position = cc.pAdd(old_pos, unit);
+        }
+    },
+    
     
     move: function (position) {
+        this.target = position;
         var x = position.x;
         var y = position.y;
         var old_pos = this.node.position;
@@ -33,13 +42,9 @@ cc.Class({
         var vehicle_angle = vehicle.getRotation();
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
         var turn_angle = Utils.fmod(180 * (degree - vehicle_angle) / Math.PI, 360);
-        var rotate = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
-        // var turn = cc.rotateBy(0.4, angle);
-        // var move = cc.moveTo(2, x, y);
-        // var spawn = cc.spawn(turn, move);
-        console.log("move to:" + x + "|" + y + "|" + turn_angle);
-        // this.node.runAction(rotate);
-        this.node.position = position;
+        var turn = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
+        // console.log("move to:" + x + "|" + y + "|" + turn_angle);
+        vehicle.runAction(turn);
     },
 
     face: function(x, y) {
@@ -53,7 +58,7 @@ cc.Class({
             this.node.position.y + gun.position.y);
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
-        var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
+        var now_angle = Math.PI * (vehicle_angle + gun_angle) / 180;
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
         var turn_angle = Utils.fmod(180 * (degree - now_angle) / Math.PI, 360);
         var rotate = cc.rotateBy(Math.abs(turn_angle) / this.gun_speed, turn_angle, turn_angle);
@@ -82,7 +87,7 @@ cc.Class({
         gun.stopActionByTag(ACTION_TAG);
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
-        var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
+        var now_angle = Math.PI * (vehicle_angle +  gun_angle) / 180;
         
         var anchor = gun.getAnchorPoint();
         var gun_pos = cc.pAdd(gun.position, this.node.position);
