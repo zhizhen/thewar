@@ -7,6 +7,8 @@ cc.Class({
         move_speed: 20,
         gun_speed: 0, // 炮管每秒旋转角度
         vehicle_speed: 0,
+        label_vehicle: cc.Label,
+        label_gun: cc.Label,
         bullet: cc.Prefab
     },
 
@@ -17,12 +19,14 @@ cc.Class({
         this.node.position = cc.p(x, y);
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         vehicle.rotation = face;
+        
+        this.label_vehicle.string = face;
+        this.label_gun.string = face;
         // this.face(400, 600);
     },
 
     // called every frame, uncomment this function to activate update callback
     update: function (dt) {
-
         if (this.target !== undefined){
             var old_pos = this.node.position;
             var vect = cc.p(this.target.x - old_pos.x, this.target.y - old_pos.y);
@@ -41,10 +45,12 @@ cc.Class({
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         var vehicle_angle = vehicle.getRotation();
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
-        var turn_angle = Utils.fmod(180 * (degree - vehicle_angle) / Math.PI, 360);
+        var turn_angle = Utils.fmod(180 * degree / Math.PI - vehicle_angle, 360);
         var turn = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
-        // console.log("move to:" + x + "|" + y + "|" + turn_angle);
+        console.log("move to:" + x + "|" + y + "|" + turn_angle);
         vehicle.runAction(turn);
+        cc.log("old vehicle angle:", Math.floor(vehicle_angle));
+        this.label_vehicle.string = Math.floor(180 * degree / Math.PI);
     },
 
     face: function(x, y) {
@@ -56,6 +62,7 @@ cc.Class({
         
         var old_pos = cc.p(this.node.position.x + gun.position.x, 
             this.node.position.y + gun.position.y);
+        // getRotation 返回的是角度
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
         var now_angle = Math.PI * (vehicle_angle + gun_angle) / 180;
@@ -74,6 +81,8 @@ cc.Class({
                 console.log("face callback");
             })));
         }
+        
+        this.label_gun.string = Math.floor(180 * degree / Math.PI);
     },
     
     fire: function() {
@@ -109,9 +118,9 @@ cc.Class({
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         var location = this.node.position;
         var vehicle_angle = vehicle.getRotation();
-        var face = 180 * vehicle_angle / Math.PI;
-        var unit_vect_h = cc.p(Math.sin(face), Math.cos(face));
-        var unit_vect_w = cc.p(Math.cos(face), - Math.sin(face));
+        // var face = 180 * vehicle_angle / Math.PI;
+        var unit_vect_h = cc.p(Math.sin(vehicle_angle), Math.cos(vehicle_angle));
+        var unit_vect_w = cc.p(Math.cos(vehicle_angle), - Math.sin(vehicle_angle));
         
         var width = vehicle.getContentSize().width;
         var height = vehicle.getContentSize().height;

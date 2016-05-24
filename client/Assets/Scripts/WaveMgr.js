@@ -55,10 +55,10 @@ cc.Class({
     },
 
     startWave () {
-        this.currentWave.init();
-        this.currentSpawn = this.currentWave.spawns[this.currentWave.spawnIdx];
-        this.startSpawn();
-        this.game.inGameUI.showWave(this.waveIdx + 1);
+        // this.currentWave.init();
+        // this.currentSpawn = this.currentWave.spawns[this.currentWave.spawnIdx];
+        // this.startSpawn();
+        // this.game.inGameUI.showWave(this.waveIdx + 1);
         
     },
     
