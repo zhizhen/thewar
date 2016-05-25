@@ -1,28 +1,17 @@
-var boot = require('boot')
+// var boot = require('boot')
 var NetMgr = cc.Class({
     ctor: function () {
         cc.log("netmgr constructor!");    // true
-        // this.connect();
+        // Connect to our server: node server.js
+        this.socket = new WebSocket("ws://localhost:8080/ws");
+        this.socket.binaryType = "arraybuffer"; // We are talking binary
+        this.connect();
     },
     
-    connect: function() {
-        alert("on start");
-        var host = '127.0.0.1';
-        var port = '3010';
-        pomelo.init({
-            host: host,
-            port: port,
-            user: {},
-            log: true,
-            handshakeCallback : function(){}
-        }, function() {
-            console.log('success');
-            // pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-                // alert(data.msg);
-                // cc.director.loadScene('main');
-            // });
-           // cc.director.loadScene('main');
-        });
+    connect: function(address
+    ) {
+        cc.log("on start");
+       
     },
     
     send: function(Msg) {
