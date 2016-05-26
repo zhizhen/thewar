@@ -28,7 +28,8 @@ socket.binaryType = "arraybuffer"; // We are talking binary
 function send() {
     if (socket.readyState == WebSocket.OPEN) {
         var msg = new Message(text.value);
-        socket.send(msg.toArrayBuffer());
+        var arrayBuffer = msg.toArrayBuffer();
+        socket.send(arrayBuffer);
         log.value += "Sent: "+msg.text+"\n";
     } else {
         log.value += "Not connected\n";
