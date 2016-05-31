@@ -47,6 +47,7 @@ cc.Class({
             // 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
             if (touchID === this.move){
                 // console.log("end move touch,x:" + location.x + ",y:" + location.y);
+                this.tank.move(location);
                 this.move = null;
             }
             else{
@@ -62,9 +63,9 @@ cc.Class({
     // called every frame, uncomment this function to activate update callback
     update: function (dt) {
         // console.log("touch tick!" + dt);
-        if(this.pre_move.length !== 0){
-            var location = this.pre_move.pop();
-            this.tank.move(location);
-        }
+        // if(this.pre_move.length !== 0){
+        //     var location = this.pre_move.pop();
+        //     this.tank.move(location);
+        // }
     },
 });

@@ -20,6 +20,9 @@ var Game = cc.Class({
     onLoad: function () {
         Game.instance = this;
         console.log("游戏启动！");
+        var manager = cc.director.getCollisionManager();
+        manager.enabled = true;
+        manager.enabledDebugDraw = true;
         this.tank = this.tank.getComponent('Tank');
         this.tank.init(this, 200, 300, 0);
         this.tank.node.active = true;

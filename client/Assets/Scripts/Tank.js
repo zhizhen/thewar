@@ -20,8 +20,8 @@ cc.Class({
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         vehicle.rotation = face;
         
-        this.label_vehicle.string = face;
-        this.label_gun.string = face;
+        // this.label_vehicle.string = face;
+        // this.label_gun.string = face;
         // this.face(400, 600);
     },
 
@@ -32,13 +32,23 @@ cc.Class({
             var vect = cc.p(this.target.x - old_pos.x, this.target.y - old_pos.y);
             var distance = cc.pDistance(old_pos, this.target);
             var unit = cc.p(vect.x / distance, vect.y / distance);
-            this.node.position = cc.pAdd(old_pos, unit);
+            this.node.position = cc.pAdd(old_pos, unit); 
+            
+            if (cc.pDistance(this.target, this.node.position) < 5) {
+                this.target = undefined;
+            }
         }
     },
     
+    forward: function (position) {
+        
+    },
+    
+    backward: function (position) {
+        
+    },
     
     move: function (position) {
-        this.target = position;
         var x = position.x;
         var y = position.y;
         var old_pos = this.node.position;
@@ -48,7 +58,12 @@ cc.Class({
         var turn_angle = Utils.fmod(180 * degree / Math.PI - vehicle_angle, 360);
         var turn = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
         console.log("move to:" + x + "|" + y + "|" + turn_angle);
-        vehicle.runAction(turn);
+        // vehicle.runAction(turn);
+        var self = this;
+        vehicle.runAction(cc.sequence(turn, cc.callFunc(function() {
+                console.log("move turn callback");
+                self.target = position;
+            })));
         cc.log("old vehicle angle:", Math.floor(vehicle_angle));
         this.label_vehicle.string = Math.floor(180 * degree / Math.PI);
     },
@@ -100,9 +115,13 @@ cc.Class({
         
         var anchor = gun.getAnchorPoint();
         var gun_pos = cc.pAdd(gun.position, this.node.position);
-        var dx = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
-        var dy = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
-        var pos = cc.p(gun_pos.x + dx, gun_pos.y + dy);
+        var dx = Math.sin(Math.PI * gun_angle / 180) * gun.getContentSize().height * (1 - anchor.y);
+        var dy = Math.cos(Math.PI * gun_angle / 180) * gun.getContentSize().height * (1 - anchor.y);
+        
+        
+        var dx1 = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var dy1 = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var pos = cc.p(gun_pos.x + dx1, gun_pos.y + dy1);
         this.game.waveMgr.spawnProjectile(this.projectileType, pos, now_angle);
         
         // 炮塔后座力
