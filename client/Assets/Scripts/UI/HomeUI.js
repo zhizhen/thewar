@@ -1,3 +1,4 @@
+var NetMgr = require("NetMgr");
 cc.Class({
     extends: cc.Component,
 
@@ -8,9 +9,11 @@ cc.Class({
     // use this for initialization
     onLoad: function () {
         // this.playGame();
+        NetMgr.connect();
     },
     
     playGame: function() {
+        NetMgr.send();
         cc.director.loadScene("TestScene");
     }
 

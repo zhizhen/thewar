@@ -1,3 +1,11 @@
 {
-  "start-scene": "bb42c52b-6982-447a-a84f-78c05d23e305"
+  "start-scene": "bb42c52b-6982-447a-a84f-78c05d23e305",
+  "group-list": [
+    "default"
+  ],
+  "collision-matrix": [
+    [
+      true
+    ]
+  ]
 }

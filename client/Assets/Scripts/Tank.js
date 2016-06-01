@@ -7,24 +7,46 @@ cc.Class({
         move_speed: 20,
         gun_speed: 0, // 炮管每秒旋转角度
         vehicle_speed: 0,
-        tankPrefeb: cc.Prefab,
+        label_vehicle: cc.Label,
+        label_gun: cc.Label,
         bullet: cc.Prefab
     },
 
     // use this for initialization
     init: function (game, x, y, face) {
-        console.log("tank view onload!");
+        cc.log("tank view onload!", x, y);
         this.game = game;
         this.node.position = cc.p(x, y);
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         vehicle.rotation = face;
-        this.face(400, 600);
+        
+        // this.label_vehicle.string = face;
+        // this.label_gun.string = face;
+        // this.face(400, 600);
     },
 
     // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
-
-    // },
+    update: function (dt) {
+        if (this.target !== undefined){
+            var old_pos = this.node.position;
+            var vect = cc.p(this.target.x - old_pos.x, this.target.y - old_pos.y);
+            var distance = cc.pDistance(old_pos, this.target);
+            var unit = cc.p(vect.x / distance, vect.y / distance);
+            this.node.position = cc.pAdd(old_pos, unit); 
+            
+            if (cc.pDistance(this.target, this.node.position) < 5) {
+                this.target = undefined;
+            }
+        }
+    },
+    
+    forward: function (position) {
+        
+    },
+    
+    backward: function (position) {
+        
+    },
     
     move: function (position) {
         var x = position.x;
@@ -33,14 +55,17 @@ cc.Class({
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         var vehicle_angle = vehicle.getRotation();
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
-        var turn_angle = Utils.fmod(180 * (degree - vehicle_angle) / Math.PI, 360);
-        var rotate = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
-        // var turn = cc.rotateBy(0.4, angle);
-        // var move = cc.moveTo(2, x, y);
-        // var spawn = cc.spawn(turn, move);
+        var turn_angle = Utils.fmod(180 * degree / Math.PI - vehicle_angle, 360);
+        var turn = cc.rotateBy(Math.abs(turn_angle) / this.vehicle_speed, turn_angle, turn_angle);
         console.log("move to:" + x + "|" + y + "|" + turn_angle);
-        // this.node.runAction(rotate);
-        this.node.position = position;
+        // vehicle.runAction(turn);
+        var self = this;
+        vehicle.runAction(cc.sequence(turn, cc.callFunc(function() {
+                console.log("move turn callback");
+                self.target = position;
+            })));
+        cc.log("old vehicle angle:", Math.floor(vehicle_angle));
+        this.label_vehicle.string = Math.floor(180 * degree / Math.PI);
     },
 
     face: function(x, y) {
@@ -52,9 +77,10 @@ cc.Class({
         
         var old_pos = cc.p(this.node.position.x + gun.position.x, 
             this.node.position.y + gun.position.y);
+        // getRotation 返回的是角度
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
-        var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
+        var now_angle = Math.PI * (vehicle_angle + gun_angle) / 180;
         var degree = Math.atan2(x - old_pos.x, y - old_pos.y);
         var turn_angle = Utils.fmod(180 * (degree - now_angle) / Math.PI, 360);
         var rotate = cc.rotateBy(Math.abs(turn_angle) / this.gun_speed, turn_angle, turn_angle);
@@ -70,6 +96,8 @@ cc.Class({
                 console.log("face callback");
             })));
         }
+        
+        this.label_gun.string = Math.floor(180 * degree / Math.PI);
     },
     
     fire: function() {
@@ -83,13 +111,17 @@ cc.Class({
         gun.stopActionByTag(ACTION_TAG);
         var gun_angle = gun.getRotation();
         var vehicle_angle = vehicle.getRotation();
-        var now_angle = vehicle_angle + Math.PI * gun_angle / 180;
+        var now_angle = Math.PI * (vehicle_angle +  gun_angle) / 180;
         
         var anchor = gun.getAnchorPoint();
         var gun_pos = cc.pAdd(gun.position, this.node.position);
-        var dx = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
-        var dy = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
-        var pos = cc.p(gun_pos.x + dx, gun_pos.y + dy);
+        var dx = Math.sin(Math.PI * gun_angle / 180) * gun.getContentSize().height * (1 - anchor.y);
+        var dy = Math.cos(Math.PI * gun_angle / 180) * gun.getContentSize().height * (1 - anchor.y);
+        
+        
+        var dx1 = Math.sin(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var dy1 = Math.cos(now_angle) * gun.getContentSize().height * (1 - anchor.y);
+        var pos = cc.p(gun_pos.x + dx1, gun_pos.y + dy1);
         this.game.waveMgr.spawnProjectile(this.projectileType, pos, now_angle);
         
         // 炮塔后座力
@@ -105,9 +137,9 @@ cc.Class({
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         var location = this.node.position;
         var vehicle_angle = vehicle.getRotation();
-        var face = 180 * vehicle_angle / Math.PI;
-        var unit_vect_h = cc.p(Math.sin(face), Math.cos(face));
-        var unit_vect_w = cc.p(Math.cos(face), - Math.sin(face));
+        // var face = 180 * vehicle_angle / Math.PI;
+        var unit_vect_h = cc.p(Math.sin(vehicle_angle), Math.cos(vehicle_angle));
+        var unit_vect_w = cc.p(Math.cos(vehicle_angle), - Math.sin(vehicle_angle));
         
         var width = vehicle.getContentSize().width;
         var height = vehicle.getContentSize().height;
