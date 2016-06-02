@@ -11,7 +11,19 @@
 
 start(_StartType, _StartArgs) ->
     lager:info("Application start!!!"),
+    ok = start_websocket(),
     gate_sup:start_link().
 
 stop(_State) ->
+    ok.
+
+start_websocket() ->
+    Rules = [
+                {'_', [
+                       {"/ws", ws_handler, []}
+                      ]
+                }
+            ],
+    Dispatch = cowboy_router:compile(Rules),
+    cowboy:start_clear(http, 100, [{port, 8080}], #{env => #{dispatch =>Dispatch}}),
     ok.
