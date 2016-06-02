@@ -1,4 +1,4 @@
-{application, game,
+{application, gate,
  [
   {description, ""},
   {vsn, "1"},
@@ -7,6 +7,6 @@
                   kernel,
                   stdlib
                  ]},
-  {mod, { game_app, []}},
+  {mod, { gate_app, []}},
   {env, []}
  ]}.

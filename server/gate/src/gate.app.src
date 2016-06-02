@@ -1,0 +1,12 @@
+{application, gate,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { gate_app, []}},
+  {env, []}
+ ]}.

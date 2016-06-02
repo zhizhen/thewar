@@ -1,4 +1,4 @@
--module(game_app).
+-module(gate_app).
 
 -behaviour(application).
 
@@ -10,7 +10,7 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    game_sup:start_link().
+    gate_sup:start_link().
 
 stop(_State) ->
     ok.

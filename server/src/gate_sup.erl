@@ -1,5 +1,5 @@
 
--module(game_sup).
+-module(gate_sup).
 
 -behaviour(supervisor).
 

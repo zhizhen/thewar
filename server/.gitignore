@@ -2,3 +2,4 @@ ebin
 node_modules/
 npm-debug.log
 www/*.js
+rel/gate
