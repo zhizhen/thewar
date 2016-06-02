@@ -11,6 +11,7 @@
 
 start(_StartType, _StartArgs) ->
     lager:info("Application start!!!"),
+    ok = protobuffs_compile:scan_file("example.proto"),
     ok = start_websocket(),
     gate_sup:start_link().
 

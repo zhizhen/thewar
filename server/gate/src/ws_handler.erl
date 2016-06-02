@@ -14,7 +14,8 @@ websocket_handle({text, Msg}, Req, State) ->
     lager:info("receive message: ~p~n", [Msg]),
     {reply, {text, <<"That's what she said! ", Msg/binary>>}, Req, State};
 websocket_handle({binary, Bin}, Req, State) ->
-    lager:info("receive binary: ~p~n", [Bin]),
+    Result = example_pb:decode_message(Bin),
+    lager:info("receive binary: ~p~n", [{Bin, Result}]),
     {ok, Req, State};
 websocket_handle(_Data, Req, State) ->
     lager:error("recv unhanded data: ~p~n", [_Data]),
