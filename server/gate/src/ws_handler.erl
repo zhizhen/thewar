@@ -6,7 +6,7 @@
 -export([websocket_terminate/3]).
 
 init(Req, _Opts) ->
-    lager:info("websocket handler init", [{Req, _Opts}]),
+    lager:info("websocket handler init: ~p~n", [{Req, _Opts}]),
     State = undefined,
     {cowboy_websocket, Req, State}.
 
@@ -14,8 +14,9 @@ websocket_handle({text, Msg}, Req, State) ->
     lager:info("receive message: ~p~n", [Msg]),
     {reply, {text, <<"That's what she said! ", Msg/binary>>}, Req, State};
 websocket_handle({binary, Bin}, Req, State) ->
+    lager:info("receive binary: ~p~n", [{Bin}]),
     Result = example_pb:decode_message(Bin),
-    lager:info("receive binary: ~p~n", [{Bin, Result}]),
+    lager:info("receive binary: ~p~n", [{Result}]),
     {ok, Req, State};
 websocket_handle(_Data, Req, State) ->
     lager:error("recv unhanded data: ~p~n", [_Data]),
