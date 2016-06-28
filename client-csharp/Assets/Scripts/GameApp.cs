@@ -10,7 +10,10 @@ public class GameApp : MonoBehaviour {
         InitSceneCamera();
         GameUI.InitBaseUI();
         GameObject.DontDestroyOnLoad(gameObject);
-	}
+        //LoadAssetBundleFile();
+
+        EnterGame();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -34,5 +37,14 @@ public class GameApp : MonoBehaviour {
         {
             mainCamera = mainCameraGo.GetComponent<Camera>();
         }
+    }
+
+    private void LoadAssetBundleFile()
+    {
+    }
+
+    private void EnterGame()
+    {
+
     }
 }

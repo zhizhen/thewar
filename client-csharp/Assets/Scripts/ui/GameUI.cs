@@ -17,5 +17,7 @@ public class GameUI {
             mUIRoot.name = "UIRoot";
             GameObject.DontDestroyOnLoad(mUIRoot);
         }
+        
     }
+
 }
