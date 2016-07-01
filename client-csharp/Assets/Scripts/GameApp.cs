@@ -4,13 +4,14 @@ using Engine;
 
 public class GameApp : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
         InitSceneCamera();
         GameUI.InitBaseUI();
         GameObject.DontDestroyOnLoad(gameObject);
-        //LoadAssetBundleFile();
+        LoadAssetBundleFile();
 
         EnterGame();
     }
@@ -37,14 +38,18 @@ public class GameApp : MonoBehaviour {
         {
             mainCamera = mainCameraGo.GetComponent<Camera>();
         }
+
     }
 
     private void LoadAssetBundleFile()
     {
+        gameObject.AddComponent<ResourceMgr>();
+        StartCoroutine(ResourceMgr.Instance.LoadMainGameObject(ResourceMgr.PathURL + "UIMain.assetbundle"));
     }
 
     private void EnterGame()
     {
 
     }
+
 }

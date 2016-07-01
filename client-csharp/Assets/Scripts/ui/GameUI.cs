@@ -9,6 +9,7 @@ public class GameUI {
     private static Text mWaitLoadingText;
     //private static UIAlert mAlert;
 
+
     public static void InitBaseUI()
     {
         if (mUIRoot == null)
@@ -16,6 +17,7 @@ public class GameUI {
             mUIRoot = GameObject.Instantiate(Resources.Load("UIRoot")) as GameObject;
             mUIRoot.name = "UIRoot";
             GameObject.DontDestroyOnLoad(mUIRoot);
+
         }
         
     }
