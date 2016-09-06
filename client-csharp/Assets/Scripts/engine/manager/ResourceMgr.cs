@@ -37,7 +37,9 @@ public class ResourceMgr : MonoBehaviour {
         yield return bundle;
 
         //加载到游戏中
-        yield return Instantiate(bundle.assetBundle.mainAsset);
+        GameObject go = Instantiate(bundle.assetBundle.mainAsset) as GameObject;
+        go.transform.parent = GameObject.Find("UIRoot").transform;
+        yield return go;
 
         bundle.assetBundle.Unload(false);
     }

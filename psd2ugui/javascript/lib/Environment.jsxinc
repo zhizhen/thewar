@@ -1,0 +1,24 @@
+function Environment(doc)
+{
+	this.doc = doc;
+	this.psdFullName = doc.name;
+	this.psdName = this.getPsdName(doc.name).replace(/\.(psd|png)/i, "");
+	this.psdPath = doc.path + "/" + doc.name;
+	this.psdFolderPath = String(doc.path);
+
+	this.imageFolderPath = this.psdFolderPath.replace("Psd", "Image");
+	this.jsonFolderPath = this.psdFolderPath.replace("Psd", "Json");
+	this.xmlFolderPath = this.psdFolderPath.replace("Psd", "Xml");
+}
+
+//Psd文件名示例：背包面板$BagPanel.psd
+//截取文件名中英文部分
+Environment.prototype.getPsdName = function(fullName)
+{
+	var nameSplit = fullName.split("$");
+	if(nameSplit.length == 2)
+	{
+		return nameSplit[1];
+	}
+	return fullName;
+}

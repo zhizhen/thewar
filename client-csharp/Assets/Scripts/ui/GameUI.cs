@@ -12,13 +12,6 @@ public class GameUI {
 
     public static void InitBaseUI()
     {
-        if (mUIRoot == null)
-        {
-            mUIRoot = GameObject.Instantiate(Resources.Load("UIRoot")) as GameObject;
-            mUIRoot.name = "UIRoot";
-            GameObject.DontDestroyOnLoad(mUIRoot);
-
-        }
         
     }
 
