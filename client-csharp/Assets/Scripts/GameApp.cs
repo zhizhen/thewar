@@ -8,12 +8,19 @@ public class GameApp : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
-        InitSceneCamera();
-        GameUI.InitBaseUI();
-        GameObject.DontDestroyOnLoad(gameObject);
-        LoadAssetBundleFile();
+        //InitSceneCamera();
+        //GameUI.InitBaseUI();
+        //GameObject.DontDestroyOnLoad(gameObject);
+        //LoadAssetBundleFile();
+        Driver.InitApp(gameObject);
+        OnLoadUILoading();
+        //EnterGame();
+    }
 
-        EnterGame();
+    private void OnLoadUILoading()
+    {
+        UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
+        UILoading.ShowLoading();
     }
 	
 	// Update is called once per frame

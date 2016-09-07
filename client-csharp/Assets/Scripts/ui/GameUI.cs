@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class GameUI {
-    private static GameObject mUIRoot;
+    private static Canvas mUIRoot;
     //private static UIGameLoading mGameLoading = null;
     private static GameObject mWaitLoading = null;
     private static Text mWaitLoadingText;
@@ -12,7 +12,10 @@ public class GameUI {
 
     public static void InitBaseUI()
     {
-        
+        if (mUIRoot == null)
+        {
+            mUIRoot.name = "UIRoot";
+        }
     }
 
 }

@@ -5,17 +5,17 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F3C265B1-B320-3C6F-EB98-9203FD424BA1}</ProjectGuid>
+    <ProjectGuid>{D846D275-249D-8C8E-5B8B-CC2A0560B9B7}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile>
     </CompilerResponseFile>
-    <UnityProjectType>Editor:5</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0b4</UnityVersion>
     <RootNamespace>
@@ -54,59 +54,34 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.EditorTestsRunner">
-      <HintPath>Library\UnityAssemblies\UnityEditor.EditorTestsRunner.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TreeEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.TreeEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Graphs">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zlib">
       <HintPath>Assets\Plugins\DotNetZipLib\Ionic.Zlib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="client-csharp.CSharp.Plugins.csproj">
-      <Project>{D846D275-249D-8C8E-5B8B-CC2A0560B9B7}</Project>
-      <Name>client-csharp.CSharp.Plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="client-csharp.CSharp.csproj">
-      <Project>{B8794E66-C8EA-5C25-AFC4-DAFC4F72653D}</Project>
-      <Name>client-csharp.CSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Editor\CreateAssetBundle.cs" />
-    <Compile Include="Assets\Editor\Inspector\PropsProxyInspector.cs" />
+    <Compile Include="Assets\Plugins\Driver.cs" />
+    <Compile Include="Assets\Plugins\extend\GameObjectExt.cs" />
+    <Compile Include="Assets\Plugins\loader\SimpleLoader.cs" />
+    <Compile Include="Assets\Plugins\PSD\UIExtension\TextWrapper.cs" />
+    <Compile Include="Assets\Plugins\Timer\GlobalTimer.cs" />
+    <Compile Include="Assets\Plugins\Timer\ITick.cs" />
+    <Compile Include="Assets\Plugins\Timer\TickMgr.cs" />
+    <Compile Include="Assets\Plugins\UI\CustomUI\UILoading.cs" />
+    <Compile Include="Assets\Plugins\UI\SliderWrapper.cs" />
+    <Compile Include="Assets\Plugins\extend\MonoBehaviourExt.cs" />
+    <Compile Include="Assets\Plugins\proxy\PropsProxy.cs" />
+    <Compile Include="Assets\Plugins\proxy\Singleton.cs" />
+    <Compile Include="Assets\Plugins\proxy\SingletonMonoBehaviour.cs" />
+    <Compile Include="Assets\Plugins\utils\GameTools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
