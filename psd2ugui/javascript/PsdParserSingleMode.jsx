@@ -1,4 +1,4 @@
-#include "lib/Environment.jsxinc";
+﻿#include "lib/Environment.jsxinc";
 #include "lib/Extractor.jsxinc";
 #include "lib/Parser.jsxinc";
 #include "lib/ImageExporter.jsxinc";

@@ -48,7 +48,7 @@ public class UILoading :SingletonMonoBehaviour<UILoading>
         set
         {
             var p = Mathf.Clamp(value, 0f, 1f);
-            sliderWrapper.percent = p;
+            //sliderWrapper.percent = p;
             percentText.text = (p * 100).ToString("0.00") + "%";
         }
     }

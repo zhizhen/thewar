@@ -1,0 +1,68 @@
+﻿//资源名称1.起始不能使用特殊符号，2.图像图层名称中不能包含中文字符
+const FIRST_TOKEN_REGEXP = /^([0-9]|\~|\!|\@|\#|\^|\*)/;
+const CHINESE_CHAR_REGEXP = /[\u4e00-\u9f5a]/;
+const DUMMY_TOKEN_LIST = [/\#/g, /\./g, /副本\d*/g, /拷贝\d*/g, /copy\d*/g];
+
+const SHARED = "Shared";
+const LABEL_DEFAULT_ALIGNMENT = "UpperLeft";
+const LABEL_DEFAULT_SPACEING = "1.0";
+const PLACEHOLDER = "placeholder";
+const NOT_EXPORT = "notextport";
+
+const SCALE_9_GRID_REGEXP = /(_|\|)\d+,\d+,\d+,\d+/g;
+const REMAIN_MIRROR_REGEXP = /(_|\|)((left)|(up))/ig;
+const DISCARD_MIRROR_REGEXP = /(_|\|)((right)|(down))/ig;
+const BRACE_REGEXP = /\{[\s\S]*?\}/gm;
+const LABEL_REGEXP = /(_|\|)(Upper|Middle|Lower)(Left|Center|Right)(,\d{1,2}(\.\d{1,3}))?/ig;
+const LANG_ID_REGEXP = /(_|\|)(lang)\d+/ig;
+const ALLOWED_FONT = [/.*/];
+
+//组件必须子元素校验
+const TOGGLE_REGEXP =              {required:[".*_checkmark"]);
+const TOGGLE_GROUP_REGEXP =  {required:["Toggle_.*"]);
+const LIST_REGEXP =                   {required:[".*_item"]);
+const TREE_REGEXP =                  {required:[".*_menu", ".*_detail"]);
+const SLIDER_REGEXP =               {required:[".*_fill"]);
+const PROGRESS_BAR_REGEXP =  {required:["Image_bar"]);
+const INPUT_REGEXP =                {required:["Label_.*"]);
+const SCROLL_VIEW_REGEXP =    {required:[".*_mask$"]);
+const SCROLL_PAGE_REGEXP =    {required:[".*_mask$"]);
+
+function Parser(environment)
+{
+    this.environment = environment;
+    this.isExportMirror = true;
+    this.sharedAssetMap = {};
+    this.assetMap = {};
+    
+    this.typeSet = 
+    {
+        "Image":
+        {
+            "parser" : "parseImage",
+            "validator" : "validateImage",
+            "childrenRegExp" : null
+        },
+        ""
+    }
+}
+
+Parser.prototype.loadSharedAssetXml = function()
+{
+    var xmlPath = this.environment.xmlFolderPath + "/Shared.xml";
+    var file = new File(xmlPath);
+    if(file.exists == true)
+    {
+        var assetNameRegExp = /[^\\]+?(?=\.png)/gm;
+        if(file.open("r") == true)
+        {
+            var content = file.read();
+            file.close();
+            var matchList = content.match(assetNameRegExp);
+            for(var i = 0; i < matchList.length; i++)
+            {
+                this.sharedAssetMap[matchList[i]] = 1;
+            }
+        }
+    }
+}

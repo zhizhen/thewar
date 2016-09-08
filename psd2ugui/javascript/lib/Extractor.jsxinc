@@ -1,0 +1,61 @@
+﻿/*
+提取Psd文件的原始信息
+Psd文件包括三种图层，1：文件夹节点(folder),2:图像图层(Image),3:文本图层(Text)
+扩展:可以根据具体项目需求提取图像和文本图层的相关信息
+*/
+
+const ST = stringIDToTypeID;
+const TS = typeIDToStringID;
+
+function Extractor(doc)
+{
+    this.doc = doc;
+}
+
+Extractor.prototype.extract = function()
+{
+    var layerCount = this.getLayerCount(this.doc);
+    var data = {type:"folder", name:this.doc.name, visible:1, layerIndex:layerCount, startIndex:layerCount, endIndex:1, parent:null, children:[]};
+    var current = data;
+    for(var i = layerCount; i >= 1; i--)
+    {
+         var descriptor = this.getLayerActionDescripter(i);
+         var layerSection = this.getLayerSection(descriptor);
+         var node;
+         switch(layerSection)
+         {
+             case "layerSectionStart":
+                 node = {type:"folder", name:this.getLayerName(descriptor), visible:this.getLayerVisibility(descriptor), layerIndex:i, startIndex:i, endIndex:0,
+                     parent:current, children:[]};
+                 current.children.push(node);
+                 current = node;
+                 break;
+             case "layerSectionContent":
+                 if(this.isTextLayer(descriptor) == true)
+                 {
+                     node = this.generateTextLayerData(descriptor, i);
+                 }
+                 else
+                 {
+                     node = this.generateImageLayerData(descriptor, i);
+                 }
+                 node.parent = current;
+                 current.children.push(node);
+                 break;
+             case "layerSectionEnd":
+                 current.endIndex = i;
+                 current = current.parent;
+                 break;
+         }   
+    }
+    return data;
+}
+
+Extractor.prototype.getLayerCount = function()
+{
+    var ref = new ActionReference();
+    ref.putEnumerated (ST("document"), ST("ordinal"), ST("targetEnum"));
+    var desc = executeActionGet(ref);
+    var count = desc.getInteger (ST("numberOfLayers"));
+    return count;
+}
