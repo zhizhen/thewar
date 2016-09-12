@@ -9,12 +9,11 @@ public class GameApp : MonoBehaviour {
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
         //InitSceneCamera();
-        //GameUI.InitBaseUI();
         //GameObject.DontDestroyOnLoad(gameObject);
         //LoadAssetBundleFile();
         Driver.InitApp(gameObject);
         OnLoadUILoading();
-        //EnterGame();
+        EnterGame();
     }
 
     private void OnLoadUILoading()
@@ -56,6 +55,7 @@ public class GameApp : MonoBehaviour {
 
     private void EnterGame()
     {
+		GameUI.InitBaseUI();
 
     }
 
