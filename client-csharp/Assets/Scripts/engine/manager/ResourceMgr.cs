@@ -1,64 +1,57 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Security;
+using UnityEngine;
 
-public class ResourceMgr : MonoBehaviour {
-    public static ResourceMgr Instance = null;
+namespace Engine
+{
+    public class ResourceMgr : BaseLoader
+    {
+        public static ResourceMgr Instance = null;
 
+        public Action bundleVersionLoaded;
 
-    //不同平台下StreamingAssets的路径是不同的，这里需要注意一下。
-    public static readonly string PathURL =
-#if UNITY_ANDROID
-		"jar:file://" + Application.dataPath + "!/assets/";
-#elif UNITY_IPHONE
-		Application.dataPath + "/Raw/";
-#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-    "file://" + Application.dataPath + "/StreamingAssets/";
+        void Awake()
+        {
+            Instance = this;
+
+            GameObject.DontDestroyOnLoad(this);
+        }
+
+        IEnumerator Start()
+        {
+            yield return StartCoroutine(Initialize());
+            yield return StartCoroutine(Load("uirootcanvas.ui", "UIRootCanvas"));
+            /*
+#if _DEBUG
+            if(bundleVersionLoaded != null)
+            {
+                bundleVersionLoaded();
+            }
+            yield break;
 #else
-        string.Empty;
+            yield return StartCoroutine(AnalyzeBundleDepends(URL.GetPath("BundleVersion" + URLConst.EXTEND_ASSETBUNDLE), localVersions));
+            if (bundleVersionLoaded != null)
+            {
+                bundleVersionLoaded();
+            }
 #endif
+*/
+        }
+        /*
 
-    // Use this for initialization
-    void Awake () {
-        Instance = this;
-        GameObject.DontDestroyOnLoad(this);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    //读取一个资源
-
-    public IEnumerator LoadMainGameObject(string path)
-    {
-        WWW bundle = new WWW(path);
-
-        yield return bundle;
-
-        //加载到游戏中
-        GameObject go = Instantiate(bundle.assetBundle.mainAsset) as GameObject;
-        Canvas canvas = new Canvas();
-        go.transform.parent = GameObject.Find("UIRoot").transform;
-        yield return go;
-
-        bundle.assetBundle.Unload(false);
-    }
-
-    //读取全部资源
-
-    public IEnumerator LoadALLGameObject(string path)
-    {
-        WWW bundle = new WWW(path);
-        yield return bundle;
-
-        //通过Prefab的名称把他们都读取出来
-        Object obj0 = bundle.assetBundle.LoadAsset("Prefab0");
-        Object obj1 = bundle.assetBundle.LoadAsset("Prefab1");
-
-        //加载到游戏中	
-        yield return Instantiate(obj0);
-        yield return Instantiate(obj1);
-        bundle.assetBundle.Unload(false);
+        public DownloadTask DownLoadBundles(string[] bundlePaths, Action<object> downloadCall, ushort priority, Action<Resource, int, int> downPerAsset = null)
+        {
+            DownloadTask task = ObjectPool.GetObject<DownloadTask>();
+            task.InitTask(bundlePaths, FinishDownloadTask, downloadCall, downPerAsset, null, null, null, priority);
+            if (task.HasDownload())
+            {
+                addDownLoadTask(task);
+            }
+            return task;
+        }
+        */
     }
 }

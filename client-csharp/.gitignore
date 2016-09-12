@@ -1,2 +1,6 @@
 Library
+AssetBundles
+ProjectSettings
 Temp
+obj
+.DS_Store

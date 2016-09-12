@@ -3,14 +3,12 @@ using System.Collections;
 using Engine;
 
 public class GameApp : MonoBehaviour {
-
+    private float otherStep;
+    private int step, resStep, resTotal = 4;
 
     // Use this for initialization
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
-        //InitSceneCamera();
-        //GameObject.DontDestroyOnLoad(gameObject);
-        //LoadAssetBundleFile();
         Driver.InitApp(gameObject);
         OnLoadUILoading();
         EnterGame();
@@ -20,6 +18,8 @@ public class GameApp : MonoBehaviour {
     {
         UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
         UILoading.ShowLoading();
+
+        LoadNeedRes();
     }
 	
 	// Update is called once per frame
@@ -27,36 +27,43 @@ public class GameApp : MonoBehaviour {
 	
 	}
 
-    private void InitSceneCamera()
-    {
-        GameObject mainCameraGo = GameObject.FindWithTag("MainCamera");
-        Camera mainCamera;
-        if (mainCameraGo == null)
-        {
-            mainCameraGo = new GameObject("SceneCamera");
-            GameObject.DontDestroyOnLoad(mainCameraGo);
-            mainCamera = mainCameraGo.AddComponent<Camera>();
-            mainCamera.clearFlags = CameraClearFlags.SolidColor;
-            mainCamera.backgroundColor = Color.black;
-            mainCamera.cullingMask = 0;
-        }
-        else
-        {
-            mainCamera = mainCameraGo.GetComponent<Camera>();
-        }
-
-    }
-
-    private void LoadAssetBundleFile()
+    private void LoadNeedRes()
     {
         gameObject.AddComponent<ResourceMgr>();
-        StartCoroutine(ResourceMgr.Instance.LoadMainGameObject(ResourceMgr.PathURL + "UIMain.assetbundle"));
+        ResourceMgr.Instance.bundleVersionLoaded = () =>
+        {
+            otherStep++;
+            /*
+            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
+                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
+                */
+        };
+    }
+
+    private void OnNeedResLoaded(object userdata)
+    {
+        otherStep++;
+        EnterGame();
+    }
+
+    private void OnDownLoadCallBack(Resources res, int listCount, int index)
+    {
+#if _DEBUG
+        resTotal = listCount - 1;
+#else
+        resTotal = listCount + index;
+#endif
+        resStep = index;
     }
 
     private void EnterGame()
     {
-		GameUI.InitBaseUI();
+        InitUGUIMain();
+    }
 
+    static private void InitUGUIMain()
+    {
+        //GameObject rootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
     }
 
 }
