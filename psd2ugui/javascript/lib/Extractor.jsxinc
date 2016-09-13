@@ -19,14 +19,13 @@ Extractor.prototype.extract = function()
     var current = data;
     for(var i = layerCount; i >= 1; i--)
     {
-         var descriptor = this.getLayerActionDescripter(i);
+         var descriptor = this.getLayerActionDescriptor(i);
          var layerSection = this.getLayerSection(descriptor);
          var node;
          switch(layerSection)
          {
              case "layerSectionStart":
-                 node = {type:"folder", name:this.getLayerName(descriptor), visible:this.getLayerVisibility(descriptor), layerIndex:i, startIndex:i, endIndex:0,
-                     parent:current, children:[]};
+                 node = {type:"folder", name:this.getLayerName(descriptor), visible:this.getLayerVisibility(descriptor), layerIndex:i, startIndex:i, endIndex:0, parent:current, children:[]};
                  current.children.push(node);
                  current = node;
                  break;
@@ -51,6 +50,187 @@ Extractor.prototype.extract = function()
     return data;
 }
 
+Extractor.prototype.isTextLayer = function(descriptor)
+{
+	return descriptor.hasKey(ST("textKey"));
+}
+
+Extractor.prototype.generateTextLayerData = function(descriptor, layerIndex)
+{
+	var hasEffects = this.hasLayerEffects(descriptor);
+	if(hasEffects == true)
+	{
+		this.selectLayer(layerIndex);
+		//临时关闭文本图层特效以获得精确的文本框尺寸值
+		this.toggleLayerEffects(layerIndex, false);
+		descriptor = this.getLayerActionDescriptor(layerIndex);
+	}
+	var bounds = this.getLayerBounds(descriptor);
+	var data = {type:"text",name:this.getLayerName(descriptor),visible:this.getLayerVisibility(descriptor),alpha:this.getLayerAlpha(descriptor),
+				centerX:bounds[0],centerY:bounds[1],width:bounds[2],height:bounds[3],fragments:this.getTextLayerFragments(descriptor),
+				effects:this.getTextLayerEffects(descriptor),layerIndex:layerIndex};
+	if(hasEffects == true)
+	{
+		this.toggleLayerEffects(layerIndex, true);
+	}
+	return data;
+}
+
+Extractor.prototype.generateImageLayerData = function(descriptor, layerIndex)
+{
+	var bounds = this.getLayerBounds(descriptor);
+	var data = {type:"image",name:this.getLayerName(descriptor),visible:this.getLayerVisibility(descriptor),alpha:this.getLayerAlpha(descriptor),
+				centerX:bounds[0],centerY:bounds[1],width:bounds[2],height:bounds[3],
+				effects:this.getImageLayerEffects(descriptor),layerIndex:layerIndex,assetName:""};
+	return data;
+}
+
+Extractor.prototype.getLayerActionDescriptor = function(layerIndex)
+{
+	var ref = new ActionReference();
+	ref.putIndex(ST("layer"), layerIndex);
+	return executeActionGet(ref);
+}
+
+Extractor.prototype.getLayerSection = function(descriptor)
+{
+	return TS(descriptor.getEnumerationValue(ST("layerSection")));
+}
+
+Extractor.prototype.getLayerName = function(descriptor)
+{
+	return descriptor.getString(ST("name"));
+}
+
+Extractor.prototype.getLayerAlpha = function(descriptor)
+{
+	return descriptor.getUnitDoubleValue(ST("opacity")) / 255;
+}
+
+Extractor.prototype.getLayerVisibility = function(descriptor)
+{
+	return descriptor.getInteger(ST("visible"));
+}
+
+//文本图层返回的是实际像素的区域，比文本框范围略小
+//游戏研发过程中需要更加具体使用的字体和字号在此基础上调整文本框范围值
+Extractor.prototype.getLayerBounds = function(descriptor)
+{
+	var bounds = descriptor.getObjectValue(ST("bounds"));
+	var left = bounds.getUnitDoubleValue(ST("left"));
+	var top = bounds.getUnitDoubleValue(ST("top"));
+	var right = bounds.getUnitDoubleValue(ST("right"));
+	var bottom = bounds.getUnitDoubleValue(ST("bottom"));
+	var width = right - left;
+	var height = bottom - top;
+	var centerX = left + (right - left) * 0.5;
+	var centerY = top + (bottom - top) * 0.5;
+	return [centerX, centerY, width, height];
+}
+
+Extractor.prototype.getTextLayerFragments = function(descriptor)
+{
+	var fragments = [];
+	var textKey = descriptor.getObjectValue(ST("textKey"));
+	var content = textKey.getString(ST("textKey"));
+	var styleRangleList = textKey.getList(ST("textStyleRange"));
+	var factor = 1;
+	//文本缩放洗漱，Ps版本cs6(Version number 13)以上需要应用该系数
+	if(app.version.match(/^\d+/) >= 13 && textKey.hasKey(ST("transform")) == true)
+	{
+		factor = textKey.getObjectValue(ST("transform")).getUnitDoubleValue(ST("yy"));
+	}
+	for(var i = 0; i < styleRangleList.count; i++)
+	{
+		var styleRange = styleRangleList.getObjectValue(i);
+		var start = styleRange.getInteger(ST("from"));
+		var end = styleRange.getInteger(ST("to"));
+		var style = styleRange.getObjectValue(ST("textStyle"));
+		var text = content.substring(start, end);
+		var font = style.getString(ST("fontName"));
+		var size = style.getUnitDoubleValue(ST("size"));
+		var color = style.getObjectValue(ST("color"));
+		fragments.push({text:text, font:font, size:Math.round(size * factor), color:this.getColorHexValue(color)});
+	}
+	return fragments;
+}
+
+Extractor.prototype.getTextLayerEffects = function(descriptor)
+{
+	var effects = [];
+	if(this.hasLayerEffects(descriptor, "frameFX") == true)
+	{
+		effects.push(this.getTextLayerStrokeEffect(descriptor));
+	}
+	if(this.hasLayerEffects(descriptor, "dropShadow") == true)
+	{
+		effects.push(this.getTextLayerDropShadowEffect(descriptor));
+	}
+	return effects;
+}
+
+Extractor.prototype.hasLayerEffects = function(descriptor, effectName)
+{
+	var hasLayerEffects = descriptor.hasKey(ST("layerEffects"));
+	if(hasLayerEffects == false) return false;
+
+	var layerEffects = descriptor.getObjectValue(ST("layerEffects"));
+	var hasEffect = layerEffects.hasKey(ST(effectName));
+	if(hasEffect == false) return false;
+
+	var effectEnabled = layerEffects.getObjectValue(ST(effectName)).getBoolean(ST("enabled"));
+	if(effectEnabled == false) return false;
+
+	return true;
+}
+
+Extractor.prototype.hasLayerEffects = function(descriptor)
+{
+	return descriptor.hasKey(ST("layerEffects"));
+}
+
+Extractor.prototype.getTextLayerStrokeEffect = function(descriptor)
+{
+	var stroke = descriptor.getObjectValue(ST("layerEffects")).getObjectValue(ST("frameFX"));
+	var size = stroke.getUnitDoubleValue(ST("size"));
+	var alpha = stroke.getUnitDoubleValue(ST("opacity"));
+	var color = stroke.getObjectValue(ST("color"));
+	return {type:"stroke", size:size, color:this.getColorHexValue(color), alpha: alpha};
+}
+
+Extractor.prototype.getTextLayerDropShadowEffect = function(descriptor)
+{
+	var dropShadow = descriptor.getObjectValue(ST("layerEffects")).getObjectValue(ST("dropShadow"));
+	var alpha = dropShadow.getUnitDoubleValue(ST("opacity"));
+	var angle = dropShadow.getInteger(ST("localLightingAngle"));
+	var distance = dropShadow.getInteger(ST("distance"));
+	var color = dropShadow.getObjectValue(ST("color"));
+	return {type:"dropShadow", color:this.getColorHexValue(color), alpha:alpha, angle:angle, distance:distance};
+}
+
+Extractor.prototype.getImageLayerEffects = function(descriptor)
+{
+	var effects = [];
+	if(this.hasLayerEffects(descriptor, "solidFill") == true)
+	{
+		effects.push(this.getImageLayerSolidFillEffect(descriptor));
+	}
+	return effects;
+}
+
+Extractor.prototype.getImageLayerSolidFillEffect = function(descriptor)
+{
+	var solidFill = descriptor.getObjectValue(ST("layerEffects")).getObjectValue(ST("solidFill"));
+	var alpha = solidFill.getUnitDoubleValue(ST("opacity"));
+	var mode = "notSupport";
+	if(solidFill.getEnumerationValue(ST("mode")) == ST("normal"))
+	{
+		mode = "normal";
+	}
+	var color = solidFill.getObjectValue(ST("color"));
+	return {type:"solidFill", mode:mode, color:this.getColorHexValue(color), alpha:alpha};
+}
+
 Extractor.prototype.getLayerCount = function()
 {
     var ref = new ActionReference();
@@ -58,4 +238,34 @@ Extractor.prototype.getLayerCount = function()
     var desc = executeActionGet(ref);
     var count = desc.getInteger (ST("numberOfLayers"));
     return count;
+}
+
+Extractor.prototype.toggleLayerEffects = function(layerIndex, isOn)
+{
+	var descriptor = new ActionDescriptor();
+	var list = new ActionList();
+	var reference = new ActionReference();
+	reference.putClass(ST("layerEffects"));
+	reference.putEnumerated(ST("layer"), ST("ordinal"), ST("targetEnum"));
+	list.putReference(reference);
+	descriptor.putList(ST("null"), list);
+	executeAction(isOn? ST("show") : ST("hide"), descriptor, DialogModes.NO);
+}
+
+Extractor.prototype.selectLayer = function(layerIndex)
+{
+	var descriptor = new ActionDescriptor();
+	var reference = new ActionReference();
+	reference.putIndex(ST("layer"), layerIndex);
+	descriptor.putReference(ST("null"), reference);
+	executeAction(ST("select"), descriptor, DialogModes.NO);
+}
+
+Extractor.prototype.getColorHexValue = function(color)
+{
+	var solidColor = new SolidColor();
+	solidColor.rgb.red = color.getInteger(ST("red"));
+	solidColor.rgb.green = color.getInteger(ST("green"));
+	solidColor.rgb.blue = color.getInteger(ST("blue"));
+	return solidColor.rgb.hexValue;
 }
