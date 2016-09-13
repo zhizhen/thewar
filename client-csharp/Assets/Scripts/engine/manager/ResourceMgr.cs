@@ -18,40 +18,19 @@ namespace Engine
             Instance = this;
 
             GameObject.DontDestroyOnLoad(this);
+            StartCoroutine(Initialize());
         }
 
         IEnumerator Start()
         {
-            yield return StartCoroutine(Initialize());
-            yield return StartCoroutine(Load("uirootcanvas.ui", "UIRootCanvas"));
-            /*
-#if _DEBUG
-            if(bundleVersionLoaded != null)
-            {
-                bundleVersionLoaded();
-            }
             yield break;
-#else
-            yield return StartCoroutine(AnalyzeBundleDepends(URL.GetPath("BundleVersion" + URLConst.EXTEND_ASSETBUNDLE), localVersions));
-            if (bundleVersionLoaded != null)
-            {
-                bundleVersionLoaded();
-            }
-#endif
-*/
         }
-        /*
 
-        public DownloadTask DownLoadBundles(string[] bundlePaths, Action<object> downloadCall, ushort priority, Action<Resource, int, int> downPerAsset = null)
+        public GameObject GetGameObject(string AssetBundleName, string bundleName)
         {
-            DownloadTask task = ObjectPool.GetObject<DownloadTask>();
-            task.InitTask(bundlePaths, FinishDownloadTask, downloadCall, downPerAsset, null, null, null, priority);
-            if (task.HasDownload())
-            {
-                addDownLoadTask(task);
-            }
-            return task;
+            GameObject go = Load(AssetBundleName, bundleName);
+            return go;
         }
-        */
+        
     }
 }

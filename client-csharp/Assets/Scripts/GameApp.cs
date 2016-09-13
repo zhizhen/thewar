@@ -30,14 +30,14 @@ public class GameApp : MonoBehaviour {
     private void LoadNeedRes()
     {
         gameObject.AddComponent<ResourceMgr>();
-        ResourceMgr.Instance.bundleVersionLoaded = () =>
-        {
-            otherStep++;
+       // ResourceMgr.Instance.bundleVersionLoaded = () =>
+       // {
+       //     otherStep++;
             /*
             ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
                 ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
                 */
-        };
+       // };
     }
 
     private void OnNeedResLoaded(object userdata)
@@ -61,9 +61,11 @@ public class GameApp : MonoBehaviour {
         InitUGUIMain();
     }
 
-    static private void InitUGUIMain()
+    private void InitUGUIMain()
     {
-        //GameObject rootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
+        // GameObject rootCanvas = BaseLoader.Load("uirootcanvas.ui", "UIRootCanvas");
+        GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        GameObject.DontDestroyOnLoad(UIRootCanvas);
     }
 
 }

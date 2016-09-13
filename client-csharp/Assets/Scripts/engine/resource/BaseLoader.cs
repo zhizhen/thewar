@@ -102,22 +102,31 @@ public class BaseLoader : MonoBehaviour
         }
     }
 
-    protected IEnumerator Load(string assetBundleName, string assetName)
+    protected GameObject Load(string assetBundleName, string assetName)
     {
         Debug.Log("Start to load " + assetName + " at frame " + Time.frameCount);
 
         // Load asset from assetBundle.
+        /*
         AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
         if (request == null)
             yield break;
         yield return StartCoroutine(request);
+        */
+        AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
+        if (request == null)
+            return null;
 
         // Get the asset.
         GameObject prefab = request.GetAsset<GameObject>();
         Debug.Log(assetName + (prefab == null ? " isn't" : " is") + " loaded successfully at frame " + Time.frameCount);
 
         if (prefab != null)
-            GameObject.Instantiate(prefab);
+        {
+            GameObject go = GameObjectExt.Instantiate(prefab) as GameObject;
+            return go;
+        }
+        return null;
     }
 
     protected IEnumerator LoadLevel(string assetBundleName, string levelName, bool isAdditive)
