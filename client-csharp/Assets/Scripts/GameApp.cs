@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 using Engine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class GameApp : MonoBehaviour {
+public class GameApp : MonoBehaviour
+{
+    private bool isCompletedLoad = false;
+    private bool showProgress = true;
     private float otherStep;
     private int step, resStep, resTotal = 4;
+    private const int aspet = 0;
+    private readonly int otherTotal = 2 + aspet;
+    private readonly Action[] frameActions = {};
 
     // Use this for initialization
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
         Driver.InitApp(gameObject);
         OnLoadUILoading();
-        EnterGame();
+        //EnterGame();
     }
 
     private void OnLoadUILoading()
@@ -24,20 +33,50 @@ public class GameApp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	if(showProgress)
+        {
+            OnProgress();
+            if (resStep >= resTotal)
+            {
+                if (isCompletedLoad)
+                {
+                    OnCompleteLoaded();
+                    return;
+                }
+                if(step < frameActions.Length)
+                {
+                    frameActions[step]();
+                    step++;
+                }
+            }
+        }
 	}
+
+    private void OnCompleteLoaded()
+    {
+        showProgress = false;
+        UILoading.CloseLoading();
+    }
+
+    private void OnProgress()
+    {
+        resStep++;
+        var curStep = step + resStep + otherStep;
+        var totalStep = resTotal + frameActions.Length + otherTotal; //4 + 4 + 2
+        UILoading.percent = curStep * 1.0f / totalStep;
+        if (curStep >= totalStep) isCompletedLoad = true;
+    }
 
     private void LoadNeedRes()
     {
         gameObject.AddComponent<ResourceMgr>();
-       // ResourceMgr.Instance.bundleVersionLoaded = () =>
-       // {
-       //     otherStep++;
-            /*
-            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
-                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
-                */
-       // };
+       ResourceMgr.Instance.bundleVersionLoaded = () =>
+       {
+            otherStep++;
+            OnNeedResLoaded(new object());
+            //ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
+            //    ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
+       };
     }
 
     private void OnNeedResLoaded(object userdata)
@@ -63,9 +102,18 @@ public class GameApp : MonoBehaviour {
 
     private void InitUGUIMain()
     {
-        // GameObject rootCanvas = BaseLoader.Load("uirootcanvas.ui", "UIRootCanvas");
         GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        UIRootCanvas.SetActive(true);
         GameObject.DontDestroyOnLoad(UIRootCanvas);
+
+        GameObject eventSystem = GameObject.Find("EventSystem");
+        if (eventSystem == null)
+        {
+            eventSystem = new GameObject("EventSystem");
+            eventSystem.AddComponent<EventSystem>();
+            eventSystem.AddComponent<StandaloneInputModule>();
+            GameObject.DontDestroyOnLoad(eventSystem);
+        }
     }
 
 }
