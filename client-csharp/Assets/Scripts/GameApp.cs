@@ -56,17 +56,20 @@ public class GameApp : MonoBehaviour
     {
         showProgress = false;
         UILoading.CloseLoading();
-        GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
-        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
-        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
-        GameObject panel = ResourceMgr.Instance.GetGameObject("uiinputaccount.ui", "UIInputAccount");
-		panel.transform.SetParent (UICanvas.transform);
-		panel.transform.localPosition = new Vector3 (0, 0, 0);
-		panel.transform.localScale = new Vector3 (1, 1, 1);
-        Canvas canvas = panel.GetComponent<Canvas>();
-        Camera camera = UICamera.GetComponent<Camera>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = camera;
+//        GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
+//        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
+//        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+//
+//        GameObject panel = ResourceMgr.Instance.GetGameObject("uiinputaccount.ui", "UIInputAccount");
+//		panel.transform.SetParent (UICanvas.transform);
+//		panel.transform.localPosition = new Vector3 (0, 0, 0);
+//		panel.transform.localScale = new Vector3 (1, 1, 1);
+//        Canvas canvas = panel.GetComponent<Canvas>();
+//        Camera camera = UICamera.GetComponent<Camera>();
+//        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+//        canvas.worldCamera = camera;
+
+		ContextManager.GetInstance ();
     }
 
     private void OnProgress()
