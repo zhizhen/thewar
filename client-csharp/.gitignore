@@ -4,3 +4,5 @@ ProjectSettings
 Temp
 obj
 .DS_Store
+Assembly-CSharp*
+client-csharp*
