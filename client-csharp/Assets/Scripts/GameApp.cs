@@ -13,7 +13,7 @@ public class GameApp : MonoBehaviour
     private int step, resStep, resTotal = 4;
     private const int aspet = 0;
     private readonly int otherTotal = 2 + aspet;
-    private readonly Action[] frameActions = {};
+    private readonly Action[] frameActions = {SoundUtils.OnInitSound};
 
     // Use this for initialization
     void Start () {
@@ -33,7 +33,7 @@ public class GameApp : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	if(showProgress)
+	    if(showProgress)
         {
             OnProgress();
             if (resStep >= resTotal)
@@ -56,6 +56,15 @@ public class GameApp : MonoBehaviour
     {
         showProgress = false;
         UILoading.CloseLoading();
+        GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
+        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
+        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+        GameObject panel = ResourceMgr.Instance.GetGameObject("uiinputaccount.ui", "UIInputAccount");
+        panel.transform.parent = UICanvas.transform;
+        Canvas canvas = panel.GetComponent<Canvas>();
+        Camera camera = UICamera.GetComponent<Camera>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = camera;
     }
 
     private void OnProgress()
@@ -103,6 +112,11 @@ public class GameApp : MonoBehaviour
     private void InitUGUIMain()
     {
         GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
+        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+        GameTools.CanvasCamera = UICamera.GetComponent<Camera>();
+        GameTools.UICanvasCamera = UICanvas;
+
         UIRootCanvas.SetActive(true);
         GameObject.DontDestroyOnLoad(UIRootCanvas);
 

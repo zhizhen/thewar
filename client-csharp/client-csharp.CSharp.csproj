@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -74,16 +72,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameApp.cs" />
+    <Compile Include="Assets\Scripts\engine\base\LockedPool.cs.cs" />
+    <Compile Include="Assets\Scripts\engine\base\SynchronizedQueue.cs" />
+    <Compile Include="Assets\Scripts\engine\manager\ResourceMgr.cs" />
     <Compile Include="Assets\Scripts\engine\resource\Assetbundles\AssetBundleLoadOperation.cs" />
     <Compile Include="Assets\Scripts\engine\resource\Assetbundles\AssetBundleManager.cs" />
     <Compile Include="Assets\Scripts\engine\resource\Assetbundles\AssetbundlesMenuItems.cs" />
     <Compile Include="Assets\Scripts\engine\resource\Assetbundles\BuildScript.cs" />
     <Compile Include="Assets\Scripts\engine\resource\BaseLoader.cs" />
     <Compile Include="Assets\Scripts\engine\resource\DownloadTask.cs" />
-    <Compile Include="Assets\Scripts\GameApp.cs" />
-    <Compile Include="Assets\Scripts\engine\base\LockedPool.cs.cs" />
-    <Compile Include="Assets\Scripts\engine\base\SynchronizedQueue.cs" />
-    <Compile Include="Assets\Scripts\engine\manager\ResourceMgr.cs" />
+    <Compile Include="Assets\Scripts\engine\voice\SoundUtils.cs" />
     <Compile Include="Assets\Scripts\modules\CameraControl.cs" />
     <Compile Include="Assets\Scripts\modules\WebCamManager.cs" />
     <Compile Include="Assets\Scripts\net\ByteArray.cs" />
@@ -94,10 +93,7 @@
     <Compile Include="Assets\Scripts\net\proto\m__proto__test__c2s.cs" />
     <Compile Include="Assets\Scripts\net\proto\m__proto__test__s2c.cs" />
     <Compile Include="Assets\Scripts\net\proto\p_test.cs" />
-    <Compile Include="Assets\Scripts\ui\GameUI.cs" />
     <Compile Include="Assets\Scripts\ui\InputFieldScene.cs" />
-    <Compile Include="Assets\Scripts\ui\UIManager.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

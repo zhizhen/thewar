@@ -7,6 +7,13 @@
 
     public class GameTools
     {
+        public static Camera mainCamera;
+        public static GameObject mainCameraGO;
+        public static Camera CanvasCamera;
+
+        public static GameObject UICanvas;
+        public static GameObject UICanvasCamera;
+
         public static void InitList<T>(ref List<T> list, int count)
         {
             if (list == null) { list = new List<T>(); }
