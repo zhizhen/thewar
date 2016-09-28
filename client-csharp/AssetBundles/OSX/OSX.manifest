@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 3232236214
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: uiinputaccount.ui
+      Dependencies: {}
+    Info_1:
+      Name: uirootcanvas.ui
+      Dependencies: {}
