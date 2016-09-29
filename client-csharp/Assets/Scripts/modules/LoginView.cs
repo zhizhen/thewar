@@ -22,8 +22,10 @@ namespace Engine
 		public override void OnEnter(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			//base.OnEnter(context);
-		}
+            Button btn = _buttonOption.GetComponent<Button>();
+            btn.onClick.AddListener(LoginCallBack);
+            //base.OnEnter(context);
+        }
 
 		public override void OnExit(BaseContext context)
 		{
@@ -43,16 +45,11 @@ namespace Engine
 			//_animator.SetTrigger("OnEnter");
 		}
 
-		public void OptionCallBack()
-		{
-			Debug.Log ("callllllllllllllll");
-			//ContextManager.Instance.Push(new OptionMenuContext());
-		}
 
-		public void HighScoreCallBack()
-		{
-			Debug.Log ("on enter");
-			//ContextManager.Instance.Push(new HighScoreContext());
-		}
+        public void LoginCallBack()
+        {
+            Debug.Log("on button click");
+            ContextManager.Instance.Push(new MainMenuContext());
+        }
 	}
 }

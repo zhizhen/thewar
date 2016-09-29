@@ -20,11 +20,11 @@ namespace Engine
 
 		public UIManager()
 		{
-			_canvas = GameObject.Find("UIRootCanvas").transform;
-			foreach (Transform item in _canvas)
-			{
-				GameObject.Destroy(item.gameObject);
-			}
+			//_canvas = GameObject.Find("UIRootCanvas").transform;
+			//foreach (Transform item in _canvas)
+			//{
+			//	GameObject.Destroy(item.gameObject);
+			//}
 		}
 
 		public GameObject GetSingleUI(UIType uiType)
