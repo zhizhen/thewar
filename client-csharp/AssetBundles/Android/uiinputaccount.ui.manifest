@@ -1,17 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3666740488
+CRC: 148002938
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a8780f1f2db062f3d5c6d21330ca4909
+    Hash: a202fd2884c080fd0b3ddaeb4b4b4a28
   TypeTreeHash:
     serializedVersion: 2
-    Hash: dd96499ec5488a4900e24b0f93496b8c
+    Hash: 703928684019a876e1e556094f3d896a
 HashAppended: 0
 ClassTypes:
 - Class: 1
-  Script: {instanceID: 0}
-- Class: 4
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
@@ -22,17 +20,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
-  Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-- Class: 114
   Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
-  Script: {fileID: 575553740, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-- Class: 114
   Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: baad8962a2b0b69438b41ae36a406019, type: 3}
+  Script: {fileID: 11500000, guid: 205af8ed21eb4498d8ddb6bfa57532f0, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -46,5 +40,5 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefabs/ui/UIMain.prefab
+- Assets/Resources/GameAssets/AssetBundles/UI/UIInputAccount.prefab
 Dependencies: []

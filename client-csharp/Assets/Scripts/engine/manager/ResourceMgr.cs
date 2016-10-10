@@ -24,12 +24,12 @@ namespace Engine
 
         IEnumerator Start()
         {
-#if _DEBUG
-            if(bundleVersionLoaded != null) { bundleVersionLoaded(); }
+//#if _DEBUG
+            if (bundleVersionLoaded != null) { bundleVersionLoaded(); }
             yield break;
-#else
-
-#endif
+//#else
+//            yield break;
+//#endif
         }
 
         public GameObject GetGameObject(string AssetBundleName, string bundleName)
