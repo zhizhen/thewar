@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Engine
 {
@@ -49,7 +50,14 @@ namespace Engine
         public void LoginCallBack()
         {
             Debug.Log("on button click");
-            ContextManager.Instance.Push(new MainMenuContext());
+            SceneManager.sceneLoaded += OnComplete;
+            SceneManager.LoadScene("Scene1001");
+            //ContextManager.Instance.Push(new MainMenuContext());
+        }
+
+        public void OnComplete(Scene scene, LoadSceneMode mode)
+        {
+
         }
 	}
 }
