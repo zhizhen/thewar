@@ -11,7 +11,7 @@
 
 start(_StartType, _StartArgs) ->
     lager:info("Application start!!!"),
-    ok = protobuffs_compile:scan_file("example.proto"),
+%    ok = protobuffs_compile:scan_file("example.proto"),
     ok = start_websocket(),
     gate_sup:start_link().
 
@@ -21,7 +21,9 @@ stop(_State) ->
 start_websocket() ->
     Rules = [
                 {'_', [
-                       {"/ws", ws_handler, []}
+                       {"/", cowboy_static, {priv_file, gate, "index.html"}},
+                       {"/ws", ws_handler, []},
+                       {"/static/[...]", cowboy_static, {priv_dir, gate, "static"}}
                       ]
                 }
             ],
