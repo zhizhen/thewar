@@ -1,0 +1,871 @@
+﻿//资源名称1.起始不能使用特殊符号，2.图像图层名称中不能包含中文字符
+const FIRST_TOKEN_REGEXP = /^([0-9]|\~|\!|\@|\#|\^|\*)/;
+const CHINESE_CHAR_REGEXP = /[\u4e00-\u9f5a]/;
+const DUMMY_TOKEN_LIST = [/\#/g, /\./g, /副本\d*/g, /拷贝\d*/g, /copy\d*/g];
+
+const SHARED = "Shared";
+const LABEL_DEFAULT_ALIGNMENT = "UpperLeft";
+const LABEL_DEFAULT_SPACEING = "1.0";
+const PLACEHOLDER = "placeholder";
+const NOT_EXPORT = "notextport";
+
+const SCALE_9_GRID_REGEXP = /(_|\|)\d+,\d+,\d+,\d+/g;
+const REMAIN_MIRROR_REGEXP = /(_|\|)((left)|(up))/ig;
+const DISCARD_MIRROR_REGEXP = /(_|\|)((right)|(down))/ig;
+const BRACE_REGEXP = /\{[\s\S]*?\}/gm;
+const LABEL_REGEXP = /(_|\|)(Upper|Middle|Lower)(Left|Center|Right)(,\d{1,2}(\.\d{1,3}))?/ig;
+const LANG_ID_REGEXP = /(_|\|)(lang)\d+/ig;
+const ALLOWED_FONT = [/.*/];
+
+//组件必须子元素校验
+const TOGGLE_REGEXP =              {required:[".*_checkmark"]};
+const TOGGLE_GROUP_REGEXP =  {required:["Toggle_.*"]};
+const LIST_REGEXP =                   {required:[".*_item"]};
+const TREE_REGEXP =                  {required:[".*_menu", ".*_detail"]};
+const SLIDER_REGEXP =               {required:[".*_fill"]};
+const PROGRESS_BAR_REGEXP =  {required:["Image_bar"]};
+const INPUT_REGEXP =                {required:["Label_.*"]};
+const SCROLL_VIEW_REGEXP =    {required:[".*_mask$"]};
+const SCROLL_PAGE_REGEXP =    {required:[".*_mask$"]};
+
+function Parser(environment)
+{
+    this.environment = environment;
+    this.isExportMirror = true;
+    this.sharedAssetMap = {};
+    this.assetMap = {};
+    
+    this.typeSet = 
+    {
+        "Image":
+        {
+            "parser" : "parseImage",
+            "validator" : "validateImage",
+            "childrenRegExp" : null
+        },
+        "ScaleImage"://该类型不再推荐使用，只为兼容旧文件
+        {
+            "parser" : "parseImage",
+            "validator" : "validateImage",
+            "childrenRegExp" : null
+        },
+        "Label":
+        {
+            "parser" : "parseLabel",
+            "validator" : "validateLabel",
+            "childrenRegExp": null
+        },
+        "Input":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp": INPUT_REGEXP
+        },
+        "ProgressBar":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp": PROGRESS_BAR_REGEXP
+        },
+        "Button":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp": null
+        },
+        "Container":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp": null
+        },
+        "List":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : LIST_REGEXP
+        },
+        "Tree":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : TREE_REGEXP
+        },
+        "Toggle":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : TOGGLE_REGEXP
+        },
+        "ToggleGroup":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : TOGGLE_GROUP_REGEXP
+        },
+        "Slider":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : SLIDER_REGEXP
+        },
+        "ScrollView":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : SCROLL_VIEW_REGEXP
+        },
+        "ScrollPage":
+        {
+            "parser" : "parseContainer",
+            "validator" : "validateContainer",
+            "childrenRegExp" : SCROLL_PAGE_REGEXP
+        },
+        "Language":
+        {
+            "parser" : "parseLanguage",
+            "validator" : "validateContainer",
+            "childrenRegExp" : null
+        }
+    }
+
+    //可交互组件集合，这类组件任意深度不能互相包含，比如Button组件子元素含有另外一个Button组件
+    this.selectableSet = {"Button":1, "Toggle":1, "Slider":1};
+}
+
+Parser.prototype.loadSharedAssetXml = function()
+{
+    var xmlPath = this.environment.xmlFolderPath + "/Shared.xml";
+    var file = new File(xmlPath);
+    if(file.exists == true)
+    {
+        var assetNameRegExp = /[^\\]+?(?=\.png)/gm;
+        if(file.open("r") == true)
+        {
+            var content = file.read();
+            file.close();
+            var matchList = content.match(assetNameRegExp);
+            for(var i = 0; i < matchList.length; i++)
+            {
+                this.sharedAssetMap[matchList[i]] = 1;
+            }
+        }
+    }
+}
+
+Parser.prototype.parse = function(extractData)
+{
+    var result = this.parseTopContainer(extractData);
+    this.validateContainer(result, "");
+    return result;
+}
+
+Parser.prototype.parseTopContainer = function(extractData)
+{
+    var result = {};
+    result.name = this.environment.psdName;
+    result.type = "Container";
+    result.x = 0;
+    result.y = 0;
+    result.width = this.environment.doc.width.value;
+    result.height = this.environment.doc.height.value;
+    result.children = this.parseNodeList(extractData.children, "", "");
+    this.removePlaceholder(result.children);
+    return result;
+}
+
+Parser.prototype.parseContainer = function(node, parentPath, language)
+{
+    var result = this.parseFolderNodeName(node);
+    var currentPath = parentPath + "/" + node.name;
+    var children = this.parseNodeList(node.children, currentPath, language);
+    var bounds = this.calculateContainerBounds(children);
+    this.adjustContainerBounds(result, bounds);
+    this.adjustChildrenBounds(children, result);
+    this.calculateContainerSelectableValue(children, result);
+    this.removePlaceholder(children);
+    result.children = children;
+    return result;   
+}
+
+Parser.prototype.parseLanguage = function(node, parentPath, language)
+{
+    var result = this.parseFolderNodeName(node);
+    var currentPath = parentPath + "/" + node.name;
+    var children = this.parseNodeList(node.children, currentPath, result.name);
+    var bounds = this.calculateContainerBounds(children);
+    this.adjustContainerBounds(result, bounds);
+    this.adjustChildrenBounds(children, result);
+    this.calculateContainerSelectableValue(children, result);
+    this.removePlaceholder(children);
+    result.children = children;
+    return result;
+}
+
+Parser.prototype.removePlaceholder = function(children)
+{
+    for(var i = children.length - 1; i >= 0; i--)
+    {
+        if(children[i].name == PLACEHOLDER)
+        {
+            children.splice(i, 1);
+        }
+    }
+}
+
+Parser.prototype.parseLabel = function(node, parentPath, language)
+{
+    var result = this.parseFolderNodeName(node);
+    var currentPath = parentPath + "/" + node.name;
+    return this.parseStateFolderNode(node, result, "Label", "atomParseTextNode", currentPath, language);
+}
+
+Parser.prototype.parseImage = function(node, parentPath, language)
+{
+    var result = this.parseFolderNodeName(node);
+    var currentPath = parentPath + "/" + node.name;
+    return this.parseFolderNodeName(node, result, "Image", "atomParseImageNode", currentPath, language);
+}
+
+Parser.prototype.parseStateFolderNode = function(node, preprocessResult, typeName, atomParser, path, language)
+{
+    var result = preprocessResult;
+    if(node.children.length == 0)
+    {
+        this.logError(path + "\n格式错误！文件夹内容为空！");
+    }
+    var children = [];
+    for(var i = 0; i < node.children.length; i++)
+    {
+        var state = node.children[i];
+        var stateName = this.eliminateDummyToken(state.name);
+        var currentPath = path + "/" + state.name;
+        if(state.type != "folder")
+        {
+            this.logError(currentPath + "\n格式错误！文件夹内容包含非状态文件夹内容！");
+        }
+        if(state.children.length == 0)
+        {
+            this.logError(currentPath + "\n格式错误！状态文件夹内容为空！");
+        }
+        if(state.children.length > 1)
+        {
+            this.logError(currentPath + "\n格式错误！状态文件夹内容长度大于1！");
+        }
+        if(state.children[0].type > "folder")
+        {
+            this.logError(currentPath + "\n格式错误！状态文件夹子元素是文件夹！");
+        }
+        result[stateName] = this[atomParser](state.children[0], currentPath, language);
+        children.push(result[stateName]);
+    }
+    var bounds = this.calculateContainerBounds(children);
+    this.adjustContainerBounds(result, bounds);
+    this.adjustChildrenBounds(children, result);
+    return result;
+}
+
+Parser.prototype.parseNodeList = function(nodeList, parentPath, Language)
+{
+    var result = [];
+    for(var i = nodeList.length - 1; i >= 0; i--)
+    {
+        var node = nodeList[i];
+        if(node.visible == 0 || node.name.toLowerCase() == NOT_EXPORT)
+        {
+            continue;
+        }
+        var obj;
+        if(node.type == "folder")
+        {
+            obj = this.parseFolderNode(node, parentPath, Language);
+        }
+        else if(node.type == "text")
+        {
+            obj.this.parseTextNode(node, parentPath, Language);
+        }
+        else if(node.type == "image")
+        {
+            obj = this.parseImageNode(node, parentPath, language);
+        }
+        if(obj != null)
+        {
+            result.push(obj);
+        }
+    }
+    return result;
+}
+
+Parser.prototype.parseFolderNode = function(node, parentPath, language)
+{
+    var parser = this.getFolderNodeParser(node);
+    if(parser == null)
+    {
+        this.logError(parentPath + "/" + node.name + "\n未找到对应解析函数!");
+    }
+    return this[parser](node, parentPath, language);
+}
+
+Parser.prototype.getFolderNodeParser = function(node)
+{
+    var obj = this.parseFolderNodeName(node);
+    var typeObj = this.typeSet[obj.type];
+    return typeObj != null ? typeObj.parser : null;
+}
+
+//图层名称使用"_"分割，第一个字段为类型名，第二个为实例名，第三个为参数列表（可选）
+Parser.prototype.parseFolderNodeName = function(node)
+{
+    var raw = this.eliminateDummyToken(node.name);
+    var result = {};
+    var tokenList = raw.split("_");
+    result.name = this.extractNodeName(tokenList);
+    result.type = this.extractNodeType(tokenList);
+    result.type = (result.type == "ScaleImage")?"Image" : result.type;
+    result.param = this.extractNodeParam(tokenList);
+    result.selectableValue = (this.selectableSet[result.type] != null)? 1: 0;
+    return result;
+}
+
+Parser.prototype.eliminateDummyToken = function(name)
+{
+    for(var i = 0; i < DUMMY_TOKEN_LIST.length; i++)
+    {
+        name = name.replace(DUMMY_TOKEN_LIST[i], "");
+    }
+    return name;
+}
+
+Parser.prototype.extractNodeName = function(tokenList)
+{
+    if(tokenList.length == 1)
+    {
+        return tokenList[0];
+    }
+    return tokenList[1];
+}
+
+Parser.prototype.extractNodeType = function(tokenList)
+{
+    var type = tokenList[0];
+    if(this.typeSet[type] != null)
+    {
+        return type;
+    }
+    return "Container";
+}
+
+Parser.prototype.extractNodeParam = function(tokenList)
+{
+    if(tokenList.length >= 3)
+    {
+        return tokenList[2];
+    }
+    return null;
+}
+
+//提取某种参数的具体值
+Parser.prototype.extractNodeParamToken = function(name, regExp)
+{
+    var result = name.match(regExp)[0];
+    result = result.substring(1);
+    return result;
+}
+
+Parser.prototype.parseImageNode = function(node, parentPath, language)
+{
+    var result = this.parseImageNodeName(node, language);
+    result.selectableValue = 0;
+    result.normal = this.atomParseImageNode(node, parentPath, language);
+    var bounds = this.unionRectangle([result.normal]);
+    this.adjustContainerBounds(result, bounds);
+    result.normal.x = result.normal.x - result.x;
+    result.normal.y = result.normal.y - result.y;
+    return result;
+}
+
+Parser.prototype.parseImageNodeName = function(node, language)
+{
+    var raw = this.eliminateDummyToken(node.name);
+    var tokenList = raw.split("_");
+    var name = tokenList[0];
+    var param = tokenList[1];
+    var assetName = name;
+    var top = null;
+    var right = null;
+    var bottom = null;
+    var left = null;
+    var type = "Image";
+    var mirror = null;
+    if(raw.match(SCALE_9_GRID_REGEXP) != null)
+    {
+        var paramToken = this.extractNodeParamToken(raw, SCALE_9_GRID_REGEXP);
+        var paramList = paramToken.split(",");
+        top = paramList[0];
+        right = paramList[1];
+        bottom = paramList[2];
+        left = paramList[3];
+        if(top == 0 || bottom == 0)
+        {
+            top = Math.floor(node.height / 2);
+            bottom = node.height - 1 - top;
+        }
+        if(right == 0 || left == 0)
+        {
+            right = Math.floor(node.width / 2);
+            left = node.width - 1 - right;
+        }
+    }
+    if(raw.match(REMAIN_MIRROR_REGEXP) != null)
+    {
+        var paramToken = this.extractNodeParamToken(raw, REMAIN_MIRROR_REGEXP);
+        name = name + "_" + paramToken;
+        assetName = name;
+    }
+    else if(raw.match(DISCARD_MIRROR_REGEXP) != null)
+    {
+        var paramToken = this.extractNodeParamToken(raw, DISCARD_MIRROR_REGEXP);
+        assetName = name + "_" + this.getDiscardAssetNamePostfix(paramToken);
+        name = name + "_" + paramToken;
+        mirror = this.getDiscardMirror(paramToken);
+    }
+    if(language != "")
+    {
+        assetName = language + "#" + assetName;
+    }
+    return {name:name, type:type, param:param, assetName:assetName, mirror:mirror: top:top, right:right, bottom:bottom, left:left};
+}
+
+Parser.prototype.getDiscardAssetNamePostfix = function(param) 
+{
+    if(this.isExportMirror == true)
+    {
+        return param;
+    }
+    if(param == "down")
+    {
+        return "up";
+    }
+    return "left";
+}
+
+Parser.prototype.getDiscardMirror = function(param)
+{
+    if(this.isExportMirror == true)
+    {
+        //修改为不会处理的镜像值
+        return (param == "down")?"up":"left";
+    }
+    return param;
+}
+
+Parser.prototype.atomParseImageNode = function(node, parentPath, language)
+{
+    var result = this.parseImageNodeName(node, language);
+    var assetName = result.assetName;
+    var prefix = this.environment.psdName;
+    if(this.sharedAssetMap[assetName] != null)
+    {
+        prefix = SHARED;
+    }
+    if(assetName != PLACEHOLDER)
+    {
+        this.assetMap[assetName] = prefix + "\\" + assetName;
+    }
+    result.link = prefix + "." + assetName;
+    result.width = node.width;
+    result.height = node.height;
+    result.x = node.centerX - result.width * 0.5;
+    result.y = node.centerY - result.height * 0.5;
+    result.alpha = Math.floor(node.alpha * 100);
+    result.solidFill = this.getImageSolidFillEffect(node);
+    node.assetName = result.link;
+    return result;
+}
+
+
+Parser.prototype.getImageSolidFillEffect = function(node)
+{
+    if(node.effects != null && node.effects.length > 0)
+    {
+        var effect = node.effects[0];
+        var result = {};
+        result.mode = effect.mode;
+        result.color = effect.color;
+        result.alpha = effect.alpha;
+        return result;
+    }
+    return null;
+}
+
+Parser.prototype.parseTextNode = function(node, parentPath, language)
+{
+    var result = this.parseTextNodeName(node, language);
+    result.selectableValue = 0;
+    result.normal = this.atomParseTextNode(node, parentPath, language);
+    var bounds = this.unionRectangle([result.normal]);
+    this.adjustContainerBounds(result, bounds);
+    result.normal.x = result.normal.x - result.x;
+    result.normal.y = result.normal.y - result.y;
+    return result;
+}
+
+Parser.prototype.parseTextNodeName = function(node, language)
+{
+    var raw = this.eliminateDummyToken(node.name);
+    var tokenList = raw.split("_");
+    var name = tokenList[0];
+    var param = tokenList[1];
+    var alignment = LABEL_DEFAULT_ALIGNMENT;
+    var lineSpacing = LABEL_DEFAULT_SPACEING;
+    var langId = null;
+    if(raw.match(LANG_ID_REGEXP) != null)
+    {
+        langId = this.extractNodeParamToken(raw, LANG_ID_REGEXP);
+        langId = langId.substring(4);
+    }
+    if(raw.match(LABEL_REGEXP) != null)
+    {
+        var paramToken = this.extractNodeParamToken(raw, LABEL_REGEXP);
+        var paramList = paramToken.split(",");
+        alignment = paramList[0];
+        if(paramList.length == 2)lineSpacing = paramList[1];
+    }
+    return {name:name, type:"Label", param:param, langId:langId, alignment:alignment, lineSpacing:lineSpacing};
+}
+
+Parser.prototype.atomParseTextNode = function(node, parentPath, language)
+{
+    if(node.fragments.length == 0)
+    {
+        this.logError(parentPath + "/" + node.name + "\n文本内容为空！");
+    }
+    var result = this.parseTextNodeName(node, language);
+    result.content = "";
+    result.format = this.parseTextDefaultFormat(node.fragments[0]);
+    if(this.isFontAllowed(result.format.font) == false)
+    {
+        this.logError(parentPath + "/" + node.name + "\n" + result.format.font + " 字体不允许使用！");
+    }
+    for(var i = 0; i < node.fragments.length; i++)
+    {
+        var fragment = node.fragments[i];
+        if(i == 0)
+        {
+            result.content += fragment.text;
+        }
+        else
+        {
+            result.content += "<color=#" + fragment.color + ">" + fragment.text + "</color>";
+        }
+    }
+    result.content = this.replaceBrace(result.content);
+    result.content = result.content.replace(/\r/g, "\\n");
+    result.width = this.getTextWidth(node.width);
+    result.height = this.getTextHeight(result.format.size);
+    result.x = node.centerX - result.width * 0.5;
+    result.y = node.centerY - result.height * 0.5;
+    result.stroke = this.getTextStokenEffect(node);
+    result.shadow = this.getTextShadowEffect(node);
+    return result;
+}
+
+//根据特定字体调节获取文本框高度的计算公式
+//微软雅黑
+Parser.prototype.getTextHeight = function(size)
+{
+    return Math.ceil(size * 1.33);
+}
+
+Parser.prototype.getTextWidth = function(width)
+{
+    return width + 2;
+}
+
+Parser.prototype.isFontAllowed = function(font)
+{
+    for(var i = 0; i < ALLOWED_FONT.length; i++)
+    {
+        if(font.match(ALLOWED_FONT[i]) != null)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+Parser.prototype.replaceBrace = function(content)
+{
+    var result = content.match(BRACE_REGEXP);
+    if(result != null)
+    {
+        for(var i = 0; i < result.length; i++)
+        {
+            content = content.replace(result[i], "{" + i + "}");
+        }
+    }
+    return content;
+}
+
+Parser.prototype.parseTextDefaultFormat = function(fragment)
+{
+    var result = {};
+    result.font = fragment.font;
+    result.size = fragment.size;
+    result.color = fragment.color;
+    return result;
+}
+
+Parser.prototype.getTextStokenEffect = function(node)
+{
+    if(node.effects.length == 0)
+    {
+        return null;
+    }
+    for(var i = 0; i < node.effects.length; i++)
+    {
+        var effect = node.effects[i];
+        if(effect.type == "stroke")
+        {
+            var result = {name:"stroke"};
+            result.distance = effect.size;
+            result.color = effect.color;
+            result.alpha = effect.alpha;
+            return result;
+        }
+    }
+    return null;
+}
+
+Parser.prototype.getTextShadowEffect = function(node)
+{
+    if(node.effect.length == 0)
+    {
+        return null;
+    }
+    for(var i = 0; i < node.effects.length; i++)
+    {
+        var effect = node.effects[i];
+        if(effect.type == "dropShadow")
+        {
+            var result = {name:"shadow"};
+            result.angle = effect.angle;
+            result.distance = effect.distance;
+            result.color = effect.color;
+            result.alpha = effect.alpha;
+            return result;
+        }
+    }
+    return null;
+}
+
+//重新计算组件相对坐标和尺寸
+Parser.prototype.calculateContainerBounds = function(children)
+{
+    var rectList = [];
+    for(var i = 0; i < children.length; i++)
+    {
+        if(this.isEmptyChild(children[i]) == false)
+        {
+            rectList.push(children[i]);
+        }
+    }
+    return this.unionRectangle(rectList);
+}
+
+Parser.prototype.unionRectangle = function(rectList)
+{
+    if(rectList.length == 0)
+    {
+        return {x:0, y:0, width:0, height:0};
+    }
+    var left = Number.MAX_VALUE;
+    var top = Number.MAX_VALUE;
+    var right = Number.MIN_VALUE;
+    var bottom = Number.MIN_VALUE;
+    for(var i = 0; i < rectList.length; i++)
+    {
+        var rect = rectList[i];
+        left = (left > rect.x) ? rect.x : left:
+        top = (top > rect.y) ? rect.y : top;
+        right = (right < (rect.width + rect.x)) ? (rect.width + rect.x) : right;
+        bottom = (bottom < (rect.height + rect.y)) ? (rect.height + rect.y) : bottom;
+    }
+    return {x:left, y:top, width:right - left, height:bottom - top};
+}
+
+Parser.prototype.adjustContainerBounds = function(obj, bounds)
+{
+    obj.x = bounds.x;
+    obj.y = bounds.y;
+    obj.width = bounds.width;
+    obj.height = bounds.height;
+}
+
+Parser.prototype.adjustChildrenBounds = function(children, parent)
+{
+    for(var i = 0; i < children.length; i++)
+    {
+        var child = children[i];
+        if(this.isEmptyChild(child) == true)
+        {
+            child.x = 0;
+            child.y = 0;
+        }
+        else
+        {
+            child.x = child.x - parent.x;
+            child.y = child.y - parent.y;
+            if(child.type == "Language")
+            {
+                this.adjustLanguageChildrenBounds(child);
+            }
+        }
+    }
+}
+
+//Selectable不能相互嵌套: Selectable组件的任何次级元素不能为Selectable组件
+//该算法计算每个组件节点的SelectableValue, 当节点自身为Selectable且SelectableValue大于1时，
+//该组件的结构非法
+Parser.prototype.calculateContainerSelectableValue = function(children, parent)
+{
+    for(var i = 0; i < children.length; i++)
+    {
+        parent.selectableValue += children[i].selectableValue;
+    }
+}
+
+//语言设置容器，在结构中是不占位置的，所以其子元素的位置需要重新计算
+Parser.prototype.adjustLanguageChildrenBounds = function(languageObj)
+{
+    for(var i = 0; i < languageObj.children.length; i++)
+    {
+        var child = languageObj.children[i];
+        child.x = child.x + languageObj.x;
+        child.y = child.y + languageObj.y;
+    }
+}
+
+Parser.prototype.isEmptyChild = function(child)
+{
+    if(child.x == 0 && child.y == 0
+        && child.width == 0 && child.height == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+//===============================检验解析结果=================
+Parser.prototype.validateContainer = function(result, parentPath)
+{
+    this.validateName(result, parentPath);
+    parentPath = parentPath + "/" + result.type + "_" + result.name;
+    this.validateChildren(result, parentPath);
+    var len = (result.children != null) ? result.children.length : 0;
+    for(var i = 0; i < len; i++)
+    {
+        var child = result.children[i]
+        var validator = this.getTypeValidator(child.type);
+        if(validator != null)
+        {
+            this[validator](child, parentPath);
+        }
+    }
+    //可扩展，增加重名元素检查
+}
+
+Parser.prototype.validateImage = function(result, parentPath)
+{
+    this.validateName(result, parentPath);
+    for(var state in result)
+    {
+        var stateObj = result[state];
+        if(stateObj instanceof Object)
+        {
+            if(stateObj.link != null)
+            {
+                var link = stateObj.link;
+                var imageName = link.substring(link.indexOf(".") + 1);
+                this.validateName({type:result.type, name:imageName}, parentPath + "/" + state);
+                var statePath = parentPath + "/" + result.name + "/" + state + "/" + iamgeName;
+                if(stateObj.top == undefined || stateObj.right == undefined || stateObj.bottom == undefined || stateObj.left == undefined)
+                {
+                    continue;
+                }
+                if((parseInt(stateObj.top) + parseInt(stateObj.bottom)) >= stateObj.height)
+                {
+                    this.logError("九宫图像图层【" + statePath + "】top和bottom参数之和必须小于图片height（高度）值！");
+                }
+                if((parseInt(stateObj.right) + parseInt(stateObj.left)) >= stateObj.width)
+                {
+                    this.logError("九宫图像图层【" + statePath + "】right和left参数之和必须小于图片width（宽度）值！");
+                }
+            }
+        }
+    }
+}
+
+Parser.prototype.validateLabel = function(result, parentPath)
+{
+    this.validateName(result, parentPath);
+}
+
+Parser.prototype.validateChildren = function(result, parentPath)
+{
+    var regExp = this.getTypeRegExp(result.type);
+    if(regExp == null)
+    {
+        return;
+    }
+    var requiredCount = regExp.required.length;
+    var children = result.children;
+    outer:
+    for(var i = 0; i < requiredCount; i++)
+    {
+        var required = regExp.required[i];
+        for(var j = 0; j < children.length; j++)
+        {
+            var child = children[j];
+            var candidate = child.type + "_" + child.name;
+            if(candidate.match(required) != null)
+            {
+                continue outer;
+            }
+        }
+        var content = parentPath + "组件【" + result.type + "_" + result.name + "】格式错误!\n";
+        content += "子元素" + required.replace("$", "") + "未找到!";
+        this.logError(content);
+    }
+}
+
+Parser.prototype.validateName = function(result, parentPath)
+{
+    if(result.name.match(FIRST_TOKEN_REGEXP) != null)
+    {
+        this.logError(parentPath + "/" + result.type + "_" + result.name + "\n命名格式错误！名字以数字或特殊符号开始！");
+    }
+    if(result.name.match(CHINESE_CHAR_REGEXP) != null)
+    {
+        this.logError(parentPath + "/" + result.type + "_" + result.name + "\n命名格式错误！名字中包含中文字符！");
+    }
+    if(this.selectableSet[result.type] != null && result.selectableValue > 1)
+    {
+        this.logError(parentPath + "/" + result.type + "_" + result.name + "\n交互组件次级元素中包含其他可交互组件！");
+    }
+}
+
+Parser.prototype.getTypeRegExp = function(type)
+{
+    return this.typeSet[type].childrenRegExp;
+}
+
+Parser.prototype.getTypeValidator = function(type)
+{
+    return this.typeSet[type].validator;
+}
+
+Parser.prototype.logError = function(content)
+{
+    throw new Error(content);
+}

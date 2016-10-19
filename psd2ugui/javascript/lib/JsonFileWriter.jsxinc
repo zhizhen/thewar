@@ -1,0 +1,9 @@
+﻿function JsonFileWriter(environment)
+{
+    this.environment = environment;
+}
+
+JsonFileWriter.prototype.writeParseResult = function(data)
+{
+    var json = this.formatContainer(data, "");
+}

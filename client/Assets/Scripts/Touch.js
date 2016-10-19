@@ -7,8 +7,8 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.move = null;
-        this.face = null;
+        this.last_touch = null;
+        this.is_face = null;
         this.pre_move = new Array();
         this.tank = this.tank.getComponent('Tank');
         var begin = function (event){
@@ -16,40 +16,41 @@ cc.Class({
             var touchID = event.touch.getID();
             var location = event.touch.getLocation();
             // 判断，如果点击区域是车身，则接下来move是移动、否则，则是炮塔转动到瞄准该位置
-            var isHit = this.tank.isHit(location);
-            if (isHit){
+            var is_on_body = this.tank.IsOnBody(location);
+            if (is_on_body){
                 // console.log("start move!");
-                this.move = touchID;
+                this.last_touch = touchID;
             }
             else{
                 // console.log("face target!");
-                this.face = touchID;
+                this.is_face = touchID;
                 this.tank.face(location.x, location.y);
             }
         };
         var move = function (event){
-            var location = event.touch.getLocation();
             var touchID = event.touch.getID();
-            // console.log("touchend move,touch id:" + touchID + ";:"+this.move +"|"+this.face);
+            var location = event.touch.getLocation();
+            // console.log("touchend move,touch id:" + touchID + ";:"+this.last_touch +"|"+this.is_face);
 
-            if (touchID === this.face){
+            if (touchID === this.is_face){
                 // cc.log("move face!");
                 this.tank.face(location.x, location.y);
             }
-            else if(touchID === this.move){
-                this.pre_move.unshift(location);
+            else if(touchID === this.last_touch){
+                // this.pre_move.unshift(location);
                 // console.log("id:" + touchID + ";" + this.touchID);
             }
         };
         var end = function (event){
             var touchID = event.touch.getID();
             var location = event.touch.getLocation();
-            // 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
-            if (touchID === this.move){
+            // 如果是移动，松开手就开始移动
+            if (touchID === this.last_touch){
                 // console.log("end move touch,x:" + location.x + ",y:" + location.y);
                 this.tank.move(location);
-                this.move = null;
+                this.last_touch = null;
             }
+            // 判断，如果炮塔旋转完毕，已瞄准触屏方向，松开就开炮
             else{
                 this.tank.fire();
                 this.face = null;

@@ -48,6 +48,22 @@ cc.Class({
         
     },
     
+    moveWithParabola: function(pos) {
+        var vehicle = cc.find("tankInfo/vehicle", this.node);
+        var sx = this.node.position.x;
+        var sy = this.node.position.y;
+        var ex = pos.x;
+        var ey = pos.y;
+        var h = vehicle.getContentSize().height;
+        var config = cc.BezierConfig;
+        
+        var move = cc.bezierTo(t, c);
+        var self = this;
+        vehicle.runAction(cc.sequence(move, cc.callFunc(function() {
+                console.log("move move callback");
+            })));
+    },
+    
     move: function (position) {
         var x = position.x;
         var y = position.y;
@@ -133,7 +149,7 @@ cc.Class({
         gun.runAction(sequence);
     },
     
-    isHit: function(p) {
+    IsOnBody: function(p) {
         var vehicle = cc.find("tankInfo/vehicle", this.node);
         var location = this.node.position;
         var vehicle_angle = vehicle.getRotation();
