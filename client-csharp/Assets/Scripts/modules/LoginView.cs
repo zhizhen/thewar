@@ -37,7 +37,7 @@ namespace Engine
 		public override void OnPause(BaseContext context)
 		{
 			Debug.Log ("on pause");
-			_animator.SetTrigger("OnExit");
+			//_animator.SetTrigger("OnExit");
 		}
 
 		public override void OnResume(BaseContext context)
@@ -51,7 +51,7 @@ namespace Engine
         {
             Debug.Log("on button click");
             SceneManager.sceneLoaded += OnComplete;
-            SceneManager.LoadScene("Scene1001");
+            SceneManager.LoadScene("Scene1002");
             ContextManager.Instance.Push(new MainMenuContext());
         }
 

@@ -12,7 +12,7 @@ namespace Engine {
 
 		private NetMgr(){
 #if UNITY_WEBGL
-            net = new WebSocket ();
+			net = new WebNetSocket ();
 #else
             net = new NetSocket ();
 #endif
