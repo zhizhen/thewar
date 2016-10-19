@@ -11,8 +11,12 @@ namespace Engine {
 		public LockedPool<ByteArray> byteArrayPool = new LockedPool<ByteArray>(16);
 
 		private NetMgr(){
-			net = new NetSocket ();
-		}
+#if UNITY_WEBGL
+            net = new WebSocket ();
+#else
+            net = new NetSocket ();
+#endif
+        }
 
 		private static NetMgr _instance;
 		public static NetMgr Instance {

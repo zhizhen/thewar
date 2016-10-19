@@ -24,7 +24,7 @@ namespace Engine
 		public override void OnEnter(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			base.OnEnter(context);
+			//base.OnEnter(context);
 		}
 
 		public override void OnExit(BaseContext context)

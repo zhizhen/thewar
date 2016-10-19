@@ -25,24 +25,24 @@ namespace Engine
 			Debug.Log ("on enter");
             Button btn = _buttonOption.GetComponent<Button>();
             btn.onClick.AddListener(LoginCallBack);
-            //base.OnEnter(context);
+            base.OnEnter(context);
         }
 
 		public override void OnExit(BaseContext context)
 		{
-			Debug.Log ("on enter");
+			Debug.Log ("on exist");
 			base.OnExit(context);
 		}
 
 		public override void OnPause(BaseContext context)
 		{
-			Debug.Log ("on enter");
-			//_animator.SetTrigger("OnExit");
+			Debug.Log ("on pause");
+			_animator.SetTrigger("OnExit");
 		}
 
 		public override void OnResume(BaseContext context)
 		{
-			Debug.Log ("on enter");
+			Debug.Log ("on resume");
 			//_animator.SetTrigger("OnEnter");
 		}
 
@@ -52,7 +52,7 @@ namespace Engine
             Debug.Log("on button click");
             SceneManager.sceneLoaded += OnComplete;
             SceneManager.LoadScene("Scene1001");
-            //ContextManager.Instance.Push(new MainMenuContext());
+            ContextManager.Instance.Push(new MainMenuContext());
         }
 
         public void OnComplete(Scene scene, LoadSceneMode mode)
