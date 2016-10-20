@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- *	
- *  Define View's Path And Name
- *
- *	by Xuanyi
- *
- */
-
 namespace Engine
 {
 	public class UIType {

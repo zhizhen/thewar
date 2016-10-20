@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- *	
- *  Manage View's Create And Destory
- *
- *	by Xuanyi
- *
- */
-
 namespace Engine
 {
 	public class UIManager : Singleton<UIManager>
