@@ -50,7 +50,13 @@ namespace Engine
             Debug.Log("on button click");
             SceneManager.sceneLoaded += OnComplete;
             SceneManager.LoadScene("Scene1002");
+            CreatePlayer();
             ContextManager.Instance.Push(new MainMenuContext());
+        }
+
+        public void CreatePlayer()
+        {
+
         }
 
         public void OnComplete(Scene scene, LoadSceneMode mode)
