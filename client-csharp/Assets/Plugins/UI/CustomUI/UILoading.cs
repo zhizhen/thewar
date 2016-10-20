@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Game.UI;
+using GAMEUI;
 using UnityEngine.UI;
 
 public class UILoading :SingletonMonoBehaviour<UILoading>
