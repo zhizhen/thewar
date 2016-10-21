@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 56784612
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: uirootcanvas.ui
+      Dependencies: {}
+    Info_1:
+      Name: uiinputaccount.ui
+      Dependencies: {}
+    Info_2:
+      Name: uimainview.ui
+      Dependencies: {}
+    Info_3:
+      Name: tank.model
+      Dependencies: {}

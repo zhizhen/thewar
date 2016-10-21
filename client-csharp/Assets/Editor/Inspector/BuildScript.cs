@@ -7,7 +7,7 @@ using System.IO;
 
 public class BuildScript
 {
-    const string kAssetBundlesOutputPath = "AssetBundles";
+    const string kAssetBundlesOutputPath = "Assets/StreamingAssets";
 
     public static void BuildAssetBundles()
     {

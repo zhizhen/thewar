@@ -70,7 +70,6 @@ public class GameApp : MonoBehaviour
         //canvas.renderMode = RenderMode.ScreenSpaceCamera;
         //canvas.worldCamera = camera;
 
-        ContextManager.GetInstance ();
     }
 
     private void OnProgress()
@@ -89,18 +88,18 @@ public class GameApp : MonoBehaviour
        {
             otherStep++;
             OnNeedResLoaded(new object());
-            //ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
-            //    ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
+            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
+                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
        };
     }
+
 
     private void OnNeedResLoaded(object userdata)
     {
         otherStep++;
-        EnterGame();
     }
 
-    private void OnDownLoadCallBack(Resources res, int listCount, int index)
+    private void OnDownLoadCallBack(Resource res, int listCount, int index)
     {
 #if _DEBUG
         resTotal = listCount - 1;
@@ -108,16 +107,19 @@ public class GameApp : MonoBehaviour
         resTotal = listCount + index;
 #endif
         resStep = index;
+        EnterGame();
     }
 
     private void EnterGame()
     {
         InitUGUIMain();
+        ContextManager.GetInstance();
     }
 
     private void InitUGUIMain()
     {
-        GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        //GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        GameObject UIRootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
         GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
         GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
         GameTools.CanvasCamera = UICamera.GetComponent<Camera>();

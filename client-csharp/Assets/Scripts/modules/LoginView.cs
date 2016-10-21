@@ -55,11 +55,11 @@ namespace Engine
 
         public void CreatePlayer()
         {
-			GameObject go = ResourceMgr.Instance.GetGameObject("tank.model", "tank");
-			go.AddComponent<CameraControl> ();
-			CameraControl c = go.GetComponent ("CamaraControl") as CameraControl;
-			c.lookAtTarget = go.transform;
-			go.transform.parent = GameObject.Find("Scene1002").transform;
+			//GameObject go = ResourceMgr.Instance.GetGameObject("tank.model", "tank");
+			//go.AddComponent<CameraControl> ();
+			//CameraControl c = go.GetComponent ("CamaraControl") as CameraControl;
+			//c.lookAtTarget = go.transform;
+			//go.transform.parent = GameObject.Find("Scene1002").transform;
         }
 
         public void OnComplete(Scene scene, LoadSceneMode mode)

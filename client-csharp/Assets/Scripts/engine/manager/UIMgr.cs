@@ -27,8 +27,9 @@ namespace Engine
 				GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
 				GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
 
-				GameObject go = ResourceMgr.Instance.GetGameObject(uiType.Path, uiType.Name);
-				go.transform.SetParent (UICanvas.transform);
+				//GameObject go = ResourceMgr.Instance.GetGameObject(uiType.Path, uiType.Name);
+                GameObject go = ResourceMgr.GetGameObject(URLConst.GetUI(uiType.Name));
+                go.transform.SetParent (UICanvas.transform);
 				go.transform.localPosition = new Vector3 (0, 0, 0);
 				go.transform.localScale = new Vector3 (1, 1, 1);
 				Canvas canvas = go.GetComponent<Canvas>();
