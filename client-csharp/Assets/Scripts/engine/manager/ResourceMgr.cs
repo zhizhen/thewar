@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Engine
 {
-    public class ResourceMgr : BaseLoader
+    public class ResourceMgr : MonoBehaviourExt
     {
         public static ResourceMgr Instance = null;
         public const ushort DEFAULT_PRIORITY = 1;
@@ -36,6 +36,9 @@ namespace Engine
         private List<int> priorityList = new List<int>();
         private Dictionary<int, List<DownloadTask>> newDownloadTasks = new Dictionary<int, List<DownloadTask>>();
 
+        private int threadMax = 3;
+        private int threadCount = 0;
+
         public Action bundleVersionLoaded;
 
         void Awake()
@@ -54,6 +57,65 @@ namespace Engine
 //#else
 //            yield break;
 //#endif
+        }
+
+        void Update()
+        {
+            if (HasFreeThread() && priorityList.Count > 0)
+            {
+                var count = priorityList.Count;
+                List<DownloadTask> downloadTaskList = null;
+                for (int i = count - 1; i >= 0; i--)
+                {
+                    if (newDownloadTasks.TryGetValue(priorityList[i], out downloadTaskList))
+                    {
+                        for (int j = 0; j < downloadTaskList.Count; j++)
+                        {
+                            if (downloadTaskList[j].HasDownload())
+                            {
+                                StartDownLoadTask(downloadTaskList[j]);
+                                if (!HasFreeThread()) break;
+                            }
+                        }
+                    }
+                    if (!HasFreeThread()) break;
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+        private bool HasFreeThread()
+        {
+            return threadCount < threadMax;
+        }
+
+        public void LoadResource(Resouce resource)
+        {
+            StartCoroutine(LoadAsync(resource));
+        }
+
+        private IEnumerator LoadAsync(Resource resource)
+        {
+            if (resource.IsLoading || IsDone(resource.BundlePath)) yield break;
+            resource.IsLoading = true;
+            BeginDownLoad();
+            yield return StartCoroutine(LoadWWWAsync(resource));
+        }
+
+        public bool IsDone(string bundlePath)
+        {
+            var resource = GetResource(bundlePath);
+            if (resource != null)
+                return resource.IsDone && string.IsNullOrEmpty(resource.error);
+            return false;
+        }
+
+        private void StartDownLoadTask(DownloadTask task)
+        {
+            if (HasFreeThread()) task.DownloadNext();
         }
 
         public Resource GetResource(string bundlePath)
@@ -98,12 +160,6 @@ namespace Engine
             return null;
         }
 
-        //public GameObject GetGameObject(string AssetBundleName, string bundleName)
-        //{
-        //    GameObject go = Load(AssetBundleName, bundleName);
-        //    return go;
-        //}
-
         public static GameObject GetGameObject(string relativePath, bool depends = false)
         {
             Material kMaterial = null;
@@ -126,6 +182,7 @@ namespace Engine
                 addDownLoadTask(task);
             return task;
         }
+
 
         private void addDownLoadTask(DownloadTask task)
         {

@@ -7,8 +7,11 @@ using System.Collections;
 
 namespace Engine
 {
-    public class Resource
+    public class Resource : EventDispatcher
     {
+        public static readonly string DOWNLOAD_BEGIN = "DOWNLOAD_BEGIN";
+        public static readonly string DOWNLOAD_END = "DOWNLOAD_END";
+        public static readonly string DOWNLOAD_ERROR = "DOWNLOAD_ERROR";
         public List<Resource> dependencies;
         public int tryCount = 0;
         private WWW _www;
@@ -25,6 +28,10 @@ namespace Engine
             get { return bundlePath; }
             set { bundlePath = value; }
         }
+
+        public string error { get { return _www != null ? _www.error : string.Empty; } }
+
+        public bool IsLoading { get { return isLoading; } set { isLoading = value; } }
 
         public UnityEngine.Object MainAsset
         {
@@ -59,6 +66,28 @@ namespace Engine
 #endif
         }
 
+        public bool IsDone
+        {
+#if _DEBUG
+            get { return MainAsset != null; }
+#else
+            get
+            {
+                if (dependencies == null)
+                {
+                    if (_www == null) return false;
+                    return _www.isDone;
+                }
+                else
+                {
+                    if (!dependencies.All(x => x.IsDone)) return false;
+                    if (_www == null) return false;
+                    return _www.isDone;
+                }
+            }
+#endif
+        }
+
         public void Reference()
         {
             m_referenceCount++;
@@ -84,15 +113,6 @@ namespace Engine
             }
         }
 
-        private void UnloadAllLoadedAssets()
-        {
-            m_referenceCount = 0;
-            if (_www != null && _www.assetBundle != null)
-                _www.assetBundle.Unload(true);
-            m_kDicObject.Clear();
-            _mainSprite = null;
-        }
-
         public void Destory(bool unloadAllLoadedAssets = true, bool destoryDepends = false)
         {
             tryCount = 0;
@@ -107,5 +127,15 @@ namespace Engine
             //if (dependencies != null)
             //    dependencies.Clear();
         }
+
+        private void UnloadAllLoadedAssets()
+        {
+            m_referenceCount = 0;
+            if (_www != null && _www.assetBundle != null)
+                _www.assetBundle.Unload(true);
+            m_kDicObject.Clear();
+            _mainSprite = null;
+        }
+
     }
 }

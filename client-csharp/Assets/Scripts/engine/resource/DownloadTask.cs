@@ -31,6 +31,7 @@ namespace Engine
             this.finishCount = 0;
             this.priority = priority;
             int i;
+            /*
 #if _DEBUG
             for(i = 0; i < bundlePaths.Length; i++)
             {
@@ -63,12 +64,70 @@ namespace Engine
             if (finishTaskCallBack != null)
                 finishTaskCallBack(this);
 #else
-#endif
+*/
+            bool hasIsDone = false;
+            List<Resource> loadQueue = new List<Resource>();
+            for(i = 0; i < bundlePaths.Length; i++)
+            {
+                var bundlePath = bundlePaths[i];
+                var resource = ResourceMgr.Instance.GetResource(bundlePath);
+                if (ResourceMgr.Instance.IsDone(resource.BundlePath))
+                {
+                    resource.Reference(); // 已加载的，根节点增加计数
+                    hasIsDone = true;
+                    continue;
+                }
+                loadQueue.Clear();
+                FlattenResource(resource, loadQueue);
+                loadQueue.Reverse();
+                for (int j = 0; j < loadQueue.Count; j++)
+                {
+                    var res = loadQueue[j];
+                    if (!downloads.Contains(res))
+                    {
+                        res.Reference();
+                        downloads.Add(res);
+                    }
+                }
+            }
+            resList = downloads.ToArray();
+            if (hasIsDone)
+            {
+                for(int j = 0; j < bundlePaths.Length; j++)
+                {
+                    var bundlePath = bundlePaths[j];
+                    var resource = ResourceMgr.Instance.GetResource(bundlePath);
+                    if (ResourceMgr.Instance.IsDone(resource.BundlePath))
+                    {
+                        OnDownloadBegin(resource);
+                        OnDownloadEnd(resource);
+                        continue;
+                    }
+                }
+                if (HasDownload() == false && resList.Length == 0)
+                {
+                    if (downloadCallBack != null) downloadCallBack(userData);
+                    if (finishTaskCallBack != null) finishTaskCallBack(this);
+                }
+            }
+//#endif
         }
 
         public bool HasDownload()
         {
             return downloads.Count != 0;
+        }
+
+        public void DownloadNext()
+        {
+            var resource = downloads[0];
+            if (resource.IsLoading) return;
+            if (ResourceMgr.Instance.IsDone(resource.BundlePath))
+            {
+                OnDownloadEnd(resource);
+                return;
+            }
+            ResourceMgr.Instance.LoadResource(resource);
         }
 
         public void Dispose()
@@ -87,6 +146,61 @@ namespace Engine
             userData = null;
             resList = null;
             ObjectPool.ReclaimObject(this);
+        }
+
+        protected void RemoveResourceListeners(Resource resource)
+        {
+            if (resource != null)
+            {
+                resource.RemoveEventListener<Resource>(Resource.DOWNLOAD_BEGIN, OnDownloadBegin);
+            }
+        }
+
+        protected void FlattenResource(Resource mainResource, List<Resource> queue)
+        {
+            queue.Add(mainResource);
+            mainResource.AddEventListener<Resource>(Resource.DOWNLOAD_BEGIN, OnDownloadBegin);
+            mainResource.AddEventListener<Resource>(Resource.DOWNLOAD_END, OnDownloadEnd);
+            mainResource.AddEventListener<Resource>(Resource.DOWNLOAD_ERROR, OnDownloadError);
+        }
+
+        private void OnDownloadBegin(Resource resource)
+        {
+            if (beginCallBack != null) beginCallBack(resource);
+        }
+
+        private void OnDownloadEnd(Resource resource)
+        {
+            //ResourceMgr.Instance.RemoveFreeTimeLoad(resource.BundlePath);
+            if (downloads.Contains(resource))
+            {
+                finishCount++;
+                RemoveResourceListeners(resource);
+                downloads.Remove(resource);
+            }
+            if (downLoadCallBackPerAsset != null) downLoadCallBackPerAsset(resource, downloads.Count, finishCount);
+            if (downloads.Count == 0 && resList.Length > 0)
+            {
+                if (downloadCallBack != null) downloadCallBack(userData);
+                if (finishTaskCallBack != null) finishTaskCallBack(this);
+            }
+        }
+
+        private void OnDownloadError(Resource resource)
+        {
+            Debug.Log("下载错误：" + resource.error);
+            if (downloads.Contains(resource))
+            {
+                finishCount++;
+                RemoveResourceListeners(resource);
+                downloads.Remove(resource);
+            }
+            if (failCallBack != null) failCallBack(resource.BundlePath, resource.error);
+            if (downloads.Count == 0)
+            {
+                if (downloadCallBack != null) downloadCallBack(userData);
+                if (finishTaskCallBack != null) finishTaskCallBack(this);
+            }
         }
     }
 }

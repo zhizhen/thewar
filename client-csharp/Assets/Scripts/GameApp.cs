@@ -19,11 +19,10 @@ public class GameApp : MonoBehaviour
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
         Driver.InitApp(gameObject);
-        OnLoadUILoading();
-        //EnterGame();
+        OnLoadingBar();
     }
 
-    private void OnLoadUILoading()
+    private void OnLoadingBar()
     {
         UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
         UILoading.ShowLoading();
@@ -84,13 +83,13 @@ public class GameApp : MonoBehaviour
     private void LoadNeedRes()
     {
         gameObject.AddComponent<ResourceMgr>();
-       ResourceMgr.Instance.bundleVersionLoaded = () =>
-       {
+        ResourceMgr.Instance.bundleVersionLoaded = () =>
+        {
             otherStep++;
             OnNeedResLoaded(new object());
             ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
                 ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
-       };
+        };
     }
 
 
