@@ -33,6 +33,8 @@ namespace Engine
 
         public bool IsLoading { get { return isLoading; } set { isLoading = value; } }
 
+        public WWW www { get { return _www; } set { _www = value; } }
+
         public UnityEngine.Object MainAsset
         {
 #if _DEBUG
@@ -86,6 +88,16 @@ namespace Engine
                 }
             }
 #endif
+        }
+
+        public void DownLoadBegin()
+        {
+            Dispatch<Resource>(DOWNLOAD_BEGIN, this);
+        }
+
+        public void DownLoadEnd()
+        {
+            Dispatch<Resource>(DOWNLOAD_END, this);
         }
 
         public void Reference()

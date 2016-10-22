@@ -92,7 +92,7 @@ namespace Engine
             return threadCount < threadMax;
         }
 
-        public void LoadResource(Resouce resource)
+        public void LoadResource(Resource resource)
         {
             StartCoroutine(LoadAsync(resource));
         }
@@ -103,6 +103,50 @@ namespace Engine
             resource.IsLoading = true;
             BeginDownLoad();
             yield return StartCoroutine(LoadWWWAsync(resource));
+            resource.DownLoadEnd();
+        }
+
+        private void BeginDownLoad()
+        {
+            threadCount++;
+        }
+
+#if UNITY_EDITOR
+        private List<string> m_kList = new List<string>();
+#endif
+
+        private IEnumerator LoadWWWAsync(Resource resource)
+        {
+            var bundlePath = resource.BundlePath.ToLower();
+            bool isFromRemote = false;
+            string url = WrapperPath(bundlePath, out isFromRemote);
+            WWW www = null;
+            www = new WWW(url);
+            resource.www = www;
+            resource.DownLoadBegin();
+            yield return www;
+
+            Debug.Log("完成加载:" + www.url);
+            FinishDownLoad();
+            resource.IsLoading = false;
+        }
+
+        private void FinishDownLoad()
+        {
+            threadCount--;
+        }
+
+        private string WrapperPath(string relativePath, out bool isFromRemote)
+        {
+#if UNITY_ANDROID
+            var localPath = LocalBundlePath + relativePath;
+            isFromRemote = false;
+            return "jar:file://" + localPath;
+#else
+            string fullPath = URL.GetPath(relativePath, localVersions.ContainsKey(relativePath));
+            isFromRemote = fullPath.StartsWith("http://");
+            return fullPath;
+#endif
         }
 
         public bool IsDone(string bundlePath)
