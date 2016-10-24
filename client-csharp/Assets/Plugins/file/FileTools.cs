@@ -15,4 +15,12 @@ public class FileTools
         return fi.Extension;
 #endif
     }
+
+    public static string GetFileNameNOExtension(string filePath)
+    {
+        filePath = filePath.Replace("\\", "/");
+        string[] strs = filePath.Split('/');
+        filePath = strs[strs.Length - 1];
+        return filePath.Split('.')[0];
+    }
 }

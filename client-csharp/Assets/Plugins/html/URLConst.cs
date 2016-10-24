@@ -9,7 +9,7 @@ public class URLConst
 
     public static string GetUI(string name)
     {
-        return "UI/" + name + EXTEND_ASSETBUNDLE;
+        return name + EXTEND_ASSETBUNDLE;
     }
 
     public static List<string> listInitGameRes = new List<string> {

@@ -126,7 +126,7 @@ namespace Engine
             resource.DownLoadBegin();
             yield return www;
 
-            Debug.Log("完成加载:" + www.url);
+            Debug.Log("加载路径:" + www.url);
             FinishDownLoad();
             resource.IsLoading = false;
         }
@@ -138,7 +138,7 @@ namespace Engine
 
         private string WrapperPath(string relativePath, out bool isFromRemote)
         {
-#if UNITY_ANDROID
+#if UNITY_MONITOR
             var localPath = LocalBundlePath + relativePath;
             isFromRemote = false;
             return "jar:file://" + localPath;

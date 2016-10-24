@@ -31,7 +31,7 @@ public class BaseLoader : MonoBehaviour
 #else
 			GetPlatformFolderForAssetBundles(Application.platform);
 #endif
-
+        
         // Set base downloading url.
         string relativePath = GetRelativePath();
         AssetBundleManager.BaseDownloadingURL = relativePath + kAssetBundlesPath + platformFolderForAssetBundles + "/";

@@ -37,10 +37,10 @@ namespace Engine
 
         public UnityEngine.Object MainAsset
         {
-#if _DEBUG
-            set{ mainAsset = value; }
-            get{ return mainAsset; }
-#else
+//#if _DEBUG
+//            set{ mainAsset = value; }
+//            get{ return mainAsset; }
+//#else
             get
             {
                 string name = FileTools.GetFileNameNOExtension(bundlePath);
@@ -65,14 +65,15 @@ namespace Engine
                 }
                 return null;
             }
-#endif
+//#endif
         }
 
         public bool IsDone
         {
-#if _DEBUG
-            get { return MainAsset != null; }
-#else
+//#if _DEBUG
+//            //get { return false; }
+//            get { return MainAsset != null; }
+//#else
             get
             {
                 if (dependencies == null)
@@ -87,7 +88,7 @@ namespace Engine
                     return _www.isDone;
                 }
             }
-#endif
+//#endif
         }
 
         public void DownLoadBegin()
