@@ -38,7 +38,7 @@ public class URL
         }
     }
 
-    public static string localBundlePath { get { return string.Format("{0}assetbundles/", localResPath); } }
+    public static string localBundlePath { get { return string.Format("{0}", localResPath); } }
 
     public static string localCachePath
     {
@@ -46,7 +46,7 @@ public class URL
     }
 
     //public static string localBundleCachePath { get { return string.Format("{0}Assetbundles/", localCachePath); } }
-    public static string localBundleCachePath { get { return string.Format("{0}Assetbundles/", localCachePath); } }
+    public static string localBundleCachePath { get { return string.Format("{0}", localCachePath); } }
 
     public static string GetPath(string relativePath, bool existsLocalRes = true)
     {
