@@ -22,21 +22,6 @@ public class GameApp : MonoBehaviour
         GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
         ShowLoadingBar();
     }
-
-    private void ShowLoadingBar()
-    {
-        UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
-        UILoading.ShowLoading();
-
-        gameObject.AddComponent<ResourceMgr>();
-        ResourceMgr.Instance.bundleVersionLoaded = () =>
-        {
-            otherStep++;
-            OnNeedResLoaded(new object());
-            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
-                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
-        };
-    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -55,6 +40,21 @@ public class GameApp : MonoBehaviour
                 step++;
             }
         }
+    }
+
+    private void ShowLoadingBar()
+    {
+        UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
+        UILoading.ShowLoading();
+
+        gameObject.AddComponent<ResourceMgr>();
+        ResourceMgr.Instance.InitFunc = () =>
+        {
+            otherStep++;
+            OnNeedResLoaded(new object());
+            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
+                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
+        };
     }
 
     private void OnCompleteLoaded()

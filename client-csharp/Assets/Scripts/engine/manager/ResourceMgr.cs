@@ -11,6 +11,7 @@ namespace Engine
     public class ResourceMgr : MonoBehaviourExt
     {
         public static ResourceMgr Instance = null;
+        public Action InitFunc;
         public const ushort DEFAULT_PRIORITY = 1;
 
         private Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
@@ -19,23 +20,9 @@ namespace Engine
 #if UNITY_EDITOR
         static int m_SimulateAssetBundleInEditor = -1;
         const string kSimulateAssetBundles = "SimulateAssetBundles";
-#endif
-
-        //public static string LocalBundlePath;
-        // 本地资源路径，在程序安装目录中
-
-#if (UNITY_STANDALONE_WIN || UINTY_EDITOR)
-            public static string LocalBundlePath = Application.dataPath + "/StreamingAssets/Assetbundles/";
-#elif UNITY_IPHONE
-            public static string LocalBundlePath = Application.dataPath + "/Raw/Assetbundles/";
-#elif UNITY_STANDALONE_OSX
-            public static string LocalBundlePath = Application.dataPath + "/Data/StreamingAssets/Assetbundles/";
-#elif UNITY_ANDROID
-        public static string LocalBundlePath = "jar:file://" + Application.dataPath + "!/assets/Android";
-        #endif
-        
-        public static string LocalCachedBundlePath;
-        public static string RemoteBundlePath;
+#endif  
+        //public static string LocalCachedBundlePath;
+        //public static string RemoteBundlePath;
 
         public static string LocalVersionPath;
         public static string LocalCacheVersionPath;
@@ -44,9 +31,7 @@ namespace Engine
 
         private int threadMax = 3;
         private int threadCount = 0;
-
-        public Action bundleVersionLoaded;
-
+        
         void Awake()
         {
             Instance = this;
@@ -58,7 +43,7 @@ namespace Engine
 
         IEnumerator Start()
         {
-            if (bundleVersionLoaded != null) { bundleVersionLoaded(); }
+            if (InitFunc != null) { InitFunc(); }
             yield break;
         }
 
@@ -119,6 +104,7 @@ namespace Engine
             return task;
         }
 
+        // 限制同时加载资源线程最大数量
         private bool HasFreeThread()
         {
             return threadCount < threadMax;
@@ -126,26 +112,13 @@ namespace Engine
 
         public void LoadResource(Resource resource)
         {
-            StartCoroutine(LoadAsync(resource));
-        }
-
-        private IEnumerator LoadAsync(Resource resource)
-        {
-            if (resource.IsLoading || IsDone(resource.BundlePath)) yield break;
+            //StartCoroutine(LoadAsync(resource));
+            if (resource.IsLoading || IsDone(resource.BundlePath)) return;
             resource.IsLoading = true;
             BeginDownLoad();
-            yield return StartCoroutine(LoadWWWAsync(resource));
+            StartCoroutine(LoadWWWAsync(resource));
             resource.DownLoadEnd();
         }
-
-        private void BeginDownLoad()
-        {
-            threadCount++;
-        }
-
-#if UNITY_EDITOR
-        private List<string> m_kList = new List<string>();
-#endif
 
         private IEnumerator LoadWWWAsync(Resource resource)
         {
@@ -162,23 +135,6 @@ namespace Engine
             resource.IsLoading = false;
         }
 
-        private void FinishDownLoad()
-        {
-            threadCount--;
-        }
-
-        private string WrapperPath(string relativePath, out bool isFromRemote)
-        {
-#if UNITY_MONITOR
-            var localPath = LocalBundlePath + relativePath;
-            isFromRemote = false;
-            return "jar:file://" + localPath;
-#else
-            string fullPath = URL.GetPath(relativePath, localVersions.ContainsKey(relativePath));
-            isFromRemote = fullPath.StartsWith("http://");
-            return fullPath;
-#endif
-        }
 
         public bool IsDone(string bundlePath)
         {
@@ -238,6 +194,22 @@ namespace Engine
         }
 
 
+        private void BeginDownLoad()
+        {
+            threadCount++;
+        }
+
+        private void FinishDownLoad()
+        {
+            threadCount--;
+        }
+
+        private string WrapperPath(string relativePath, out bool isFromRemote)
+        {
+            string fullPath = URL.GetPath(relativePath, localVersions.ContainsKey(relativePath));
+            isFromRemote = fullPath.StartsWith("http://");
+            return fullPath;
+        }
 
         private void addDownLoadTask(DownloadTask task)
         {

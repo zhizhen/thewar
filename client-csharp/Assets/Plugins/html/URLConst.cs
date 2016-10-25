@@ -14,6 +14,7 @@ public class URLConst
 
     public static List<string> listInitGameRes = new List<string> {
         GetUI("UIRootCanvas"),
-        GetUI("UIInputAccount")
+        GetUI("UIInputAccount"),
+        GetUI("UIMainView")
     };
 }
