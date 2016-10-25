@@ -31,6 +31,7 @@ public class Config : MonoBehaviour
 	void OnEnable ()
 	{
 		Instance = this;
+		playerShip.SetActiveRecursively(true);
 	}
 
 	void OnDisable ()
@@ -55,7 +56,7 @@ public class Config : MonoBehaviour
 		foreach (OnGUICallback callback in onLateGUI) { callback(); }
 
 		DisplayCopyright();
-		if (showWelcome) DisplayWelcome();
+		//if (showWelcome) DisplayWelcome();
 	}
 
 	void DisplayCopyright ()
