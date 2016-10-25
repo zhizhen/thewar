@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Security;
+#if UNITY_EDITOR	
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Engine
@@ -15,17 +16,22 @@ namespace Engine
         private Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
         private Dictionary<string, ResourceMetaData> localVersions = new Dictionary<string, ResourceMetaData>();
 
+#if UNITY_EDITOR
+        static int m_SimulateAssetBundleInEditor = -1;
+        const string kSimulateAssetBundles = "SimulateAssetBundles";
+#endif
+
         //public static string LocalBundlePath;
         // 本地资源路径，在程序安装目录中
-        
-        #if (UNITY_STANDALONE_WIN || UINTY_EDITOR)
+
+#if (UNITY_STANDALONE_WIN || UINTY_EDITOR)
             public static string LocalBundlePath = Application.dataPath + "/StreamingAssets/Assetbundles/";
-        #elif UNITY_IPHONE
+#elif UNITY_IPHONE
             public static string LocalBundlePath = Application.dataPath + "/Raw/Assetbundles/";
-        #elif UNITY_STANDALONE_OSX
+#elif UNITY_STANDALONE_OSX
             public static string LocalBundlePath = Application.dataPath + "/Data/StreamingAssets/Assetbundles/";
-        #elif UNITY_ANDROID
-            public static string LocalBundlePath = "jar:file://" + Application.dataPath + "!/assets/Android";
+#elif UNITY_ANDROID
+        public static string LocalBundlePath = "jar:file://" + Application.dataPath + "!/assets/Android";
         #endif
         
         public static string LocalCachedBundlePath;
@@ -44,47 +50,73 @@ namespace Engine
         void Awake()
         {
             Instance = this;
-
+#if UNITY_EDITOR
+            Debug.Log("We are " + (ResourceMgr.SimulateAssetBundleInEditor ? "in Editor simulation mode" : "in normal mode"));
+#endif
             GameObject.DontDestroyOnLoad(this);
-            //StartCoroutine(Initialize());
         }
 
         IEnumerator Start()
         {
-//#if _DEBUG
             if (bundleVersionLoaded != null) { bundleVersionLoaded(); }
             yield break;
-//#else
-//            yield break;
-//#endif
         }
 
         void Update()
         {
-            if (HasFreeThread() && priorityList.Count > 0)
+            var count = priorityList.Count;
+            if (HasFreeThread() && count > 0)
             {
-                var count = priorityList.Count;
-                List<DownloadTask> downloadTaskList = null;
+                List<DownloadTask> TaskList = null;
                 for (int i = count - 1; i >= 0; i--)
                 {
-                    if (newDownloadTasks.TryGetValue(priorityList[i], out downloadTaskList))
+                    if (!HasFreeThread()) break;
+                    if (newDownloadTasks.TryGetValue(priorityList[i], out TaskList))
                     {
-                        for (int j = 0; j < downloadTaskList.Count; j++)
+                        for (int j = 0; j < TaskList.Count; j++)
                         {
-                            if (downloadTaskList[j].HasDownload())
-                            {
-                                StartDownLoadTask(downloadTaskList[j]);
-                                if (!HasFreeThread()) break;
-                            }
+                            if (TaskList[j].HasDownload() && HasFreeThread())
+                                TaskList[j].DownloadNext();
                         }
                     }
-                    if (!HasFreeThread()) break;
                 }
             }
-            else
-            {
+        }
 
+#if UNITY_EDITOR
+        // Flag to indicate if we want to simulate assetBundles in Editor without building them actually.
+        public static bool SimulateAssetBundleInEditor
+        {
+            get
+            {
+                if (m_SimulateAssetBundleInEditor == -1)
+                    m_SimulateAssetBundleInEditor = EditorPrefs.GetBool(kSimulateAssetBundles, true) ? 1 : 0;
+
+                return m_SimulateAssetBundleInEditor != 0;
             }
+            set
+            {
+                int newValue = value ? 1 : 0;
+                if (newValue != m_SimulateAssetBundleInEditor)
+                {
+                    m_SimulateAssetBundleInEditor = newValue;
+                    EditorPrefs.SetBool(kSimulateAssetBundles, value);
+                }
+            }
+        }
+#endif
+        // 加载ab
+        public DownloadTask DownLoadBundles(
+            string[] bundlePaths, 
+            Action<object> downloadCall,
+            ushort priority,
+            Action<Resource, int, int> downPerAsset = null)
+        {
+            DownloadTask task = ObjectPool.GetObject<DownloadTask>();
+            task.InitTask(bundlePaths, FinishDownloadTask, downloadCall, downPerAsset, null, null, null, priority);
+            if (task.HasDownload())
+                addDownLoadTask(task);
+            return task;
         }
 
         private bool HasFreeThread()
@@ -120,8 +152,7 @@ namespace Engine
             var bundlePath = resource.BundlePath.ToLower();
             bool isFromRemote = false;
             string url = WrapperPath(bundlePath, out isFromRemote);
-            WWW www = null;
-            www = new WWW(url);
+            WWW www = new WWW(url);
             resource.www = www;
             resource.DownLoadBegin();
             yield return www;
@@ -157,23 +188,14 @@ namespace Engine
             return false;
         }
 
-        private void StartDownLoadTask(DownloadTask task)
-        {
-            if (HasFreeThread()) task.DownloadNext();
-        }
-
         public Resource GetResource(string bundlePath)
         {
-            if (string.IsNullOrEmpty(bundlePath))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(bundlePath)) return null;
             Resource resource;
             resources.TryGetValue(bundlePath, out resource);
-            if (resource != null)
-                return resource;
-            resource = new Resource();
-            resource.BundlePath = bundlePath;
+            if (resource != null) return resource;
+            // 新建Resource 并加入到List
+            resource = new Resource(bundlePath);
             resources[bundlePath] = resource;
             resource.dependencies = GetDependencies(bundlePath);
             return resource;
@@ -206,26 +228,15 @@ namespace Engine
 
         public static GameObject GetGameObject(string relativePath, bool depends = false)
         {
-            Material kMaterial = null;
             Resource res;
             UnityEngine.Object original;
 
             res = ResourceMgr.Instance.GetResource(relativePath);
             original = res.MainAsset;
             res.Destory(false, true);
-
             return GameObjectExt.Instantiate(original) as GameObject;
         }
 
-        public DownloadTask DownLoadBundles(string[] bundlePaths, Action<object> downloadCall, 
-            ushort priority, Action<Resource, int, int> downPerAsset = null)
-        {
-            DownloadTask task = ObjectPool.GetObject<DownloadTask>();
-            task.InitTask(bundlePaths, FinishDownloadTask, downloadCall, downPerAsset, null, null, null, priority);
-            if (task.HasDownload())
-                addDownLoadTask(task);
-            return task;
-        }
 
 
         private void addDownLoadTask(DownloadTask task)

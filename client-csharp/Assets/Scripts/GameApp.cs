@@ -18,70 +18,16 @@ public class GameApp : MonoBehaviour
     // Use this for initialization
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
-        Driver.InitApp(gameObject);
-        OnLoadingBar();
+        gameObject.AddComponent<GlobalTimer>();
+        GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
+        ShowLoadingBar();
     }
 
-    private void OnLoadingBar()
+    private void ShowLoadingBar()
     {
         UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
         UILoading.ShowLoading();
 
-        LoadNeedRes();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	    if(showProgress)
-        {
-            OnProgress();
-            if (resStep >= resTotal)
-            {
-                if (isCompletedLoad)
-                {
-                    OnCompleteLoaded();
-                    return;
-                }
-                if(step < frameActions.Length)
-                {
-                    frameActions[step]();
-                    step++;
-                }
-            }
-        }
-	}
-
-    private void OnCompleteLoaded()
-    {
-        showProgress = false;
-        UILoading.CloseLoading();
-
-        //GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
-        //GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
-        //GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
-
-        //GameObject panel = ResourceMgr.Instance.GetGameObject("uiinputaccount.ui", "UIInputAccount");
-        //panel.transform.SetParent(UICanvas.transform);
-        //panel.transform.localPosition = new Vector3(0, 0, 0);
-        //panel.transform.localScale = new Vector3(1, 1, 1);
-        //Canvas canvas = panel.GetComponent<Canvas>();
-        //Camera camera = UICamera.GetComponent<Camera>();
-        //canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        //canvas.worldCamera = camera;
-
-    }
-
-    private void OnProgress()
-    {
-        resStep++;
-        var curStep = step + resStep + otherStep;
-        var totalStep = resTotal + frameActions.Length + otherTotal; //4 + 4 + 2
-        UILoading.percent = curStep * 1.0f / totalStep;
-        if (curStep >= totalStep) isCompletedLoad = true;
-    }
-
-    private void LoadNeedRes()
-    {
         gameObject.AddComponent<ResourceMgr>();
         ResourceMgr.Instance.bundleVersionLoaded = () =>
         {
@@ -91,7 +37,42 @@ public class GameApp : MonoBehaviour
                 ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
         };
     }
+	
+	// Update is called once per frame
+	void Update () {
+        if (!showProgress) return;
+        OnProgress();
+        if (resStep >= resTotal)
+        {
+            if (isCompletedLoad)
+            {
+                OnCompleteLoaded();
+                return;
+            }
+            if (step < frameActions.Length)
+            {
+                frameActions[step]();
+                step++;
+            }
+        }
+    }
 
+    private void OnCompleteLoaded()
+    {
+        showProgress = false;
+        UILoading.CloseLoading();
+        EnterGame();
+    }
+
+    private void OnProgress()
+    {
+        resStep++;
+        var curStep = step + resStep + otherStep;
+        var totalStep = resTotal + frameActions.Length + otherTotal; //4 + 4 + 2
+        UILoading.percent = curStep * 1.0f / totalStep;
+        if (curStep >= totalStep)
+            isCompletedLoad = true;
+    }
 
     private void OnNeedResLoaded(object userdata)
     {
@@ -100,13 +81,8 @@ public class GameApp : MonoBehaviour
 
     private void OnDownLoadCallBack(Resource res, int listCount, int index)
     {
-#if _DEBUG
-        resTotal = listCount - 1;
-#else
         resTotal = listCount + index;
-#endif
         resStep = index;
-        EnterGame();
     }
 
     private void EnterGame()

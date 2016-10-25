@@ -13,7 +13,7 @@ public class URLConst
     }
 
     public static List<string> listInitGameRes = new List<string> {
-        GetUI("UIInputAccount"),
-        GetUI("UIRootCanvas")
+        GetUI("UIRootCanvas"),
+        GetUI("UIInputAccount")
     };
 }

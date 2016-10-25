@@ -23,6 +23,11 @@ namespace Engine
         private Dictionary<string, UnityEngine.Object> m_kDicObject;
         private Sprite _mainSprite;
 
+        public Resource(string Path)
+        {
+            bundlePath = Path;
+        }
+
         public string BundlePath
         {
             get { return bundlePath; }
