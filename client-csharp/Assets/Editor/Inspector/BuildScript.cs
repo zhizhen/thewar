@@ -12,7 +12,7 @@ public class BuildScript
     public static void BuildAssetBundles()
     {
         // Choose the output path according to the build target.
-        string outputPath = Path.Combine(kAssetBundlesOutputPath, BaseLoader.GetPlatformFolderForAssetBundles(EditorUserBuildSettings.activeBuildTarget));
+		string outputPath = Path.Combine(kAssetBundlesOutputPath, URL.GetPlatformFolderForAssetBundles(EditorUserBuildSettings.activeBuildTarget));
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath);
 
@@ -73,7 +73,7 @@ public class BuildScript
         FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath);
         Directory.CreateDirectory(outputPath);
 
-        string outputFolder = BaseLoader.GetPlatformFolderForAssetBundles(EditorUserBuildSettings.activeBuildTarget);
+        string outputFolder = URL.GetPlatformFolderForAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 
         // Setup the source folder for assetbundles.
         var source = Path.Combine(Path.Combine(System.Environment.CurrentDirectory, kAssetBundlesOutputPath), outputFolder);

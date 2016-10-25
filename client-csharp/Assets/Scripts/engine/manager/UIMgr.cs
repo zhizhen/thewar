@@ -37,9 +37,6 @@ namespace Engine
 				canvas.renderMode = RenderMode.ScreenSpaceCamera;
 				canvas.worldCamera = camera;
 
-				//GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(uiType.Path)) as GameObject;
-				//go.transform.SetParent(_canvas, false);
-				//go.name = uiType.Name;
 				_UIDict.AddOrReplace(uiType, go);
 				return go;
 			}

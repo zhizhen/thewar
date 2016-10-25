@@ -9,63 +9,23 @@ using UnityEditor;
 
 public class URL
 {
+	const string kAssetBundlesPath = "/Assets/StreamingAssets/";
 
-    public static string GetFileSymbol()
-    {
+    public static string GetPath(string assetbundle, bool existsLocalRes = true)
+	{
+		assetbundle = assetbundle.ToLower ();
+		// Set base downloading url.
+		string relativePath = GetRelativePath ();
+		string platformFolderForAssetBundles =
 #if UNITY_EDITOR
-        return @"file://";
-#elif UNITY_ANDROID
-        return "jar:file://";
-#elif UNITY_IPHONE
-        return "file://";
-#elif UNITY_STANDALONE_WIN
-        return "file:///";
+			GetPlatformFolderForAssetBundles (EditorUserBuildSettings.activeBuildTarget);
 #else
-        return "";
+		GetPlatformFolderForAssetBundles(Application.platform);
 #endif
-    }
+		return relativePath + kAssetBundlesPath + platformFolderForAssetBundles + "/" + assetbundle;
+	}
 
-    public static string localResPath
-    {
-        get
-        {
-            if (Application.platform == RuntimePlatform.WindowsEditor ||
-                Application.platform == RuntimePlatform.WindowsPlayer ||
-                Application.platform == RuntimePlatform.OSXEditor)
-                return string.Format("{0}/StreamingAsset/", Application.dataPath);
-            else if (Application.platform == RuntimePlatform.Android)
-                return string.Format("{0}!/asset/", Application.dataPath);
-            else if (Application.platform == RuntimePlatform.IPhonePlayer)
-                return string.Format("{0}/Raw/", Application.dataPath);
-            return "";
-        }
-    }
-
-    public static string localBundlePath { get { return string.Format("{0}", localResPath); } }
-
-    public static string localCachePath
-    {
-        get { return string.Format("{0}/{1}/", Application.streamingAssetsPath,  "Android"); }
-    }
-
-    //public static string localBundleCachePath { get { return string.Format("{0}Assetbundles/", localCachePath); } }
-    public static string localBundleCachePath { get { return string.Format("{0}", localCachePath); } }
-
-    public static string GetPath(string relativePath, bool existsLocalRes = true)
-    {
-        relativePath = relativePath.ToLower();
-#if UNITY_EIDTOR
-        return string.Format("{0}{1}{2}", GetFileSymbol(), URL.localBundlePath, relativePath);
-#elif UNITY_WEB || UNITY_WEBPLAYER
-        return string.Format("{0}{1}", GetFileSymbol(), URL.localBundlePath, relativePath);
-#endif
-        //if (FileTools.IsExistFile(localBundleCachePath + relativePath))
-            return string.Format("file://{0}{1}", localBundleCachePath, relativePath);
-        //else
-            //return string.Format("{0}{1}{2}", GetFileSymbol(), URL.localBundlePath, relativePath);
-    }
-
-    public string GetRelativePath()
+    public static string GetRelativePath()
     {
         if (Application.isEditor)
             return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/"); // Use the build output folder directly.
@@ -102,4 +62,26 @@ public class URL
         }
     }
 #endif
+
+	static string GetPlatformFolderForAssetBundles(RuntimePlatform platform)
+	{
+		switch (platform)
+		{
+		case RuntimePlatform.Android:
+			return "Android";
+		case RuntimePlatform.IPhonePlayer:
+			return "iOS";
+		case RuntimePlatform.WindowsWebPlayer:
+		case RuntimePlatform.OSXWebPlayer:
+			return "WebPlayer";
+		case RuntimePlatform.WindowsPlayer:
+			return "Windows";
+		case RuntimePlatform.OSXPlayer:
+			return "OSX";
+			// Add more build platform for your own.
+			// If you add more platforms, don't forget to add the same targets to GetPlatformFolderForAssetBundles(BuildTarget) function.
+		default:
+			return null;
+		}
+	}
 }

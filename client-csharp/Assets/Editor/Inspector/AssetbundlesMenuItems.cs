@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using Engine;
 
 public class AssetbundlesMenuItems
 {
@@ -9,13 +10,13 @@ public class AssetbundlesMenuItems
     [MenuItem(kSimulateAssetBundlesMenu)]
     public static void ToggleSimulateAssetBundle()
     {
-        AssetBundleManager.SimulateAssetBundleInEditor = !AssetBundleManager.SimulateAssetBundleInEditor;
+		ResourceMgr.SimulateAssetBundleInEditor = !ResourceMgr.SimulateAssetBundleInEditor;
     }
 
     [MenuItem(kSimulateAssetBundlesMenu, true)]
     public static bool ToggleSimulateAssetBundleValidate()
     {
-        Menu.SetChecked(kSimulateAssetBundlesMenu, AssetBundleManager.SimulateAssetBundleInEditor);
+		Menu.SetChecked(kSimulateAssetBundlesMenu, ResourceMgr.SimulateAssetBundleInEditor);
         return true;
     }
 
