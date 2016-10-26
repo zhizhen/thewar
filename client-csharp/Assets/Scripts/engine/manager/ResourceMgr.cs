@@ -149,13 +149,13 @@ namespace Engine
             var bundlePath = resource.BundlePath.ToLower();
             bool isFromRemote = false;
             string url = WrapperPath(bundlePath, out isFromRemote);
+			Debug.Log("加载路径:" + url);
             WWW www = new WWW(url);
             resource.www = www;
             resource.DownLoadBegin();
             yield return www;
             if (www.error == null)
             {
-                Debug.Log("加载路径:" + www.url);
                 FinishDownLoad();
                 resource.IsLoading = false;
             }

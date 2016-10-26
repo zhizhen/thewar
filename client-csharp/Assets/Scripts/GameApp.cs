@@ -27,18 +27,15 @@ public class GameApp : MonoBehaviour
 	void Update () {
         if (!showProgress) return;
         OnProgress();
-        if (resStep >= resTotal)
+        if (isCompletedLoad)
         {
-            if (isCompletedLoad)
-            {
-                OnCompleteLoaded();
-                return;
-            }
-            if (step < frameActions.Length)
-            {
-                frameActions[step]();
-                step++;
-            }
+            OnCompleteLoaded();
+            return;
+        }
+        if (step < frameActions.Length)
+        {
+            frameActions[step]();
+            step++;
         }
     }
 
@@ -66,7 +63,6 @@ public class GameApp : MonoBehaviour
 
     private void OnProgress()
     {
-        resStep++;
         var curStep = step + resStep + otherStep;
         var totalStep = resTotal + frameActions.Length + otherTotal; //4 + 4 + 2
         UILoading.percent = curStep * 1.0f / totalStep;
