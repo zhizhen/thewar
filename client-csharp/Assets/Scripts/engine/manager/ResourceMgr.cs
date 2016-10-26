@@ -43,27 +43,8 @@ namespace Engine
 
         IEnumerator Start()
         {
-            StartCoroutine(load());
             if (InitFunc != null) { InitFunc(); }
             yield break;
-        }
-
-        IEnumerator load()
-        {
-#if UNITY_EDITOR
-		var path = "file://" + Application.streamingAssetsPath + "/Android/Test.txt";
-#else
-            var path = "jar:file://" + Application.dataPath + "!/assets/Android/Text.txt";
-#endif
-            Debug.Log(path);
-            WWW www = new WWW(path);
-            yield return www;
-            if (!string.IsNullOrEmpty(www.error))
-            {
-                Debug.Log(www.error);
-            }
-
-            //Debug.Log(www.text);
         }
 
         void Update()
@@ -131,17 +112,13 @@ namespace Engine
 
         public void LoadResource(Resource resource)
         {
-            StartCoroutine(LoadAsync(resource));
-        }
-
-        public IEnumerator LoadAsync(Resource resource)
-        {
-            if (resource.IsLoading || IsDone(resource.BundlePath))
-                yield break;
-            resource.IsLoading = true;
-            BeginDownLoad();
-            yield return StartCoroutine(LoadWWWAsync(resource));
-            resource.DownLoadEnd();
+            //StartCoroutine(LoadAsync(resource));
+			if (resource.IsLoading || IsDone(resource.BundlePath))
+				return;
+			resource.IsLoading = true;
+			BeginDownLoad();
+			StartCoroutine(LoadWWWAsync(resource));
+			resource.DownLoadEnd();
         }
 
         private IEnumerator LoadWWWAsync(Resource resource)
