@@ -43,8 +43,27 @@ namespace Engine
 
         IEnumerator Start()
         {
+            StartCoroutine(load());
             if (InitFunc != null) { InitFunc(); }
             yield break;
+        }
+
+        IEnumerator load()
+        {
+#if UNITY_EDITOR
+		var path = "file://" + Application.streamingAssetsPath + "/Android/Test.txt";
+#else
+            var path = "jar:file://" + Application.dataPath + "!/assets/Android/Text.txt";
+#endif
+            Debug.Log(path);
+            WWW www = new WWW(path);
+            yield return www;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+                Debug.Log(www.error);
+            }
+
+            //Debug.Log(www.text);
         }
 
         void Update()
@@ -112,11 +131,16 @@ namespace Engine
 
         public void LoadResource(Resource resource)
         {
-            //StartCoroutine(LoadAsync(resource));
-            if (resource.IsLoading || IsDone(resource.BundlePath)) return;
+            StartCoroutine(LoadAsync(resource));
+        }
+
+        public IEnumerator LoadAsync(Resource resource)
+        {
+            if (resource.IsLoading || IsDone(resource.BundlePath))
+                yield break;
             resource.IsLoading = true;
             BeginDownLoad();
-            StartCoroutine(LoadWWWAsync(resource));
+            yield return StartCoroutine(LoadWWWAsync(resource));
             resource.DownLoadEnd();
         }
 
@@ -129,10 +153,14 @@ namespace Engine
             resource.www = www;
             resource.DownLoadBegin();
             yield return www;
-
-            Debug.Log("加载路径:" + www.url);
-            FinishDownLoad();
-            resource.IsLoading = false;
+            if (www.error == null)
+            {
+                Debug.Log("加载路径:" + www.url);
+                FinishDownLoad();
+                resource.IsLoading = false;
+            }
+            else
+                Debug.Log("资源加载出错：" + www.error);
         }
 
 
