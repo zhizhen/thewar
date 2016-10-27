@@ -2,6 +2,7 @@
 {
     using UnityEngine;
     using System;
+    using System.IO;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -34,6 +35,14 @@
                     list.Add(default(T));
                 }
             }
+        }
+
+        public static string GetFileMD5(string path)
+        {
+            FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            var md5 = MD5Hash.Get(stream);
+            stream.Close();
+            return md5;
         }
     }
 }

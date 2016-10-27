@@ -19,6 +19,16 @@ public class BuildScript
         BuildPipeline.BuildAssetBundles(outputPath, 0, EditorUserBuildSettings.activeBuildTarget);
     }
 
+    public static void BuildShader()
+    {
+        // Choose the output path according to the build target.
+        string outputPath = Path.Combine(kAssetBundlesOutputPath, URL.GetPlatformFolderForAssetBundles(EditorUserBuildSettings.activeBuildTarget));
+        if (!Directory.Exists(outputPath))
+            Directory.CreateDirectory(outputPath);
+
+        BuildPipeline.BuildAssetBundles(outputPath, 0, EditorUserBuildSettings.activeBuildTarget);
+    }
+
     public static void BuildPlayer()
     {
         var outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
