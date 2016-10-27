@@ -7,6 +7,8 @@ public class URLConst
 {
     public const string EXTEND_ASSETBUNDLE = ".ui";
 
+    public static readonly string SCENE_PATH = "Scenes/";
+
     public static string GetUI(string name)
     {
         return name + EXTEND_ASSETBUNDLE;
@@ -17,4 +19,9 @@ public class URLConst
         GetUI("UIInputAccount"),
         GetUI("UIMainView")
     };
+
+    public static string GetScenePrefab(string sceneId)
+    {
+        return SCENE_PATH + "ScenePrefab" + sceneId + EXTEND_ASSETBUNDLE;
+    }
 }

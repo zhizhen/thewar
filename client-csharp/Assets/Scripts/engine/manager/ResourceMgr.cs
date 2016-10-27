@@ -13,6 +13,7 @@ namespace Engine
         public static ResourceMgr Instance = null;
         public Action InitFunc;
         public const ushort DEFAULT_PRIORITY = 1;
+        public const ushort UI_PRIORITY = 500;
 
         private Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
         private Dictionary<string, ResourceMetaData> localVersions = new Dictionary<string, ResourceMetaData>();
