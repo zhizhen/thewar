@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Engine;
 
@@ -9,6 +10,7 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
     public static bool isLoading = false;
     private string m_sceneId;
     private bool _isLoadingComplete;
+    private GameObject m_kScenePrefab;
 
     public string sceneId { get { return m_sceneId; } set { m_sceneId = value; } }
 
@@ -19,7 +21,8 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
         this.m_sceneId = sceneId;
         isLoading = true;
         _isLoadingComplete = false;
-        // Loading
+        GameObjectExt.Destroy(m_kScenePrefab);
+        // Loadinge
         string[] sceneURLs;
         int len = 1;
         if (preloadAssets == null)
@@ -59,6 +62,12 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
         {
             _isLoadingComplete = false;
             isLoading = false;
+            TickMgr.Instance.RemoveTick(this);
+
+            Resource resPrefab = ResourceMgr.Instance.GetResource(URLConst.GetScenePrefab(m_sceneId));
+            m_kScenePrefab = GameObjectExt.Instantiate(resPrefab.MainAsset, true) as GameObject;
+            GameObject.DontDestroyOnLoad(m_kScenePrefab);
+            resPrefab.Destory(false, true);
             DownLoadCompleteAll();
         }
     }

@@ -24,7 +24,7 @@ namespace Engine
         {
             while (_needDeleteTicks.Count > 0)
             {
-                tickItem = _needActiveTicks[0];
+                tickItem = _needDeleteTicks[0];
                 _needDeleteTicks.RemoveAt(0);
                 _activeTicks.Remove(tickItem);
             }
