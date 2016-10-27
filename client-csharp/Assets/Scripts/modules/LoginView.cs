@@ -48,8 +48,9 @@ namespace Engine
         public void LoginCallBack()
         {
             Debug.Log("on button click");
-            SceneManager.sceneLoaded += OnComplete;
-            SceneManager.LoadScene("Scene1003");
+            //SceneManager.sceneLoaded += OnComplete;
+            //SceneManager.LoadScene("Scene1003");
+            SceneMgr.Instance.Init();
             ContextManager.Instance.Push(new MainMenuContext());
         }
 
