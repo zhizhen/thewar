@@ -46,4 +46,11 @@ public class SceneBaseView
     {
 
     }
+
+    private void OnRoleInfo()
+    {
+        EntityBase mainRole;
+        mainRole = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
+        mainRole.LoadRes();
+    }
 }

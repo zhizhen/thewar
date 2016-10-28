@@ -92,6 +92,11 @@ namespace Engine
         }
 #endif
         // 加载ab
+        public DownloadTask DownLoadBundle(string bundlePath, Action<object> downloadCall, ushort priority)
+        {
+            return DownLoadBundles(new string[] { bundlePath }, downloadCall, priority);
+        }
+
         public DownloadTask DownLoadBundles(
             string[] bundlePaths, 
             Action<object> downloadCall,

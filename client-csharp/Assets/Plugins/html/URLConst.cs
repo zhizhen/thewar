@@ -8,11 +8,17 @@ public class URLConst
     public const string EXTEND_ASSETBUNDLE = ".ui";
 
     public static readonly string SCENE_PATH = "Scenes/";
+    public static readonly string MODEL_PATH = "Models/";
     public static readonly string SHADER_CONFIG = "shaders" + EXTEND_ASSETBUNDLE;
 
     public static string GetUI(string name)
     {
         return name + EXTEND_ASSETBUNDLE;
+    }
+
+    public static string GetModel(string name)
+    {
+        return MODEL_PATH + name + EXTEND_ASSETBUNDLE;
     }
 
     public static List<string> listInitGameRes = new List<string> {
