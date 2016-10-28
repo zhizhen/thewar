@@ -71,6 +71,6 @@ public class EntityBase : IAIHost
 
     public virtual void LoadResCompleted(GameObject kGO, object kArg)
     {
-
+		kGO.SetActiveRecursively (true);
     }
 }

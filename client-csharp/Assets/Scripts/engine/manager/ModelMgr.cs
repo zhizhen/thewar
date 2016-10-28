@@ -52,6 +52,7 @@ public class ModelMgr : Singleton<ModelMgr>
                     //kgo.ResetLocalPosition();
                     m_mapModelUsing.Add<string, GameObject>(strUrl, kgo);
                     GameObject.DontDestroyOnLoad(kgo);
+					loadCall(kgo, arg);
                 }
             };
         //从缓存池中取
