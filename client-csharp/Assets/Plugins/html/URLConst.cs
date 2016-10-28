@@ -5,15 +5,16 @@ using System.Text;
 
 public class URLConst
 {
-    public const string EXTEND_ASSETBUNDLE = ".ui";
+    public const string EXTEND_ASSETBUNDLE = ".u";
 
+    public static readonly string UI_PATH = "UI/";
     public static readonly string SCENE_PATH = "Scenes/";
     public static readonly string MODEL_PATH = "Models/";
     public static readonly string SHADER_CONFIG = "shaders" + EXTEND_ASSETBUNDLE;
 
     public static string GetUI(string name)
     {
-        return name + EXTEND_ASSETBUNDLE;
+        return UI_PATH + name + EXTEND_ASSETBUNDLE;
     }
 
     public static string GetModel(string name)

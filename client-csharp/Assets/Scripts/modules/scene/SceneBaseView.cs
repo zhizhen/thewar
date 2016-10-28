@@ -34,6 +34,9 @@ public class SceneBaseView
 
         //摄像机调整
         InitCamera();
+
+        //加载玩家
+        OnRoleInfo();
     }
 
     virtual public void InitCamera()
