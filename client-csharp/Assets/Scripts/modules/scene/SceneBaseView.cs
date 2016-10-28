@@ -28,8 +28,18 @@ public class SceneBaseView
         propsProxy = transform.GetComponent<PropsProxy>();
 
         // 显示主界面
-
         ContextManager.Instance.Push(new MainMenuContext());
+
+        // 播放背景音效
+
+        //摄像机调整
+        InitCamera();
+    }
+
+    virtual public void InitCamera()
+    {
+        var bornPos = Vector3.zero;
+        SceneMgr.Instance.mainCamera.LookAt(bornPos);
     }
 
     public void OnChangeScene()

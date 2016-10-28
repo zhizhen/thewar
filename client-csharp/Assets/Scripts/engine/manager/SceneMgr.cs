@@ -11,6 +11,19 @@ public class SceneMgr : Singleton<SceneMgr>
     private GameObject m_CurSceneGO;
     private MainCamera m_mainCamera;
 
+    public MainCamera mainCamera
+    {
+        get
+        {
+            if (m_mainCamera == null)
+            {
+                Camera camera = GameTools.mainCameraGO.AddComponent<Camera>();
+                m_mainCamera = GameTools.mainCameraGO.AddComponent<MainCamera>();
+                m_mainCamera.SetCamera(camera);
+            }
+            return m_mainCamera;
+        }
+    }
 
     public void Init()
     {
