@@ -51,7 +51,6 @@ namespace Engine
             //SceneManager.sceneLoaded += OnComplete;
             //SceneManager.LoadScene("Scene1003");
             SceneMgr.Instance.Init();
-            ContextManager.Instance.Push(new MainMenuContext());
         }
 
         public void CreatePlayer()

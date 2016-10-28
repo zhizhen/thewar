@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Engine;
@@ -14,12 +15,32 @@ public class SceneMgr : Singleton<SceneMgr>
     public void Init()
     {
         m_Scenes = new Dictionary<int, SceneBaseView>();
-        OnSceneReadyToChange("1003");
+        OnSceneReadyToChange("1004");
     }
 
     private void OnSceneReadyToChange(string sceneId)
     {
-        SceneLoaderMgr.Instance.Load(sceneId);
+        Action<GameObject> fnLoadFinish = delegate (GameObject kSceneGO)
+        {
+            m_CurSceneGO = kSceneGO;
+            if (_baseView == null)
+            {
+                _baseView = new SceneBaseView();
+                _baseView.Init();
+            }
+            else
+            {
+                _baseView.Init();
+            }
+            if (_baseView != null)
+                _baseView.OnChangeScene();
+        };
+        SceneLoaderMgr.Instance.Load(sceneId, fnLoadFinish);
     }
 
+    public GameObject curSceneGO
+    {
+        get { return m_CurSceneGO; }
+        set { m_CurSceneGO = value; }
+    }
 }

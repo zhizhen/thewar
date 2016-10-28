@@ -31,7 +31,7 @@ public class Config : MonoBehaviour
 	void OnEnable ()
 	{
 		Instance = this;
-		playerShip.SetActiveRecursively(true);
+		//playerShip.SetActiveRecursively(true);
 	}
 
 	void OnDisable ()

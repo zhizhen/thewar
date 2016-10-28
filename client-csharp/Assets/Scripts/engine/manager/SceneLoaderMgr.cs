@@ -11,13 +11,15 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
     private string m_sceneId;
     private bool _isLoadingComplete;
     private GameObject m_kScenePrefab;
+    private Action<GameObject> callBack;
 
     public string sceneId { get { return m_sceneId; } set { m_sceneId = value; } }
 
-    public void Load(string sceneId, string[] preloadAssets = null)
+    public void Load(string sceneId, Action<GameObject> callBack = null, string[] preloadAssets = null)
     {
         if (isLoading) return;
         UILoading.ShowLoading(string.Concat("正在进入", sceneId, "场景..."), "正在预加载", 0);
+        this.callBack = callBack;
         this.m_sceneId = sceneId;
         isLoading = true;
         _isLoadingComplete = false;
@@ -54,6 +56,8 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
     private void DownLoadCompleteAll()
     {
         UILoading.CloseLoading();
+        if (callBack != null)
+            callBack(m_kScenePrefab);
     }
 
     public void OnTick(float dt)
