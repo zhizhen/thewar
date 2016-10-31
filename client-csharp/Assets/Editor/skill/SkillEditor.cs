@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class SkillEditor : BaseEditorWindow
 {
+    private Vector2 _scrollPos;
+    public SkillInfo _skillInfo = new SkillInfo();
+    string skillDir = "Assets/ResourcesLibrary/Configs/skill/";
+
     [MenuItem("Game Tools/技能编辑器")]
     static void Init()
     {
@@ -15,8 +19,6 @@ public class SkillEditor : BaseEditorWindow
         window.LoadSkillInfo();
     }
 
-    private Vector2 _scrollPos;
-    public SkillInfo _skillInfo = new SkillInfo();
 
     private const string KEY_SKILL_ID = "key_skill_id";
 
@@ -56,7 +58,7 @@ public class SkillEditor : BaseEditorWindow
     {
         if (_skillInfo.id == 0) return;
         int id = _skillInfo.id;
-        Stream fs = File.Open("Assets/ResourceLibrary/Configs/Skill/" + _skillInfo.id + ".bytes", FileMode.Open);
+        Stream fs = File.Open(skillDir + _skillInfo.id + ".bytes", FileMode.Open);
         BinaryReader br = new BinaryReader(fs);
         _skillInfo = new SkillInfo();
         _skillInfo.Read(br);
@@ -65,14 +67,13 @@ public class SkillEditor : BaseEditorWindow
         fs.Close();
     }
 
-    string skillDir = "Assets/ResourcesLibrary/Configs/skill/";
     private void Save()
     {
         if (Application.isPlaying)
             DataMgr.SkillModelEx.ResetSkillInfo(_skillInfo);
         string path = skillDir + _skillInfo.id + ".bytes";
         SaveConfig(_skillInfo, path);
-        Combine();
+        //Combine();
     }
 
     private void Combine()
