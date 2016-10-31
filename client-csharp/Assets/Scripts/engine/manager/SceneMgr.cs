@@ -19,7 +19,6 @@ public class SceneMgr : Singleton<SceneMgr>
             {
                 Camera camera = GameTools.mainCameraGO.AddComponent<Camera>();
                 m_mainCamera = GameTools.mainCameraGO.AddComponent<MainCamera>();
-                m_mainCamera.SetCamera(camera);
             }
             return m_mainCamera;
         }

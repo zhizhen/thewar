@@ -35,16 +35,17 @@ public class SceneBaseView
         // 播放背景音效
 
         //摄像机调整
-        InitCamera();
+        InitCamera(bornTrans);
 
         //加载玩家
         OnRoleInfo();
     }
 
-    virtual public void InitCamera()
+    virtual public void InitCamera(Transform bornTrans)
     {
-        var bornPos = Vector3.zero;
-        SceneMgr.Instance.mainCamera.LookAt(bornPos);
+        //var bornPos = Vector3.zero;
+        //SceneMgr.Instance.mainCamera.DetachFromParent(bornPos);
+        //SceneMgr.Instance.mainCamera.LookAt(bornPos);
     }
 
     public void OnChangeScene()
@@ -58,7 +59,12 @@ public class SceneBaseView
         mainRole = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
         mainRole.transform.parent = bornTrans;
         mainRole.SetExtraInfo();
-        mainRole.LoadRes();
+        mainRole.LoadRes(
+            (mainEnt, kArg) =>
+            {
+
+            }
+            );
     }
 
     protected Transform GetTransform(string name)
