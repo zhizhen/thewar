@@ -37,7 +37,7 @@ public class SkillEditor : BaseEditorWindow
         if (GUILayout.Button("加载配置"))
             LoadSkillInfo();
         if (GUILayout.Button("添加事件"))
-            SkillUtils.InstanceEvent(Skill_EVENT_TYPE.动作, _skillInfo, null, 0, 0);
+            SkillUtils.InstanceEvent(SKILL_EVENT_TYPE.动作, _skillInfo, null, 0, 0);
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("保存"))
             Save();

@@ -41,4 +41,43 @@ public class FileTools
         FileInfo fi = new FileInfo(filePath);
         return fi.Name;
     }
+
+    public static string[] GetFileNames(string directoryPath)
+    {
+        if (!Directory.Exists(directoryPath))
+        {
+            throw new FileNotFoundException();
+        }
+        return Directory.GetFiles(directoryPath);
+    }
+
+    public static string[] GetFileNames(string directoryPath, string searchPattern, bool isSearchChild)
+    {
+        List<string> mList = new List<string>();
+        string[] exits = searchPattern.Split('|');
+        if (!Directory.Exists(directoryPath))
+            throw new FileNotFoundException();
+        try
+        {
+            if (isSearchChild)
+            {
+                for (int i = 0; i < exits.Length; i++)
+                {
+                    mList.AddRange(Directory.GetFiles(directoryPath, exits[i], SearchOption.AllDirectories));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < exits.Length; i++)
+                {
+                    mList.AddRange(Directory.GetFiles(directoryPath, exits[i], SearchOption.TopDirectoryOnly));
+                }
+            }
+            return mList.ToArray();
+        }
+        catch (IOException ex)
+        {
+            throw ex;
+        }
+    }
 }
