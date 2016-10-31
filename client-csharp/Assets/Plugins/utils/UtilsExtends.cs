@@ -39,4 +39,25 @@ public static class UtilsExtends
             dic[t1].Remove(t2);
     }
 
+    public static void ResetAll(this GameObject kGO)
+    {
+        kGO.ResetLocalPosition();
+        kGO.ResetLocalRotation();
+        kGO.ResetLocalScale();
+    }
+
+    public static void ResetLocalPosition(this GameObject kGO)
+    {
+        kGO.transform.localPosition = Vector3.zero;
+    }
+
+    public static void ResetLocalRotation(this GameObject kGO)
+    {
+        kGO.transform.localRotation = Quaternion.identity;
+    }
+
+    public static void ResetLocalScale(this GameObject kGO)
+    {
+        kGO.transform.localScale = Vector3.one;
+    }
 }

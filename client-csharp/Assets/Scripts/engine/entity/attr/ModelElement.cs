@@ -5,7 +5,10 @@ using Engine;
 
 public class ModelElement : GlobalBase
 {
+    private GameObject m_kGO = null;
     private string m_strURL = null;
+
+    private Renderer[] renderers;
 
     public ModelElement(EntityBase own): base(own)
     {
@@ -19,6 +22,13 @@ public class ModelElement : GlobalBase
         m_strURL = URLConst.GetModel(own.attr.prefabId.ToString());
         ModelMgr.Instance.GetModel(m_strURL, delegate (GameObject kGO, object kArg)
         {
+            m_kGO = kGO;
+            renderers = m_kGO.GetComponentsInChildren<Renderer>();
+
+            var transform = m_kGO.transform;
+            own.ReplaceModel(transform);
+            own.SetActive(true);
+
 			loadCompleted(kGO, kArg);
         });
     }

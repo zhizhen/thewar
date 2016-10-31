@@ -70,7 +70,6 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
 
             Resource resPrefab = ResourceMgr.Instance.GetResource(URLConst.GetScenePrefab(m_sceneId));
             m_kScenePrefab = GameObjectExt.Instantiate(resPrefab.MainAsset, true) as GameObject;
-            //m_kScenePrefab.transform.parent = GameObject.Find("scene1003").transform;
             GameObject.DontDestroyOnLoad(m_kScenePrefab);
             resPrefab.Destory(false, true);
             DownLoadCompleteAll();

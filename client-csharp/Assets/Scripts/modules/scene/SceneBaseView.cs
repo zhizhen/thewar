@@ -26,6 +26,8 @@ public class SceneBaseView
         gameObject = SceneMgr.Instance.curSceneGO;
         transform = gameObject.transform;
         propsProxy = transform.GetComponent<PropsProxy>();
+        playerTrans = GetTransform("player");
+        bornTrans = GetTransform("born");
 
         // 显示主界面
         ContextManager.Instance.Push(new MainMenuContext());
@@ -54,6 +56,19 @@ public class SceneBaseView
     {
         EntityBase mainRole;
         mainRole = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
+        mainRole.transform.parent = bornTrans;
+        mainRole.SetExtraInfo();
         mainRole.LoadRes();
+    }
+
+    protected Transform GetTransform(string name)
+    {
+        Transform trans = transform.Find(name);
+        if (trans == null)
+        {
+            trans = new GameObject(name).transform;
+            trans.parent = transform;
+        }
+        return trans;
     }
 }

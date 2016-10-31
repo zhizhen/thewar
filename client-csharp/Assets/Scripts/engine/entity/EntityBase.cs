@@ -73,4 +73,33 @@ public class EntityBase : IAIHost
     {
 		kGO.SetActiveRecursively (true);
     }
+
+    public void ReplaceModel(Transform trans)
+    {
+        if (m_Transform == null && m_DefaultTransform != null)
+        {
+            trans.parent = m_DefaultTransform.parent;
+            trans.gameObject.ResetAll();
+            trans.position = m_DefaultTransform.position;
+            trans.rotation = m_DefaultTransform.rotation;
+            trans.localScale = m_DefaultTransform.localScale;
+            trans.name = m_DefaultTransform.name;
+
+            GameObjectExt.Destroy(m_DefaultTransform.gameObject);
+            m_Transform = trans;
+            m_DefaultTransform = null;
+        }
+        else
+            throw new ArgumentException(string.Format("m_Transform={0},m_DefaultTransform={1}", m_Transform, m_DefaultTransform));
+    }
+
+    public void SetActive(bool boo)
+    {
+        elem.SetActive(boo);
+    }
+
+    public void SetExtraInfo()
+    {
+        transform.name = "123456";
+    }
 }
