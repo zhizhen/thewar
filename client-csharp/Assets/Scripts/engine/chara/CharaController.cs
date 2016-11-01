@@ -84,8 +84,10 @@ public class CharaController : Singleton<CharaController>, ITick
         mTrans = EntityMainRole.Instance.transform;
         mStats = mTrans.gameObject.GetComponent<GameShip>();
         mCannons = mTrans.gameObject.GetComponentsInChildren<Cannon>();
+        // 碰撞点
         Transform point = mTrans.FindChild("Raycast Point");
         raycastPoints.Add(point);
+        // 碰撞检测层
         raycastMask.value = (1 << LayerMask.NameToLayer("Terrain")) | (1 << LayerMask.NameToLayer("Ship"));
         TickMgr.Instance.AddTick(this);
     }
