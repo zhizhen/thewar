@@ -17,6 +17,7 @@ public class MainCamera : MonoBehaviourExt
     Transform mTrans;
     Vector3 mPos;
     Quaternion mRot;
+    public Camera camera { get; set; }
     public Vector3 position { get { return transform.position; } set { transform.position = value; } }
 
     /// <summary>
@@ -126,5 +127,10 @@ public class MainCamera : MonoBehaviourExt
         flatDirection = direction;
         flatDirection.y = 0f;
         flatDirection.Normalize();
+    }
+
+    public void SetCamera(Camera kCamera)
+    {
+        camera = kCamera;
     }
 }
