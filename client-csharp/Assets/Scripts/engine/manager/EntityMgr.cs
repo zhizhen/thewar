@@ -26,6 +26,7 @@ public class EntityMgr : Singleton<EntityMgr>
     public void Creator()
     {
         m_dicEntityCreator[CONST_ENTITY_TYPE.MAIN_ROLE] = EntityMainRole.Creator;
+        GlobalTimer.Instance.update += OnUpdate;
     }
 
     public EntityBase CreateEntity(CONST_ENTITY_TYPE etype, uint roleId = 0)
@@ -48,7 +49,7 @@ public class EntityMgr : Singleton<EntityMgr>
             m_dicEntityCache.Remove(etype, roleId);
         kEntity.roleId = roleId;
         RealAddEntity(kEntity);
-        //kEntity.Reset();
+        kEntity.Reset();
         return kEntity;
     }
 
@@ -57,5 +58,19 @@ public class EntityMgr : Singleton<EntityMgr>
         CONST_ENTITY_TYPE type = kEnt.type;
         uint roleId = kEnt.roleId;
         m_dicEntityUpdate.Add(type, roleId, kEnt);
+    }
+
+    public void OnUpdate(float dt)
+    {
+        var enumerator = m_dicEntityUpdate.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            var dic = enumerator.Current.Value;
+            var enu = dic.GetEnumerator();
+            while (enu.MoveNext())
+            {
+                enu.Current.Value.OnUpdate(dt);
+            }
+        }
     }
 }

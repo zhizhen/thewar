@@ -11,9 +11,8 @@ public class RepositionWater : MonoBehaviour
 	void Start ()
 	{
 		mTrans = transform;
-        mCamTrans = SceneMgr.Instance.mainCamera.transform;
-		//mCamTrans = Camera.main.transform;
-	}
+        mCamTrans = Camera.main.transform;
+    }
 
 	void LateUpdate()
 	{

@@ -3,7 +3,7 @@
 [AddComponentMenu("Exploration/Ship Bobble")]
 public class ShipBobble : MonoBehaviour
 {
-	public ShipController control;
+	public CharaController control;
 
 	Transform mTrans;
 	Vector3 mOffset;

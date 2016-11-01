@@ -11,11 +11,14 @@ public class EntityBase : IAIHost
 
     protected ModelAttribute m_ModelAttribute;
     protected ModelElement m_ModelElement;
+    protected bool m_isReleased;
+    private bool _isDead = false;
 
     public virtual byte realm { get; set; }
     public uint roleId { get; set; }
     public CONST_ENTITY_TYPE type { get { return attr.type; } }
     public bool IsLoaded { get; set; }
+
     public Transform transform
     {
         get
@@ -57,6 +60,18 @@ public class EntityBase : IAIHost
         }
     }
 
+    public static EntityBase Creator()
+    {
+        return new EntityBase();
+    }
+
+    public virtual void OnUpdate(float dt)
+    {
+        if (m_isReleased) return;
+        //if (m_ModelAttribute != null) m_ModelAttribute.OnUpdate();
+        if (m_ModelElement != null) m_ModelElement.OnUpdate(dt);
+    }
+
     public void LoadRes(Action<EntityBase, object> OnComplete = null, bool resetRes = false)
     {
         elem.LoadRes(
@@ -96,6 +111,12 @@ public class EntityBase : IAIHost
     public void SetActive(bool boo)
     {
         elem.SetActive(boo);
+    }
+
+    public void Reset()
+    {
+        m_isReleased = false;
+        _isDead = false;
     }
 
     public void SetExtraInfo()

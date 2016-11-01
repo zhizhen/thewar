@@ -27,10 +27,10 @@ public class SceneMgr : Singleton<SceneMgr>
     public void Init()
     {
         m_Scenes = new Dictionary<int, SceneBaseView>();
-        OnSceneReadyToChange("1004");
+        EnterScene("1004");
     }
 
-    private void OnSceneReadyToChange(string sceneId)
+    private void EnterScene(string sceneId)
     {
         Action<GameObject> fnLoadFinish = delegate (GameObject kSceneGO)
         {
@@ -46,6 +46,9 @@ public class SceneMgr : Singleton<SceneMgr>
             }
             if (_baseView != null)
                 _baseView.OnChangeScene();
+#if UNITY_EDITOR
+            //MouseMgr.Instance.Run();
+#endif
         };
         SceneLoaderMgr.Instance.Load(sceneId, fnLoadFinish);
     }

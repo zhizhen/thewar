@@ -6,9 +6,8 @@ public class GameCameraTarget : MonoBehaviour
 	public void Activate (bool val)
 	{
 		if (val)
-            SceneMgr.Instance.mainCamera.target = transform;
-        //MainCamera.AddTarget(transform);
-        else MainCamera.RemoveTarget(transform);
+            GameCamera.AddTarget(transform);
+        else GameCamera.RemoveTarget(transform);
 	}
 
 	void OnEnable  () { Activate(true);  }

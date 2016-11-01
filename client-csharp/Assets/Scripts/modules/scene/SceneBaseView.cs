@@ -62,7 +62,8 @@ public class SceneBaseView
         mainRole.LoadRes(
             (mainEnt, kArg) =>
             {
-
+                Debug.Log("角色初始成功!");
+                CharaController.Instance.Init();
             }
             );
     }
