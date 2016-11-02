@@ -152,7 +152,7 @@ public class CharaController : Singleton<CharaController>, ITick
         mInput.x = Input.GetAxis("Horizontal");
 #else
         mInput.x = Input.acceleration.x;
-        mInput.y = - Input.acceleration.y;
+        mInput.y = Mathf.Abs(Input.acceleration.y);
 #endif
 
         // Fire the cannons
