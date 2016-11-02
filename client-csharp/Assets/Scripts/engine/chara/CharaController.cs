@@ -143,11 +143,17 @@ public class CharaController : Singleton<CharaController>, ITick
     /// <summary>
     /// Update the input (used when ship is controlled by the player).
     /// </summary>
+  
 
     void UpdateInput()
     {
+#if UNITY_EDITOR
         mInput.y = Mathf.Clamp01(Input.GetAxis("Vertical"));
         mInput.x = Input.GetAxis("Horizontal");
+#else
+        mInput.x = Input.acceleration.x;
+        mInput.y = - Input.acceleration.y;
+#endif
 
         // Fire the cannons
         if (mCannons != null && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.JoystickButton0)))

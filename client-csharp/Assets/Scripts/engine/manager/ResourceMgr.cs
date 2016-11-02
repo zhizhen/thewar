@@ -118,13 +118,18 @@ namespace Engine
 
         public void LoadResource(Resource resource)
         {
-            //StartCoroutine(LoadAsync(resource));
-			if (resource.IsLoading || IsDone(resource.BundlePath))
-				return;
-			resource.IsLoading = true;
-			BeginDownLoad();
-			StartCoroutine(LoadWWWAsync(resource));
-			resource.DownLoadEnd();
+            StartCoroutine(LoadAsync(resource));
+			
+        }
+
+        public IEnumerator LoadAsync(Resource resource)
+        {
+            if (resource.IsLoading || IsDone(resource.BundlePath))
+                yield break;
+            resource.IsLoading = true;
+            BeginDownLoad();
+            yield return StartCoroutine(LoadWWWAsync(resource));
+            resource.DownLoadEnd();
         }
 
         private IEnumerator LoadWWWAsync(Resource resource)
@@ -139,6 +144,7 @@ namespace Engine
             yield return www;
             if (www.error == null)
             {
+                Debug.Log("加载完成:" + url);
                 FinishDownLoad();
                 resource.IsLoading = false;
             }

@@ -38,6 +38,13 @@ public class GameApp : MonoBehaviour
             step++;
         }
     }
+    
+    //void OnGUI()
+    //{
+
+    //    GUI.Box(new Rect(5, 80, 100, 20), string.Format("{0:0.000}", Input.GetAxis("Horizontal")));
+    //    GUI.Box(new Rect(5, 105, 100, 20), string.Format("{0:0.000}", Mathf.Clamp01(Input.GetAxis("Vertical"))));
+    //}
 
     private void ShowLoadingBar()
     {
