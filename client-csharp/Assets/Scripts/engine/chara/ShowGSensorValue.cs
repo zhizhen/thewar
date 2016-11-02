@@ -3,9 +3,6 @@ using System.Collections;
 
 public class ShowGSensorValue : MonoBehaviour {
 
-    public Rigidbody Target = null;
-    public float ForceFactor = 10.0f;
-
     // Use this for initialization
     void Start () {
 	
@@ -15,15 +12,6 @@ public class ShowGSensorValue : MonoBehaviour {
 	void Update () {
 	
 	}
-
-    // Update is called once per frame  
-    void FixedUpdate()
-    {
-        if (Target != null)
-        {
-            Target.AddForce(new Vector3(Input.acceleration.x, Input.acceleration.z, Input.acceleration.y) * ForceFactor, ForceMode.Force);
-        }
-    }
 
     void OnGUI()
     {
