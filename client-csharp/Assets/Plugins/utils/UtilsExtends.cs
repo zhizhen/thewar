@@ -60,4 +60,12 @@ public static class UtilsExtends
     {
         kGO.transform.localScale = Vector3.one;
     }
+
+    public static T GetValue<K, T>(this Dictionary<K, T> dic, K k)
+
+    {
+        T t;
+        dic.TryGetValue(k, out t);
+        return t;
+    }
 }

@@ -89,4 +89,12 @@ namespace Engine
         矩形 = 3,
         射线 = 4,
     }
+
+    public struct SkillStateData
+    {
+        public SKILL_STATE_TYPE stateType;
+        public float beginTime;
+        public float duration;
+        public float triggerCD;
+    }
 }

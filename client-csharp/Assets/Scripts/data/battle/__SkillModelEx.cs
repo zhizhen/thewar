@@ -19,4 +19,9 @@ public class __SkillModelEx : BaseModel
         m_dicSkillInfo[skillInfo.id] = skillInfo;
     }
 #endif
+
+    public SkillInfo GetSkillInfo(int id)
+    {
+        return m_dicSkillInfo.GetValue(id);
+    }
 }
