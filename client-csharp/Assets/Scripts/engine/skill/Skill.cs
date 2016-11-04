@@ -77,7 +77,7 @@ public class Skill
             {
                 for (int j = 0; i < bse.times; ++j)
                 {
-                    SkillProgress sp = SkillProgressMgr.Instance.GetSkillProgress(false);
+                    SkillProgress sp = SkillProgressCtrl.Instance.GetSkillProgress(false);
                     _spList.Add(sp);
                     sp.InitEvt(bse, _id, bse.time + bse.interval * j, num, group);
                     ++num;

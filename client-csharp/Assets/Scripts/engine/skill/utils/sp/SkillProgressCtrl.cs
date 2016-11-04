@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Engine
 {
-    public class SkillProgressMgr : Singleton<SkillProgressMgr>
+    public class SkillProgressCtrl : Singleton<SkillProgressCtrl>
     {
         private List<SkillProgress> _cacheList;
         private SkillProgress _RootActive;
@@ -12,7 +12,7 @@ namespace Engine
         private const int DEFAULT_CAPACITY = 500;
         private float _lastTime;
 
-        public SkillProgressMgr()
+        public SkillProgressCtrl()
         {
             _cacheList = new List<SkillProgress>();
             _reclaimList = new List<SkillProgress>();
