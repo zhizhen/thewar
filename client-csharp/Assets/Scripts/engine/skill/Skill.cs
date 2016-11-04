@@ -85,11 +85,16 @@ public class Skill
             }
             else
             {
-                SkillProgress sp = SKillProgressMgr.Instance.GetSkillProgress(false);
+                SkillProgress sp = SkillProgressCtrl.Instance.GetSkillProgress(false);
                 _spList.Add(sp);
                 sp.InitEvt(bse, _id, bse.time, num, group);
                 ++num;
             }
         }
+    }
+
+    public void Begin(Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos, EntityBase target)
+    {
+
     }
 }

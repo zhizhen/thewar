@@ -25,5 +25,12 @@ namespace Engine
             }
             _lastTime = Time.time;
         }
+
+        public SkillProgress GetSkillProgress(bool addToUpdateList)
+        {
+            SkillProgress sp = null;
+            sp = new SkillProgress();
+            return sp;
+        }
     }
 }

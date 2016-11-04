@@ -20,5 +20,10 @@ namespace Engine
             if (_id <= 0)
                 _id = ++_gid;
         }
+
+        public void InitEvt(BaseSkillEvent evt, int skillId, float delay, int spid, int group)
+        {
+
+        }
     }
 }
