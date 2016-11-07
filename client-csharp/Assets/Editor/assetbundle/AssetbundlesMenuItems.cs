@@ -11,7 +11,7 @@ public class AssetbundlesMenuItems
     private static XmlDocument bundleDependDoc = null; 
     private static int operateMode = 0;
     private static readonly string bundleVersionPath = Application.dataPath + "/ResourcesLibrary/Configs/bundleversion.xml";
-    const string kSimulateAssetBundlesMenu = "AssetBundles/Simulate AssetBundles";
+	const string kSimulateAssetBundlesMenu = "Game Tools/资源打包/Simulate AssetBundles";
     public const string ASSET_SHADER_PATH = "Assets/Shaders";
     private static readonly string bundleExportFolder = Application.dataPath + "StreamingAssets/Android/";
     private static readonly List<string> canSingleBundle = new List<string>
@@ -44,24 +44,17 @@ public class AssetbundlesMenuItems
         return true;
     }
 
-
-    [MenuItem("AssetBundles/Build Shader")]
+    [MenuItem("Game Tools/资源打包/Build Shader")]
     public static void BuildShader()
     {
         SingleBundle(ASSET_SHADER_PATH, "Android/shaders.ui") ;
         Debug.Log("打包Shader文件夹完成!");
     }
 
-    [MenuItem("AssetBundles/Build AssetBundles")]
+    [MenuItem("Game Tools/资源打包/Build AssetBundles")]
     static public void BuildAssetBundles()
     {
         BuildScript.BuildAssetBundles();
-    }
-
-    [MenuItem("AssetBundles/Build Player")]
-    static void BuildPlayer()
-    {
-        BuildScript.BuildPlayer();
     }
 
     private static bool SingleBundle(string assetPath, string assetBundleName)

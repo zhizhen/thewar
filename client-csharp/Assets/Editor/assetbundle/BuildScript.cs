@@ -29,31 +29,6 @@ public class BuildScript
         BuildPipeline.BuildAssetBundles(outputPath, 0, EditorUserBuildSettings.activeBuildTarget);
     }
 
-    public static void BuildPlayer()
-    {
-        var outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
-        if (outputPath.Length == 0)
-            return;
-
-        string[] levels = GetLevelsFromBuildSettings();
-        if (levels.Length == 0)
-        {
-            Debug.Log("Nothing to build.");
-            return;
-        }
-
-        string targetName = GetBuildTargetName(EditorUserBuildSettings.activeBuildTarget);
-        if (targetName == null)
-            return;
-
-        // Build and copy AssetBundles.
-        BuildScript.BuildAssetBundles();
-        BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, kAssetBundlesOutputPath));
-
-        BuildOptions option = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
-        BuildPipeline.BuildPlayer(levels, outputPath + targetName, EditorUserBuildSettings.activeBuildTarget, option);
-    }
-
     public static string GetBuildTargetName(BuildTarget target)
     {
         switch (target)
