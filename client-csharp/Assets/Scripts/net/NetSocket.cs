@@ -22,6 +22,7 @@ namespace Engine
 		public string ip { get; set; }
 		private Socket _socket;
 		private Thread th;
+		public Action<bool> callBack;
 
 		public NetSocket ()
 		{
@@ -32,10 +33,11 @@ namespace Engine
 			return _socket != null && _socket.Connected;
 		}
 
-		public virtual void connect(string ip, int port) {
+		public virtual void connect(string ip, int port, Action<bool> connected) {
 			CloseAndClear ();
 			this.ip = ip;
 			this.port = port;
+			this.callBack = connected;
 			_socket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			IAsyncResult result = _socket.BeginConnect (ip, port, connectedCallback, null);
 		}
@@ -88,9 +90,15 @@ namespace Engine
 			if (connected ()) {
 				_socket.EndConnect (ar);
 				Debug.LogError ("connect success!");
+				if (this.callBack != null)
+					this.callBack (true);
 				startRecv ();
-			} else {
+			} 
+			else 
+			{
 				Debug.LogError ("connect failed!");
+				if (this.callBack != null)
+					this.callBack (false);
 			}
 		}
 

@@ -15,7 +15,7 @@ public class m__proto__test__s2c : ProtoBase
     public List<p_test> v10 = new List<p_test> ();
     public m__proto__test__s2c()
     {
-        proto_id = 1001;
+        proto_id = 999;
     }
     public override void read(ByteArray byteArray)
     {

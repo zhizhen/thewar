@@ -27,7 +27,7 @@ message p_test {
 // 协议部分
 //-------------------------------------
 message m__proto__test__c2s {
-    required int32 msg_id [default = 1000];
+    required int32 msg_id [default = 998];
     required byte v1;
     required short v2;
     required ushort v3;
@@ -41,7 +41,7 @@ message m__proto__test__c2s {
 }
 
 message m__proto__test__s2c {
-    required int32 msg_id [default = 1001];
+    required int32 msg_id [default = 999];
     required byte v1;
     required short v2;
     required ushort v3;
@@ -52,4 +52,8 @@ message m__proto__test__s2c {
     required p_test v8;
     repeated int32 v9;
     repeated p_test v10;
+}
+
+message m__system__heartbeat__c2s {
+    required int32 msg_id [default = 1000];
 }

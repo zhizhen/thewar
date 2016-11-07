@@ -1,16 +1,17 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 namespace Engine {
-	public class NetMgr {
+	public class NetMgr : Singleton<NetMgr> , ITick
+	{
 		private string ip_;
 		private int port_;
 		public NetSocket net;
-
+		private float t = 0;
 		public LockedPool<ByteArray> byteArrayPool = new LockedPool<ByteArray>(16);
 
-		private NetMgr(){
+		public NetMgr(){
 #if UNITY_WEBGL
 			net = new WebNetSocket ();
 #else
@@ -18,26 +19,19 @@ namespace Engine {
 #endif
         }
 
-		private static NetMgr _instance;
-		public static NetMgr Instance {
-			get {
-				if (_instance == null) {
-					_instance = new NetMgr ();
-				}
-				return _instance;
-			}
-		}
-		public static NetMgr GetInstance() {
-			return Instance;
-		}
-
 		public void connect(string ip, int port) {
 			if (net != null) {
 				ip_ = ip;
 				port_ = port;
 				Debug.Log ("connect server : " + ip + ", port : " + port);
-				net.connect (ip, port);
+				net.connect (ip, port, connected);
 			}
+		}
+
+		public void connected(bool success)
+		{
+			if (success)
+				TickMgr.Instance.AddTick (this);
 		}
 
 		public void send(ProtoBase proto) {
@@ -46,6 +40,15 @@ namespace Engine {
 
 		public void send(ByteArray byteArray) {
 			net.send(byteArray);
+		}
+
+		public void OnTick(float dt)
+		{
+			t += dt;
+			if (t > 5) {
+				t = 0;
+				Debug.Log ("heart beat tick : " + dt);
+			}
 		}
 	}
 }

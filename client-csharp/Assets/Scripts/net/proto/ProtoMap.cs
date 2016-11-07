@@ -21,11 +21,13 @@ namespace Engine
                 return null;
             }
         }
-        public static readonly int m__proto__test__c2s = 1000;
-        public static readonly int m__proto__test__s2c = 1001;
+        public static readonly int m__system__heartbeat__c2s = 1000;
+        public static readonly int m__proto__test__c2s = 998;
+        public static readonly int m__proto__test__s2c = 999;
         public ProtoMap()
         {
             m_DicProtoType = new Dictionary<int, Type>();
+            m_DicProtoType[m__system__heartbeat__c2s] = typeof(m__system__heartbeat__c2s);
             m_DicProtoType[m__proto__test__c2s] = typeof(m__proto__test__c2s);
             m_DicProtoType[m__proto__test__s2c] = typeof(m__proto__test__s2c);
         }

@@ -11,15 +11,17 @@ namespace Engine
         private WebSocket _socket;
         private readonly byte[] _headBuffer;
         private byte[] _bodyBuffer;
+		public Action<bool> callBack;
 
         public WebNetSocket()
         {
             _headBuffer = new byte[4];
         }
 
-        public override void connect(string host, int port)
+		public override void connect(string host, int port, Action<bool> connected)
         {
             close();
+			this.callBack = connected;
             SimpleLoader.Instance.StartCoroutine(WebSocketConnect(host, port));
         }
 
@@ -63,6 +65,7 @@ namespace Engine
         private void OnRecvFromSocket()
         {
             Debug.Log("WebSocket 连接成功！！！");
+			this.callBack (true);
             while(true)
             {
                 if (!connected())

@@ -15,7 +15,7 @@ public class m__proto__test__c2s : ProtoBase
     public List<p_test> v10 = new List<p_test> ();
     public m__proto__test__c2s()
     {
-        proto_id = 1000;
+        proto_id = 998;
     }
     public override void write(ByteArray byteArray)
     {
