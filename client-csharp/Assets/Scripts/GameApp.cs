@@ -18,106 +18,86 @@ public class GameApp : MonoBehaviour
     // Use this for initialization
     void Start () {
         //NetMgr.GetInstance ().connect ("113.105.250.96", 12000);
-        Driver.InitApp(gameObject);
-        OnLoadUILoading();
-        //EnterGame();
-    }
-
-    private void OnLoadUILoading()
-    {
-        UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
-        UILoading.ShowLoading();
-
-        LoadNeedRes();
+        gameObject.AddComponent<GlobalTimer>();
+        GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
+        ShowLoadingBar();
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    if(showProgress)
+        if (!showProgress) return;
+        OnProgress();
+        if (isCompletedLoad)
         {
-            OnProgress();
-            if (resStep >= resTotal)
-            {
-                if (isCompletedLoad)
-                {
-                    OnCompleteLoaded();
-                    return;
-                }
-                if(step < frameActions.Length)
-                {
-                    frameActions[step]();
-                    step++;
-                }
-            }
+            OnCompleteLoaded();
+            return;
         }
-	}
+        if (step < frameActions.Length)
+        {
+            frameActions[step]();
+            step++;
+        }
+    }
+    
+    //void OnGUI()
+    //{
+
+    //    GUI.Box(new Rect(5, 80, 100, 20), string.Format("{0:0.000}", Input.GetAxis("Horizontal")));
+    //    GUI.Box(new Rect(5, 105, 100, 20), string.Format("{0:0.000}", Mathf.Clamp01(Input.GetAxis("Vertical"))));
+    //}
+
+    private void ShowLoadingBar()
+    {
+        UILoading.subTitle = "正在加载中，请耐心等待，<color=yellow>（此加载不消耗流量）</color>";
+        UILoading.ShowLoading();
+
+        gameObject.AddComponent<ResourceMgr>();
+        ResourceMgr.Instance.InitFunc = () =>
+        {
+            otherStep++;
+            OnNeedResLoaded(new object());
+            ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
+                ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
+        };
+    }
 
     private void OnCompleteLoaded()
     {
         showProgress = false;
         UILoading.CloseLoading();
-
-        //GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
-        //GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
-        //GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
-
-        //GameObject panel = ResourceMgr.Instance.GetGameObject("uiinputaccount.ui", "UIInputAccount");
-        //panel.transform.SetParent(UICanvas.transform);
-        //panel.transform.localPosition = new Vector3(0, 0, 0);
-        //panel.transform.localScale = new Vector3(1, 1, 1);
-        //Canvas canvas = panel.GetComponent<Canvas>();
-        //Camera camera = UICamera.GetComponent<Camera>();
-        //canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        //canvas.worldCamera = camera;
-
-        ContextManager.GetInstance ();
+        EnterGame();
     }
 
     private void OnProgress()
     {
-        resStep++;
         var curStep = step + resStep + otherStep;
         var totalStep = resTotal + frameActions.Length + otherTotal; //4 + 4 + 2
         UILoading.percent = curStep * 1.0f / totalStep;
-        if (curStep >= totalStep) isCompletedLoad = true;
-    }
-
-    private void LoadNeedRes()
-    {
-        gameObject.AddComponent<ResourceMgr>();
-       ResourceMgr.Instance.bundleVersionLoaded = () =>
-       {
-            otherStep++;
-            OnNeedResLoaded(new object());
-            //ResourceMgr.Instance.DownLoadBundles(URLConst.listInitGameRes.ToArray(), OnNeedResLoaded,
-            //    ResourceMgr.DEFAULT_PRIORITY, OnDownLoadCallBack);
-       };
+        if (curStep >= totalStep)
+            isCompletedLoad = true;
     }
 
     private void OnNeedResLoaded(object userdata)
     {
         otherStep++;
-        EnterGame();
     }
 
-    private void OnDownLoadCallBack(Resources res, int listCount, int index)
+    private void OnDownLoadCallBack(Resource res, int listCount, int index)
     {
-#if _DEBUG
-        resTotal = listCount - 1;
-#else
         resTotal = listCount + index;
-#endif
         resStep = index;
     }
 
     private void EnterGame()
     {
         InitUGUIMain();
+        ContextManager.GetInstance();
     }
 
     private void InitUGUIMain()
     {
-        GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        //GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
+        GameObject UIRootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
         GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
         GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
         GameTools.CanvasCamera = UICamera.GetComponent<Camera>();

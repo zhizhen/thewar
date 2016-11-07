@@ -32,4 +32,11 @@ public class GameObjectExt
         }
         return copyObject;
     }
+
+    public static void Destroy(Object original)
+    {
+        if (original == null) return;
+        Debug.Log("删除Instantiate对象:" + original);
+        GameObject.Destroy(original);
+    }
 }

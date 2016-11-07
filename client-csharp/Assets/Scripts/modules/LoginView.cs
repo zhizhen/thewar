@@ -14,7 +14,7 @@ namespace Engine
 		}
 	}
 
-	public class LoginView : AnimateView
+	public class LoginView : BaseView
 	{
 
 		[SerializeField]
@@ -25,39 +25,47 @@ namespace Engine
 			Debug.Log ("on enter");
             Button btn = _buttonOption.GetComponent<Button>();
             btn.onClick.AddListener(LoginCallBack);
-            base.OnEnter(context);
         }
 
 		public override void OnExit(BaseContext context)
 		{
-			Debug.Log ("on exist");
-			base.OnExit(context);
+            gameObject.SetActive(false);
+            Debug.Log ("on exist");
 		}
 
 		public override void OnPause(BaseContext context)
 		{
 			Debug.Log ("on pause");
-			//_animator.SetTrigger("OnExit");
-		}
+            gameObject.SetActive(false);
+        }
 
 		public override void OnResume(BaseContext context)
 		{
 			Debug.Log ("on resume");
-			//_animator.SetTrigger("OnEnter");
 		}
 
 
         public void LoginCallBack()
         {
             Debug.Log("on button click");
-            SceneManager.sceneLoaded += OnComplete;
-            SceneManager.LoadScene("Scene1002");
-            ContextManager.Instance.Push(new MainMenuContext());
+            //SceneManager.sceneLoaded += OnComplete;
+            //SceneManager.LoadScene("Scene1003");
+            SceneMgr.Instance.Init();
+        }
+
+        public void CreatePlayer()
+        {
+			//GameObject go = ResourceMgr.Instance.GetGameObject("tank.model", "tank");
+			//go.AddComponent<CameraControl> ();
+			//CameraControl c = go.GetComponent ("CamaraControl") as CameraControl;
+			//c.lookAtTarget = go.transform;
+			//go.transform.parent = GameObject.Find("Scene1002").transform;
         }
 
         public void OnComplete(Scene scene, LoadSceneMode mode)
         {
 
+			//CreatePlayer();
         }
 	}
 }

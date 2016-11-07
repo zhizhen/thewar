@@ -1,5 +1,5 @@
 Library
-./AssetBundles
+Assets/StreamingAssets/*
 ProjectSettings
 Temp
 obj

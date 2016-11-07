@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- *	
- *  Manage Context For UI Stack
- *
- *	by Xuanyi
- *
- */
-
 namespace Engine
 {
 	public class ContextManager : Singleton<ContextManager>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Game.UI;
+using GAMEUI;
 using UnityEngine.UI;
 
 public class UILoading :SingletonMonoBehaviour<UILoading>
@@ -68,6 +68,9 @@ public class UILoading :SingletonMonoBehaviour<UILoading>
 
     private static void SetActive(bool boo)
     {
-        if (_gameObject != null) { _gameObject.SetActive(boo); }
+        if (_gameObject != null)
+        {
+            _gameObject.SetActive(boo);
+        }
     }
 }

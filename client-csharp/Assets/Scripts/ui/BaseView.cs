@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- *	
- *  Base View
- *
- *	by Xuanyi
- *
- */
-
 namespace Engine
 {
 	public abstract class BaseView : MonoBehaviour

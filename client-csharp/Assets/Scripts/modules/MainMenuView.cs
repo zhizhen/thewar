@@ -13,7 +13,7 @@ namespace Engine
 		}
 	}
 
-	public class MainMenuView : AnimateView
+	public class MainMenuView : BaseView
 	{
 
 		[SerializeField]
@@ -24,25 +24,21 @@ namespace Engine
 		public override void OnEnter(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			//base.OnEnter(context);
 		}
 
-		public override void OnExit(BaseContext context)
+		public void OnExit(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			base.OnExit(context);
 		}
 
 		public override void OnPause(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			_animator.SetTrigger("OnExit");
 		}
 
 		public override void OnResume(BaseContext context)
 		{
 			Debug.Log ("on enter");
-			_animator.SetTrigger("OnEnter");
 		}
 
 		public void OptionCallBack()

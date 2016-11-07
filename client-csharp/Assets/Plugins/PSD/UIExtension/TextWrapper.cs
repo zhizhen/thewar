@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.UI
+namespace GAMEUI
 {
     public class TextWrapper : Text, ISerializationCallbackReceiver
     {
