@@ -24,5 +24,9 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    Port = 8000,
+    TcpOpts = [{port, Port}, {nodelay, true}],
+    ListenerSpec = ranch:child_spec(reader, 2, ranch_tcp, TcpOpts, reader, []),
+    Childs = [ListenerSpec],
+    {ok, { {one_for_one, 5, 10}, Childs} }.
 

@@ -10,8 +10,8 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
+    lager:set_loglevel(lager_console_backend, debug),
     lager:info("Application start!!!"),
-%    ok = protobuffs_compile:scan_file("example.proto"),
     ok = start_websocket(),
     gate_sup:start_link().
 
