@@ -18,4 +18,18 @@ public class EntityMainRole : EntityPlayer
     {
         attr.type = CONST_ENTITY_TYPE.MAIN_ROLE;
     }
+
+    public void RoleUseSkill(int skillPos)
+    {
+        int id = 123;
+        int lv = 1;
+        UseSkill(id, lv, null, null, null, null);
+    }
+
+    public override bool UseSkill(int id, int lv, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)
+    {
+        bool result = false;
+        result = base.UseSkill(id, lv, target, preBeginPos, preBeginDir, preEndPos);
+        return result;
+    }
 }

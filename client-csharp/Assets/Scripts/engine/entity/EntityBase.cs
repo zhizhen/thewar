@@ -19,6 +19,8 @@ public class EntityBase : IAIHost
     public CONST_ENTITY_TYPE type { get { return attr.type; } }
     public bool IsLoaded { get; set; }
 
+    public SkillCtrl SkillCtrl;
+
     public Transform transform
     {
         get
@@ -58,6 +60,11 @@ public class EntityBase : IAIHost
                 m_ModelElement = new ModelElement(this);
             return m_ModelElement;
         }
+    }
+
+    public EntityBase()
+    {
+        SkillCtrl = new SkillCtrl(this);
     }
 
     public static EntityBase Creator()
@@ -122,5 +129,11 @@ public class EntityBase : IAIHost
     public void SetExtraInfo()
     {
         transform.name = "123456";
+    }
+
+    public virtual bool UseSkill(int id, int lv, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)
+    {
+        SkillCtrl.UseSkill(id, lv, target, preBeginPos, preBeginDir, preEndPos);
+        return true;
     }
 }

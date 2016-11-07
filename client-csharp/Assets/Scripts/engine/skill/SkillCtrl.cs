@@ -20,7 +20,7 @@ public class SkillCtrl : GlobalBase
         _lastTime = Time.time;
     }
 
-    public void UseSkill(int id, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)
+    public void UseSkill(int id, int lv, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)
     {
         Skill skill = CreateSkill(id);
         if (skill != null)
@@ -55,7 +55,7 @@ public class SkillCtrl : GlobalBase
         if (_skillDic.ContainsKey(id))
         {
             int index = _skillDic.GetValue(id);
-            if (index > 0 && index < _skillList.Count)
+            if (index >= 0 && index < _skillList.Count)
                 return _skillList[index];
         }
         return null;

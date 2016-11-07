@@ -15,16 +15,15 @@ namespace Engine
 
 	public class MainMenuView : BaseView
 	{
-
-		[SerializeField]
-		private Button _buttonHighScore;
 		[SerializeField]
 		private Button _buttonOption;
 
 		public override void OnEnter(BaseContext context)
 		{
 			Debug.Log ("on enter");
-		}
+            Button btn = _buttonOption.GetComponent<Button>();
+            btn.onClick.AddListener(FireCallBack);
+        }
 
 		public void OnExit(BaseContext context)
 		{
@@ -41,16 +40,10 @@ namespace Engine
 			Debug.Log ("on enter");
 		}
 
-		public void OptionCallBack()
-		{
-			Debug.Log ("callllllllllllllll");
-			//ContextManager.Instance.Push(new OptionMenuContext());
-		}
-
-		public void HighScoreCallBack()
-		{
-			Debug.Log ("on enter");
-			//ContextManager.Instance.Push(new HighScoreContext());
-		}
-	}
+        public void FireCallBack()
+        {
+            Debug.Log("on button click");
+            EntityMainRole.Instance.RoleUseSkill(1);
+        }
+    }
 }

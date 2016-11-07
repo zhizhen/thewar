@@ -34,6 +34,8 @@ namespace Engine
             set { bundlePath = value; }
         }
 
+        public Dictionary<string, UnityEngine.Object> dicObject { get { return m_kDicObject; } }
+
         public string error { get { return _www != null ? _www.error : string.Empty; } }
 
         public bool IsLoading { get { return isLoading; } set { isLoading = value; } }
@@ -125,15 +127,15 @@ namespace Engine
         {
             tryCount = 0;
             UnReference();
-            //if (unloadAllLoadedAssets)
-            //    UnloadAllLoadedAssets();
-            //else
-            //    UnloadAssetBundle();
+            if (unloadAllLoadedAssets)
+                UnloadAllLoadedAssets();
+            else
+                UnloadAssetBundle();
 
-            //DestoryDepends(unloadAllLoadedAssets, destoryDepends);
+            DestoryDepends(unloadAllLoadedAssets, destoryDepends);
 
-            //if (dependencies != null)
-            //    dependencies.Clear();
+            if (dependencies != null)
+                dependencies.Clear();
         }
 
         private void UnloadAllLoadedAssets()
@@ -144,6 +146,27 @@ namespace Engine
             m_kDicObject.Clear();
             _mainSprite = null;
         }
+        
+        private void UnloadAssetBundle()
+        {
+            if (_www != null)
+            {
+                if (_www.assetBundle != null)
+                    _www.assetBundle.Unload(false);
+            }
+            Dispose();
+        }
 
+        private void DestoryDepends(bool unloadAllLoadedAssets = true, bool destoryDepends = false)
+        {
+            if (destoryDepends && dependencies != null)
+            {
+                for (int i = 0; i < dependencies.Count; i++)
+                {
+                    Resource resource = dependencies[i];
+                    ResourceMgr.Instance.DestoryResource(resource.bundlePath, unloadAllLoadedAssets, destoryDepends);
+                }
+            }
+        }
     }
 }

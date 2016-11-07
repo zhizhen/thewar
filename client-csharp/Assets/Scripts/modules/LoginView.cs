@@ -48,24 +48,7 @@ namespace Engine
         public void LoginCallBack()
         {
             Debug.Log("on button click");
-            //SceneManager.sceneLoaded += OnComplete;
-            //SceneManager.LoadScene("Scene1003");
             SceneMgr.Instance.Init();
-        }
-
-        public void CreatePlayer()
-        {
-			//GameObject go = ResourceMgr.Instance.GetGameObject("tank.model", "tank");
-			//go.AddComponent<CameraControl> ();
-			//CameraControl c = go.GetComponent ("CamaraControl") as CameraControl;
-			//c.lookAtTarget = go.transform;
-			//go.transform.parent = GameObject.Find("Scene1002").transform;
-        }
-
-        public void OnComplete(Scene scene, LoadSceneMode mode)
-        {
-
-			//CreatePlayer();
         }
 	}
 }

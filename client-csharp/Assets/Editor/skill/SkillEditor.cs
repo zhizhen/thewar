@@ -73,12 +73,12 @@ public class SkillEditor : BaseEditorWindow
             DataMgr.SkillModelEx.ResetSkillInfo(_skillInfo);
         string path = skillDir + _skillInfo.id + ".bytes";
         SaveConfig(_skillInfo, path);
-        //Combine();
+        Combine();
     }
 
     private void Combine()
     {
-        string allPath = "Assets/ResourcesLibrary/Configs/skill/SkillConfig.bytes";
+        string allPath = "Assets/Resources/GameAssets/Configs/Skill/SkillConfig.bytes";
         FileStream fs = File.Open(allPath, FileMode.Create);
         CombineCfg(fs, skillDir);
         fs.Close();

@@ -264,5 +264,13 @@ namespace Engine
             if (task != null) task.Dispose();
         }
         
+        public void DestoryResource(string bundlePath, bool unloadAllLoadedAssets = false, bool destoryDepends = false)
+        {
+            if (resources.ContainsKey(bundlePath))
+            {
+                var resource = resources[bundlePath];
+                resource.Destory(unloadAllLoadedAssets, destoryDepends);
+            }
+        }
     }
 }

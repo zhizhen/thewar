@@ -11,6 +11,7 @@ public class URLConst
     public static readonly string SCENE_PATH = "Scenes/";
     public static readonly string MODEL_PATH = "Models/";
     public static readonly string SHADER_CONFIG = "shaders" + EXTEND_ASSETBUNDLE;
+    public static readonly string CONFIG_CONFIG = "configs" + EXTEND_ASSETBUNDLE;
 
     public static string GetUI(string name)
     {
