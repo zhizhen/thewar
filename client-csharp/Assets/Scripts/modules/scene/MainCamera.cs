@@ -78,15 +78,15 @@ public class MainCamera : MonoBehaviourExt
     /// Detach the camera from the specified parent.
     /// </summary>
 
-    public bool DetachFromParent(Transform t)
-    {
-        if (mInstance != null && Tools.IsChild(t, mInstance.mTrans))
-        {
-            mInstance.mTrans.parent = null;
-            return true;
-        }
-        return false;
-    }
+//    public bool DetachFromParent(Transform t)
+//    {
+//        if (mInstance != null && Tools.IsChild(t, mInstance.mTrans))
+//        {
+//            mInstance.mTrans.parent = null;
+//            return true;
+//        }
+//        return false;
+//    }
 
     /// <summary>
     /// Keep a singleton reference.

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Engine;
 
-[RequireComponent(typeof(GameShip))]
 public class CharaController : Singleton<CharaController>, ITick
 {
     // Whether this ship is controlled by player input
@@ -32,8 +31,8 @@ public class CharaController : Singleton<CharaController>, ITick
     float mTargetSteering = 0f;
 
     Transform mTrans;
-    GameShip mStats;
-    Cannon[] mCannons;
+//    GameShip mStats;
+//    Cannon[] mCannons;
 
     /// <summary>
     /// For controlling the ship via external means (such as AI)
@@ -82,8 +81,8 @@ public class CharaController : Singleton<CharaController>, ITick
         if (SceneMgr.Instance.curSceneGO == null)
             return;
         mTrans = EntityMainRole.Instance.transform;
-        mStats = mTrans.gameObject.GetComponent<GameShip>();
-        mCannons = mTrans.gameObject.GetComponentsInChildren<Cannon>();
+//        mStats = mTrans.gameObject.GetComponent<GameShip>();
+//        mCannons = mTrans.gameObject.GetComponentsInChildren<Cannon>();
         // 碰撞点
         Transform point = mTrans.FindChild("Raycast Point");
         raycastPoints.Add(point);
@@ -136,8 +135,8 @@ public class CharaController : Singleton<CharaController>, ITick
         mSteering = Mathf.Lerp(mSteering, mTargetSteering, delta * 5f);
 
         // Move the ship
-        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
-        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * mStats.movementSpeed);
+//        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
+//        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * mStats.movementSpeed);
     }
 
     /// <summary>
@@ -154,33 +153,33 @@ public class CharaController : Singleton<CharaController>, ITick
         mInput.x = Input.acceleration.x;
         mInput.y = Mathf.Abs(Input.acceleration.y);
 #endif
-
-        // Fire the cannons
-        if (mCannons != null && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.JoystickButton0)))
-        {
-            Vector3 dir = GameCamera.flatDirection;
-            Vector3 left = mTrans.rotation * Vector3.left;
-            Vector3 right = mTrans.rotation * Vector3.right;
-
-            left.y = 0f;
-            right.y = 0f;
-
-            left.Normalize();
-            right.Normalize();
-
-            // Calculate the maximum firing range using the best available cannon
-            float maxRange = 1f;
-
-            foreach (Cannon cannon in mCannons)
-            {
-                float range = cannon.maxRange;
-                if (range > maxRange) maxRange = range;
-            }
-
-            // Aim and fire the cannons on each side of the ship, force-firing if the camera is looking that way
-            AimAndFire(left, maxRange, Vector3.Angle(dir, left) < 60f);
-            AimAndFire(right, maxRange, Vector3.Angle(dir, right) < 60f);
-        }
+//
+//        // Fire the cannons
+//        if (mCannons != null && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.JoystickButton0)))
+//        {
+//            Vector3 dir = GameCamera.flatDirection;
+//            Vector3 left = mTrans.rotation * Vector3.left;
+//            Vector3 right = mTrans.rotation * Vector3.right;
+//
+//            left.y = 0f;
+//            right.y = 0f;
+//
+//            left.Normalize();
+//            right.Normalize();
+//
+//            // Calculate the maximum firing range using the best available cannon
+//            float maxRange = 1f;
+//
+////            foreach (Cannon cannon in mCannons)
+////            {
+////                float range = cannon.maxRange;
+////                if (range > maxRange) maxRange = range;
+////            }
+//
+//            // Aim and fire the cannons on each side of the ship, force-firing if the camera is looking that way
+//            AimAndFire(left, maxRange, Vector3.Angle(dir, left) < 60f);
+//            AimAndFire(right, maxRange, Vector3.Angle(dir, right) < 60f);
+//        }
     }
 
     /// <summary>
@@ -190,25 +189,25 @@ public class CharaController : Singleton<CharaController>, ITick
     void AimAndFire(Vector3 dir, float maxRange, bool forceFire)
     {
         Debug.Log("Aim And Fire");
-        float distance = maxRange * 1.2f;
-        GameUnit gu = GameUnit.Find(mStats, dir, distance, 60f);
-
-        // If a unit was found, override the direction and angle
-        if (gu != null)
-        {
-            dir = gu.transform.position - mTrans.position;
-            distance = dir.magnitude;
-            if (distance > 0f) dir *= 1.0f / distance;
-            else distance = maxRange;
-
-            // Fire in the target direction
-            Fire(dir, distance);
-        }
-        else if (forceFire)
-        {
-            // No target found -- only fire if asked to
-            Fire(dir, distance);
-        }
+//        float distance = maxRange * 1.2f;
+////        GameUnit gu = GameUnit.Find(mStats, dir, distance, 60f);
+//
+//        // If a unit was found, override the direction and angle
+//        if (gu != null)
+//        {
+//            dir = gu.transform.position - mTrans.position;
+//            distance = dir.magnitude;
+//            if (distance > 0f) dir *= 1.0f / distance;
+//            else distance = maxRange;
+//
+//            // Fire in the target direction
+//            Fire(dir, distance);
+//        }
+//        else if (forceFire)
+//        {
+//            // No target found -- only fire if asked to
+//            Fire(dir, distance);
+//        }
     }
 
     /// <summary>
@@ -217,12 +216,12 @@ public class CharaController : Singleton<CharaController>, ITick
 
     public void Fire(Vector3 dir, float distance)
     {
-        if (mCannons != null)
-        {
-            foreach (Cannon cannon in mCannons)
-            {
-                cannon.Fire(dir, distance);
-            }
-        }
+//        if (mCannons != null)
+//        {
+//            foreach (Cannon cannon in mCannons)
+//            {
+//                cannon.Fire(dir, distance);
+//            }
+//        }
     }
 }
