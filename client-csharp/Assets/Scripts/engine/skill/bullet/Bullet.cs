@@ -41,6 +41,9 @@ namespace Engine
                 case SKILL_BULLET_PATH_TYPE.直线:
                     ActivePath_Line(deltaTime);
                     break;
+                case SKILL_BULLET_PATH_TYPE.抛物线:
+                    ActivePath_Parabola(deltaTime);
+                    break;
             }
         }
 
@@ -51,6 +54,11 @@ namespace Engine
             _time = deltaTime;
             LoadBullet(_bulletEvt.bulletId.ToString());
             UpdatePath_Line(deltaTime);
+        }
+
+        private void ActivePath_Parabola(float deltaTime)
+        {
+
         }
 
         private void DefaultBullet()
@@ -84,6 +92,12 @@ namespace Engine
 
         private void LoadBullet(string bulletId)
         {
+            IzCommonEffect.ON_LOAD_RES_FINISH fnLoadFinish = delegate (IzCommonEffect kEffect, bool bSucceed, object kArg)
+            {
+
+            };
+            Debug.Log("bullet:" + bulletId);
+            EffectMgr.Instance.CreateEffect(bulletId).LoadResByType(fnLoadFinish);
             DefaultBullet();
         }
 

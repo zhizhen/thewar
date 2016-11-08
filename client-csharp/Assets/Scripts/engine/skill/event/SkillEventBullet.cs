@@ -57,5 +57,33 @@ namespace Engine
                 pHeight = EditorGUILayout.FloatField("垂直高度", pHeight);
         }
 #endif
+
+        protected override void SerializeType(BinaryWriter bw)
+        {
+            bw.Write((int)bulletType);
+            bw.Write((int)hitType);
+            bw.Write((int)posType);
+            bw.Write((int)targetType);
+            bw.Write((int)pathType);
+
+            bw.Write(bulletId);
+            bw.Write(bulletNum);
+            bw.Write(range);
+            bw.Write(speed);
+        }
+
+        protected override void DeserializeTYpe(BinaryReader br)
+        {
+            bulletType = (SKILL_BULLET_TYPE)br.ReadInt32();
+            hitType = (SKILL_HIT_TYPE)br.ReadInt32();
+            posType = (SKILL_BULLET_POS_TYPE)br.ReadInt32();
+            targetType = (SKILL_BULLET_TARGET_TYPE)br.ReadInt32();
+            pathType = (SKILL_BULLET_PATH_TYPE)br.ReadInt32();
+
+            bulletId = br.ReadInt32();
+            bulletNum = br.ReadInt32();
+            range = br.ReadSingle();
+            speed = br.ReadSingle();
+        }
     }
 }

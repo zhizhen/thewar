@@ -34,4 +34,9 @@ public class URLConst
     {
         return SCENE_PATH + "ScenePrefab" + sceneId + EXTEND_ASSETBUNDLE;
     }
+
+    public static string GetEffect(string name)
+    {
+        return "Effects/" + name + EXTEND_ASSETBUNDLE;
+    }
 }
