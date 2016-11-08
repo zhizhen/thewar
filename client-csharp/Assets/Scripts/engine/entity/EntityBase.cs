@@ -39,9 +39,27 @@ public class EntityBase : IAIHost
             m_DefaultTransform = null;
         }
     }
-
+    public Vector3 forward { get { return transform.forward; } }
     public Vector3 position { get { return transform.position; } set { transform.position = value; } }
-
+    public Vector3 centerPos
+    {
+        get
+        {
+            if (collider != null)
+                return new Vector3(position.x, collider.bounds.center.y, position.z);
+            else
+                return transform.position;
+        }
+    }
+    public Collider collider
+    {
+        get
+        {
+            if (m_Collider == null)
+                m_Collider = transform.GetComponent<Collider>();
+            return m_Collider;
+        }
+    }
     public ModelAttribute attr
     {
         get

@@ -31,7 +31,22 @@ namespace Engine
 
         public void DrawUI()
         {
+            EditorGUILayout.BeginVertical(GUILayout.Width(WIDTH));
+            GUILayout.Space(layer * 10);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical(GUILayout.Width(WIDTH));
+            key = GetKey();
+            GUILayout.Box(eventType + ":layer= " + layer + ",key= " + key, GUILayout.ExpandWidth(true));
+            eventType = (SKILL_EVENT_TYPE)EditorGUILayout.EnumPopup("类型", eventType);
+            time = EditorGUILayout.FloatField("触发时间", time);
+            times = EditorGUILayout.IntField("执行次数", times);
+            interval = EditorGUILayout.FloatField("执行间隔", interval);
+            actionTime = EditorGUILayout.FloatField("动作时间", actionTime);
+            //DrawTypeUI();
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
 
+            EditorGUILayout.EndVertical();
         }
 #endif
 

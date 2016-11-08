@@ -97,4 +97,44 @@ namespace Engine
         public float duration;
         public float triggerCD;
     }
+
+    public struct SkillPreData
+    {
+        public Vector3? preBeginDir;
+        public Vector3? preBeginPos;
+        public Vector3? preEndPos;
+    }
+
+    public struct SkillCasterData
+    {
+        public CONST_ENTITY_TYPE roleType;
+        public uint roleId;
+        public Vector3 oriPos;
+        public Vector3 oriCenter;
+        public Vector3 oriDir;
+    }
+
+    public struct SkillTargetData
+    {
+        public CONST_ENTITY_TYPE roleType;
+        public uint roleId;
+        public Vector3? oriPos;
+        public Vector3? oriCenter;
+    }
+
+    public struct SkillHitEndData
+    {
+        public Vector3? srcPos;
+        public Vector3? hitPos;
+        public Vector3? hitDir;
+    }
+
+    public struct SkillHitData
+    {
+        public CONST_ENTITY_TYPE roleType;
+        public uint roleId;
+        public Vector3 srcPos;
+        public Vector3 hitPos;
+        public Vector3 hitDir;
+    }
 }

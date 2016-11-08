@@ -63,7 +63,12 @@ public class Skill
 
     private void InitState()
     {
-
+        for (int i = 0; i <= 4; ++i)
+        {
+            SKILL_STATE_TYPE stateType = (SKILL_STATE_TYPE)i;
+            SkillStateData stateData;
+            stateData.stateType = stateType;
+        }
     }
 
     private void InitProgress()
@@ -75,7 +80,7 @@ public class Skill
             BaseSkillEvent bse = _info.eventList[i];
             if (SKILL_EVENT_TYPE.子弹 == bse.eventType || SKILL_EVENT_TYPE.动作 == bse.eventType)
             {
-                for (int j = 0; i < bse.times; ++j)
+                for (int j = 0; j < bse.times; ++j)
                 {
                     SkillProgress sp = SkillProgressCtrl.Instance.GetSkillProgress(false);
                     _spList.Add(sp);
@@ -93,8 +98,48 @@ public class Skill
         }
     }
 
-    public void Begin(Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos, EntityBase target)
+    public void Begin(Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos, bool isSync, EntityBase target)
     {
+        if (_executed == true) return;
+        _executed = true;
+        _timer = 0;
 
+        SkillPreData preData = new SkillPreData();
+        preData.preBeginPos = preBeginPos;
+        preData.preBeginDir = preBeginDir;
+        preData.preEndPos = preEndPos;
+        SkillCasterData casterData = new SkillCasterData();
+        casterData.roleId = _caster.roleId;
+        casterData.oriPos = _caster.position;
+        casterData.oriDir = _caster.forward;
+        casterData.oriCenter = _caster.centerPos;
+        SkillTargetData targetData = new SkillTargetData();
+        if (target != null)
+        {
+            targetData.roleId = target.roleId;
+            targetData.oriPos = target.position;
+            targetData.oriCenter = target.centerPos;
+        }
+        for (int i = 0; i < _spList.Count; ++i)
+        {
+            SkillProgress sp = _spList[i];
+            sp.SetSkillProgressData(_lv, casterData, preData, targetData, isSync);
+        }
+        Update(0f);
+    }
+
+    public void Update(float elapsedTime)
+    {
+        if (_executed == false) return;
+        _timer += elapsedTime;
+        for (int i = 0; i < _spList.Count; ++i)
+        {
+            _spList[i].Update(elapsedTime);
+        }
+        if (_executed && SKILL_STATE_TYPE.结束 == _currentStateType)
+        {
+            _executed = false;
+            _timer = 0;
+        }
     }
 }

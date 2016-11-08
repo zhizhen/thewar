@@ -60,6 +60,11 @@ public class EntityMgr : Singleton<EntityMgr>
         m_dicEntityUpdate.Add(type, roleId, kEnt);
     }
 
+    public EntityBase GetEntity(CONST_ENTITY_TYPE type, uint roleId)
+    {
+        return m_dicEntityUpdate.Get(type, roleId);
+    }
+
     public void OnUpdate(float dt)
     {
         var enumerator = m_dicEntityUpdate.GetEnumerator();

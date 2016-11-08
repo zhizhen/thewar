@@ -30,6 +30,9 @@ namespace Engine
                 case SKILL_EVENT_TYPE.动作:
                     bse = new SkillEventAction();
                     break;
+                case SKILL_EVENT_TYPE.子弹:
+                    bse = new SkillEventBullet();
+                    break;
             }
             bse.skillInfo = info;
             bse.parent = parent;

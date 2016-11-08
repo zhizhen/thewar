@@ -26,7 +26,7 @@ public class SkillCtrl : GlobalBase
         if (skill != null)
         {
             _executeSkill = skill;
-            _executeSkill.Begin(preBeginPos, preBeginDir, preEndPos, target);
+            _executeSkill.Begin(preBeginPos, preBeginDir, preEndPos, false, target);
         }
     }
 
