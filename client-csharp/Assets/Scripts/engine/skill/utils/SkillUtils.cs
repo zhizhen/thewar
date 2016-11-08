@@ -44,5 +44,30 @@ namespace Engine
 #endif
             return bse;
         }
+
+        public static SkillProgress CopySkillProgress(SkillProgress from, bool executed, bool finished, bool AddToUpdateList)
+        {
+            SkillProgress copy = SkillProgressCtrl.Instance.GetSkillProgress(AddToUpdateList);
+            copy.executed = executed;
+            copy.finished = finished;
+            copy.timer = from.timer;
+            copy.delay = from.delay;
+            copy.spid = from.spid;
+            copy.isSync = from.isSync;
+            copy.skillId = from.skillId;
+            copy.skillEvt = from.skillEvt;
+            copy.casterData = from.casterData;
+            copy.targetData = from.targetData;
+            if (SKILL_EVENT_TYPE.伤害 == from.skillEvt.eventType)
+                Array.Copy(from.casterAttrs, copy.casterAttrs, from.casterAttrs.Length);
+            for (int i = 0; i < from.spList.Count; ++i)
+            {
+                SkillProgress childSp = from.spList[i];
+                if (from.skillEvt is SkillEventBullet && childSp.skillEvt is SkillEventWarn)
+                    continue;
+                copy.spList.Add(SkillUtils.CopySkillProgress(childSp, false, false, false));
+            }
+            return copy;
+        }
     }
 }

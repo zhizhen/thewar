@@ -10,5 +10,51 @@ namespace Engine
     public class SkillEventBullet : BaseSkillEvent
     {
         public SKILL_BULLET_TYPE bulletType = SKILL_BULLET_TYPE.普通;
+        public SKILL_HIT_TYPE hitType = SKILL_HIT_TYPE.敌方;
+        public SKILL_BULLET_POS_TYPE posType = SKILL_BULLET_POS_TYPE.FirePoint;
+        public SKILL_BULLET_TARGET_TYPE targetType = SKILL_BULLET_TARGET_TYPE.目标;
+        public SKILL_BULLET_PATH_TYPE pathType = SKILL_BULLET_PATH_TYPE.直线;
+
+        //基本属性
+        public int bulletId = 0;
+        public int bulletNum = 1;
+        public float range = 5.0f;
+        public float speed = 5f;
+
+        public int effectEnd = 0;
+        //子弹类型
+        public Vector3 size = new Vector3(0.1f, 0.1f, 0.1f);
+        public bool ignoreCollision = false;
+
+        //弹道
+        public float trackAdd = 0;
+        public float pHeight = 0;
+
+#if UNITY_EDITOR
+        protected override void DrawTypeUI()
+        {
+            DrawPathTypeUI();
+        }
+
+        private void DrawPathTypeUI()
+        {
+            pathType = (SKILL_BULLET_PATH_TYPE)EditorGUILayout.EnumPopup("子弹弹道", pathType);
+            bulletNum = EditorGUILayout.IntField("子弹数量", bulletNum);
+            if (SKILL_BULLET_PATH_TYPE.直接命中 != pathType)
+            {
+                bulletId = EditorGUILayout.IntField("子弹Id", bulletId);
+                speed = EditorGUILayout.FloatField("射速", speed);
+            }
+            else
+                bulletId = 0;
+            range = EditorGUILayout.FloatField("射程", range);
+            if (SKILL_BULLET_PATH_TYPE.跟踪 == pathType)
+                trackAdd = EditorGUILayout.FloatField("附加射程", trackAdd);
+            else if (SKILL_BULLET_PATH_TYPE.抛物线 == pathType ||
+                SKILL_BULLET_PATH_TYPE.弹球 == pathType ||
+                SKILL_BULLET_PATH_TYPE.轰炸 == pathType)
+                pHeight = EditorGUILayout.FloatField("垂直高度", pHeight);
+        }
+#endif
     }
 }

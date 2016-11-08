@@ -23,6 +23,7 @@ namespace Engine
         public SkillTargetData targetData;
         public SkillHitEndData hitEndData;
         public List<SkillHitData> hitList = new List<SkillHitData>();
+        public float[] casterAttrs = new float[10];
 
         public void Dispose()
         {
@@ -143,6 +144,14 @@ namespace Engine
             //float range = SkillEventBullet.range;
             //this.FindBulletRange(caster, beginPos, ref range, ref target);
             //CreateBullets(beginPos, beginDir, range, target);
+            CreateBullets();
+        }
+
+        private void CreateBullets()
+        {
+            SkillProgress sp = SkillUtils.CopySkillProgress(this, false, false, true);
+            Bullet bullet = BulletMgr.Instance.GetObj();
+            bullet.Active(sp.skillEvt as SkillEventBullet);
         }
     }
 }

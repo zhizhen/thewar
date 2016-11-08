@@ -42,7 +42,7 @@ namespace Engine
             times = EditorGUILayout.IntField("执行次数", times);
             interval = EditorGUILayout.FloatField("执行间隔", interval);
             actionTime = EditorGUILayout.FloatField("动作时间", actionTime);
-            //DrawTypeUI();
+            DrawTypeUI();
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
 
@@ -109,6 +109,11 @@ namespace Engine
         }
 
         protected virtual void DeserializeTYpe(BinaryReader br)
+        {
+
+        }
+
+        protected virtual void DrawTypeUI()
         {
 
         }

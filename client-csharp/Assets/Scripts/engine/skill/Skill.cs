@@ -110,6 +110,7 @@ public class Skill
         preData.preEndPos = preEndPos;
         SkillCasterData casterData = new SkillCasterData();
         casterData.roleId = _caster.roleId;
+        casterData.roleType = CONST_ENTITY_TYPE.MAIN_ROLE;
         casterData.oriPos = _caster.position;
         casterData.oriDir = _caster.forward;
         casterData.oriCenter = _caster.centerPos;
