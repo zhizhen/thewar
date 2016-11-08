@@ -44,9 +44,137 @@ namespace Engine
             actionTime = EditorGUILayout.FloatField("动作时间", actionTime);
             DrawTypeUI();
             EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical(GUILayout.MaxWidth(WIDTH_LEVEL));
+            if (GUILayout.Button("X"))
+                DeleteEvent();
+            if (GUILayout.Button("+"))
+                AddChildEvent();
+            if (GUILayout.Button("←"))
+                LayerLeftEvent();
+            if (GUILayout.Button("→"))
+                LayerRightEvent();
+            if (GUILayout.Button("↑"))
+                LayerUpEvent();
+            if (GUILayout.Button("↓"))
+                LayerDownEvent();
+            if (GUILayout.Button("C"))
+                CopyEvent();
+            EditorGUILayout.EndVertical();
+
+            for (int i = 0; i < childrenEvents.Count; ++i)
+            {
+                childrenEvents[i].DrawUI();
+            }
+
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
+
+            RefreshType();
+        }
+
+        private void DeleteEvent()
+        {
+            GetParentChildrenEventList().Remove(this);
+            childrenEvents.Clear();
+            parent = null;
+            skillInfo = null;
+        }
+
+        private void AddChildEvent()
+        {
+            if (this.layer >= MAX_LAYER) return;
+            SkillUtils.InstanceEvent(SKILL_EVENT_TYPE.动作, skillInfo, this, layer + 1, 0);
+        }
+
+        private void LayerLeftEvent()
+        {
+            List<BaseSkillEvent> parentChildrenEventList = GetParentChildrenEventList();
+            int index = parentChildrenEventList.IndexOf(this);
+            if (index >0)
+            {
+                parentChildrenEventList.Remove(this);
+                parentChildrenEventList.Insert(index - 1, this);
+            }
+        }
+
+        private void LayerRightEvent()
+        {
+            List<BaseSkillEvent> parentChildrenEventList = GetParentChildrenEventList();
+            int index = parentChildrenEventList.IndexOf(this);
+            if (index < parentChildrenEventList.Count - 1)
+            {
+                parentChildrenEventList.Remove(this);
+                parentChildrenEventList.Insert(index + 1, this);
+            }
+        }
+
+        private void LayerUpEvent()
+        {
+            if (parent == null) return;
+            List<BaseSkillEvent> ppChildrenEventList = parent.GetParentChildrenEventList();
+            int index = ppChildrenEventList.IndexOf(parent);
+            this.parent.childrenEvents.Remove(this);
+            ppChildrenEventList.Insert(index + 1, this);
+            this.parent = parent.parent;
+            ChangeLayer(-1);
+        }
+
+        private void LayerDownEvent()
+        {
+            if (this.GetMaxLayer() >= MAX_LAYER) return;
+            List<BaseSkillEvent> parentChildrenEventList = GetParentChildrenEventList();
+            int index = parentChildrenEventList.IndexOf(parent);
+            BaseSkillEvent be = SkillUtils.InstanceEvent(SKILL_EVENT_TYPE.动作, skillInfo, parent, layer, index);
+            parentChildrenEventList.Remove(this);
+            be.childrenEvents.Add(this);
+            this.parent = be;
+            ChangeLayer(1);
+        }
+
+        private void CopyEvent()
+        {
+            MemoryStream ms = new MemoryStream();
+            BinaryWriter bw = new BinaryWriter(ms);
+            Serialize(bw);
+            bw.Close();
+            ms.Close();
+            byte[] bytes = ms.GetBuffer();
+            bw = null;
+            ms = null;
+
+            ms = new MemoryStream(bytes);
+            BinaryReader br = new BinaryReader(ms);
+            List<BaseSkillEvent> parentChildrenEventList = GetParentChildrenEventList();
+            int index = parentChildrenEventList.IndexOf(this);
+            BaseSkillEvent bse = SkillUtils.InstSkillEvent(br, skillInfo, this.parent, layer, index + 1);
+            bse.Deserialize(br);
+            br.Close();
+            br = null;
+        }
+
+        private void ChangeLayer(int value)
+        {
+            layer = layer + value;
+            for (int i = 0; i < childrenEvents.Count; ++i)
+            {
+                BaseSkillEvent be = childrenEvents[i];
+                be.ChangeLayer(value);
+            }
+        }
+
+        public int GetMaxLayer()
+        {
+            int layer = this.layer;
+            if (childrenEvents.Count > 0)
+            {
+                for (int i = 0; i < childrenEvents.Count; ++i)
+                {
+                    BaseSkillEvent be = childrenEvents[i];
+                    layer = Mathf.Max(layer, be.GetMaxLayer());
+                }
+            }
+            return layer;
         }
 #endif
 
@@ -116,6 +244,22 @@ namespace Engine
         protected virtual void DrawTypeUI()
         {
 
+        }
+
+        private void RefreshType()
+        {
+            if (lastType != eventType)
+            {
+                lastType = eventType;
+                int index = GetParentChildrenEventList().IndexOf(this);
+                BaseSkillEvent nbe = SkillUtils.InstanceEvent(eventType, skillInfo, parent, layer, index);
+                for (int i = 0; i < this.childrenEvents.Count; ++i)
+                {
+                    this.childrenEvents[i].parent = nbe;
+                    nbe.childrenEvents.Add(this.childrenEvents[i]);
+                }
+                DeleteEvent();
+            }
         }
     }
 }

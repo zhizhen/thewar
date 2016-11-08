@@ -58,7 +58,7 @@ namespace Engine
             _gameObject.name = "defaultBullet";
             _gameObject.layer = LayerName.iEffectLayer;
             _transform = _gameObject.transform;
-            _transform.localScale = Vector3.one * 0.01f;
+            _transform.localScale = Vector3.one * 1.0f;
             _transform.localPosition = _pos;
             _transform.forward = _dir;
             _collider = _gameObject.GetComponent<BoxCollider>();
