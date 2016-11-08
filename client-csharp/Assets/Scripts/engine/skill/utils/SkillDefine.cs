@@ -137,4 +137,11 @@ namespace Engine
         public Vector3 hitPos;
         public Vector3 hitDir;
     }
+
+    public struct BulletAccelPathData
+    {
+        public float beginTime;
+        public float endTime;
+        public float accel;
+    }
 }

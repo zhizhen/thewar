@@ -29,6 +29,7 @@ namespace Engine
         //弹道
         public float trackAdd = 0;
         public float pHeight = 0;
+        public List<BulletAccelPathData> listAccel = new List<BulletAccelPathData>();
 
 #if UNITY_EDITOR
         protected override void DrawTypeUI()

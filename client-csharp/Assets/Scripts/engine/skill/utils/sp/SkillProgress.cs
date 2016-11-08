@@ -149,9 +149,16 @@ namespace Engine
 
         private void CreateBullets()
         {
+            SkillEventBullet skillEvtBullet = skillEvt as SkillEventBullet;
+            float speed = skillEvtBullet.speed;
+            CreateBullet(speed);
+        }
+
+        private void CreateBullet(float speed)
+        {
             SkillProgress sp = SkillUtils.CopySkillProgress(this, false, false, true);
             Bullet bullet = BulletMgr.Instance.GetObj();
-            bullet.Active(sp.skillEvt as SkillEventBullet);
+            bullet.Active(sp.skillEvt as SkillEventBullet, speed);
         }
     }
 }

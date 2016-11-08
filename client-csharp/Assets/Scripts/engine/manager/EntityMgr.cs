@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Engine;
 
 public class EntityMgr : Singleton<EntityMgr>
 {
@@ -77,5 +78,8 @@ public class EntityMgr : Singleton<EntityMgr>
                 enu.Current.Value.OnUpdate(dt);
             }
         }
+
+        //子弹
+        BulletMgr.Instance.Update();
     }
 }

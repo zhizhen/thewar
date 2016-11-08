@@ -25,10 +25,12 @@ namespace Engine
         private float _disTotal;
         private SkillEventBullet _bulletEvt;
 
-        public void Active(SkillEventBullet evt, float deltaTime = 0)
+        public void Active(SkillEventBullet evt, float speed, float deltaTime = 0)
         {
             Debug.Log("bullet active");
+            _state = SKILL_OBJ_STATE.ACTIVE;
             _bulletEvt = evt;
+            _speed = speed;
             ActivePath(deltaTime);
         }
 
@@ -48,7 +50,7 @@ namespace Engine
             _disTotal = _range;
             _time = deltaTime;
             LoadBullet(_bulletEvt.bulletId.ToString());
-            //UpdatePath_Line(deltaTime);
+            UpdatePath_Line(deltaTime);
         }
 
         private void DefaultBullet()
@@ -83,6 +85,47 @@ namespace Engine
         private void LoadBullet(string bulletId)
         {
             DefaultBullet();
+        }
+
+        public override void Update(float elapseTime)
+        {
+            if (SKILL_OBJ_STATE.DEACTIVE == _state) return;
+            if (_time == 0) _gameObject.SetActive(true);
+            _time += elapseTime;
+            _aoeTick += elapseTime;
+
+            switch (_bulletEvt.pathType)
+            {
+                case SKILL_BULLET_PATH_TYPE.直线:
+                    UpdatePath_Line(elapseTime);
+                    break;
+            }
+            //if (SKILL_BULLET_TYPE.AOE == _bulletEvt.bulletType && _aoeTick >= _bulletEvt.aoeInterval)
+            //{
+            //    _aoeTick = 0;
+            //    AOETrigger();
+            //}
+        }
+
+        private void UpdatePath_Line(float elapseTime)
+        {
+            float oldSpeed = _speed;
+            CalculateSpeed(ref _speed, elapseTime);
+            float step = (oldSpeed + _speed) * elapseTime / 2f;
+            if (step != 0f)
+                _transform.Translate(0f, 0f, step);
+            _pos = _transform.position;
+            _disMoved += step;
+        }
+
+        private void CalculateSpeed(ref float speed, float elapseTime)
+        {
+            for (int i = 0; i < _bulletEvt.listAccel.Count; ++i)
+            {
+                BulletAccelPathData data = _bulletEvt.listAccel[i];
+                if (_time >= data.beginTime && _time < data.endTime)
+                    speed += elapseTime * data.accel;
+            }
         }
 
         private bool ISNeedBoxCollider()
