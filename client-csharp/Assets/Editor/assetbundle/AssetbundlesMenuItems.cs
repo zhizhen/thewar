@@ -8,7 +8,7 @@ using Engine;
 
 public class AssetbundlesMenuItems
 {
-	const string kSimulateAssetBundlesMenu = "Game Tools/资源打包/模拟加载";
+	const string kSimulateAssetBundlesMenu = "Game Tools/资源打包/编辑模式";
 
     [MenuItem(kSimulateAssetBundlesMenu)]
     public static void ToggleSimulateAssetBundle()
@@ -23,7 +23,7 @@ public class AssetbundlesMenuItems
         return true;
     }
 
-    [MenuItem("Game Tools/资源打包/打包所有资源")]
+    [MenuItem("Game Tools/资源打包/打包资源")]
     static public void BuildAssetBundles()
     {
         BuildScript.BuildAssetBundles();
