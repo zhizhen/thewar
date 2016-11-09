@@ -44,29 +44,39 @@ namespace Engine
 
         public UnityEngine.Object MainAsset
         {
+            set
+            {
+                if (ResourceMgr.SimulateAssetBundleInEditor)
+                    mainAsset = value;
+            }
             get
             {
-                string name = FileTools.GetFileNameNOExtension(bundlePath);
-                if(IsDone)
-                {
-                    if(mainAsset == null && _www != null && _www.assetBundle != null)
-                    {
-                        try
-                        {
-                            mainAsset = _www.assetBundle.LoadAsset(name);
-                        }
-                        catch(Exception ex)
-                        {
-                            Debug.LogError(bundlePath + "获取MainAsset错误:" + ex.Message);
-                        }
-                    }
+                if (ResourceMgr.SimulateAssetBundleInEditor)
                     return mainAsset;
-                }
-                else if(_www != null && _www.assetBundle != null)
+                else
                 {
-                    return _www.assetBundle.LoadAsset(name);
+                    string name = FileTools.GetFileNameNOExtension(bundlePath);
+                    if (IsDone)
+                    {
+                        if (mainAsset == null && _www != null && _www.assetBundle != null)
+                        {
+                            try
+                            {
+                                mainAsset = _www.assetBundle.LoadAsset(name);
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogError(bundlePath + "获取MainAsset错误:" + ex.Message);
+                            }
+                        }
+                        return mainAsset;
+                    }
+                    else if (_www != null && _www.assetBundle != null)
+                    {
+                        return _www.assetBundle.LoadAsset(name);
+                    }
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -74,16 +84,21 @@ namespace Engine
         {
             get
             {
-                if (dependencies == null)
-                {
-                    if (_www == null) return false;
-                    return _www.isDone;
-                }
+                if (ResourceMgr.SimulateAssetBundleInEditor)
+                    return MainAsset != null;
                 else
                 {
-                    if (!dependencies.All(x => x.IsDone)) return false;
-                    if (_www == null) return false;
-                    return _www.isDone;
+                    if (dependencies == null)
+                    {
+                        if (_www == null) return false;
+                        return _www.isDone;
+                    }
+                    else
+                    {
+                        if (!dependencies.All(x => x.IsDone)) return false;
+                        if (_www == null) return false;
+                        return _www.isDone;
+                    }
                 }
             }
         }

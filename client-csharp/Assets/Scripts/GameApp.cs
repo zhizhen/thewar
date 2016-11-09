@@ -84,7 +84,10 @@ public class GameApp : MonoBehaviour
 
     private void OnDownLoadCallBack(Resource res, int listCount, int index)
     {
-        resTotal = listCount + index;
+        if (ResourceMgr.SimulateAssetBundleInEditor)
+            resTotal = listCount;
+        else
+            resTotal = listCount + index;
         resStep = index;
     }
 

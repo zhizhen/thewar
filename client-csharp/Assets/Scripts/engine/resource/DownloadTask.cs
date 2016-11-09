@@ -40,47 +40,77 @@ namespace Engine
             bool hasIsDone = false;
             List<Resource> loadQueue = new List<Resource>();
 
-            for(int i = 0; i < bundlePaths.Length; i++)
+            if (ResourceMgr.SimulateAssetBundleInEditor)
             {
-                var bundlePath = bundlePaths[i];
-                var resource = ResourceMgr.Instance.GetResource(bundlePath);
-                if (ResourceMgr.Instance.IsDone(resource.BundlePath))
+
+                for (int i = 0; i < bundlePaths.Length; i++)
                 {
-                    resource.Reference(); // 已加载的，根节点增加计数
-                    hasIsDone = true;
-                    continue;
-                }
-                loadQueue.Clear();
-                FlattenResource(resource, loadQueue);
-                loadQueue.Reverse();
-                for (int j = 0; j < loadQueue.Count; j++)
-                {
-                    var res = loadQueue[j];
-                    if (!downloads.Contains(res))
+                    var bundlePath = bundlePaths[i];
+                    Resource resource = ResourceMgr.Instance.GetResource(bundlePath);
+                    if (beginCallBack != null) beginCallBack(resource);
+                    try
                     {
-                        res.Reference();
-                        downloads.Add(res);
+                        string strExtend = FileTools.GetExtension(bundlePath);
+                        string strAssetBundlePath = "GameAssets/Assetbundles/" + bundlePath.Replace(strExtend, "");
+                        Debug.Log("正在模拟加载:" + strAssetBundlePath);
+                        resource.MainAsset = Resources.Load(strAssetBundlePath);
+                        if (resource.MainAsset == null)
+                            Debug.Log(strAssetBundlePath + "不存在!");
+                        if (downLoadCallBackPerAsset != null) downLoadCallBackPerAsset(resource, bundlePaths.Length, finishCount);
                     }
+                    catch (Exception ex)
+                    {
+                        if (failCallBack != null) failCallBack(resource.BundlePath, "加载错误：" + ex.Message);
+                    }
+                    finishCount++;
                 }
+                if (downloadCallBack != null) downloadCallBack(userData);
+                if (finishTaskCallBack != null) finishTaskCallBack(this);
             }
-            resList = downloads.ToArray();
-            if (hasIsDone)
+            else
             {
-                for(int j = 0; j < bundlePaths.Length; j++)
+                for (int i = 0; i < bundlePaths.Length; i++)
                 {
-                    var bundlePath = bundlePaths[j];
+                    var bundlePath = bundlePaths[i];
                     var resource = ResourceMgr.Instance.GetResource(bundlePath);
                     if (ResourceMgr.Instance.IsDone(resource.BundlePath))
                     {
-                        OnDownloadBegin(resource);
-                        OnDownloadEnd(resource);
+                        resource.Reference(); // 已加载的，根节点增加计数
+                        hasIsDone = true;
                         continue;
                     }
+                    loadQueue.Clear();
+                    FlattenResource(resource, loadQueue);
+                    loadQueue.Reverse();
+                    for (int j = 0; j < loadQueue.Count; j++)
+                    {
+                        var res = loadQueue[j];
+                        if (!downloads.Contains(res))
+                        {
+                            res.Reference();
+                            downloads.Add(res);
+                        }
+                    }
                 }
-                if (HasDownload() == false && resList.Length == 0)
+                resList = downloads.ToArray();
+                if (hasIsDone)
                 {
-                    if (downloadCallBack != null) downloadCallBack(userData);
-                    if (finishTaskCallBack != null) finishTaskCallBack(this);
+                    for (int j = 0; j < bundlePaths.Length; j++)
+                    {
+                        var bundlePath = bundlePaths[j];
+                        var resource = ResourceMgr.Instance.GetResource(bundlePath);
+                        if (ResourceMgr.Instance.IsDone(resource.BundlePath))
+                        {
+                            OnDownloadBegin(resource);
+                            OnDownloadEnd(resource);
+                            continue;
+                        }
+                    }
+                    if (HasDownload() == false && resList.Length == 0)
+                    {
+                        if (downloadCallBack != null) downloadCallBack(userData);
+                        if (finishTaskCallBack != null) finishTaskCallBack(this);
+                    }
                 }
             }
         }
