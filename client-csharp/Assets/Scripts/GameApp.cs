@@ -101,10 +101,10 @@ public class GameApp : MonoBehaviour
     {
         //GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
         GameObject UIRootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
-        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
+//        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
         GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
         GameTools.CanvasCamera = UICamera.GetComponent<Camera>();
-        GameTools.UICanvasCamera = UICanvas;
+		GameTools.UICanvasCamera = UIRootCanvas;
 
         UIRootCanvas.SetActive(true);
         GameObject.DontDestroyOnLoad(UIRootCanvas);
@@ -117,6 +117,7 @@ public class GameApp : MonoBehaviour
             eventSystem.AddComponent<StandaloneInputModule>();
             GameObject.DontDestroyOnLoad(eventSystem);
         }
+
     }
 
 }
