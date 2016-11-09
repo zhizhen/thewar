@@ -8,25 +8,4 @@
 proto/lua
 proto/erlang
 
-thewar/.settings
-thewar/frameworks/cocos2d-x
-
-thewar/simulator/win32
-thewar/runtime/win32
-thewar/frameworks/runtime-src/proj.win32/Debug
-thewar/frameworks/runtime-src/proj.win32/Debug.win32
-thewar/frameworks/runtime-src/proj.win32/thewar.VC.opendb
-thewar/frameworks/runtime-src/proj.win32/.vs
-
-thewar/frameworks/runtime-src/proj.android/libs/armeabi
-thewar/frameworks/runtime-src/proj.android/obj
-
-thewar/frameworks/runtime-src/proj.android-studio/.gradle
-thewar/frameworks/runtime-src/proj.android-studio/.idea
-thewar/frameworks/runtime-src/proj.android-studio/app/build
-thewar/frameworks/runtime-src/proj.android-studio/app/libs/armeabi
-thewar/frameworks/runtime-src/proj.android-studio/app/obj
-
-
-
 server/gate/rel/gate/*
