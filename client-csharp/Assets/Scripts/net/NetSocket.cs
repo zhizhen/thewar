@@ -23,8 +23,10 @@ namespace Engine
 		private Socket _socket;
 		private Thread th;
 		public Action<bool> callBack;
+        public int ProtoCount { get { return recvQueue.Count; } }
 
-		public NetSocket ()
+
+        public NetSocket ()
 		{
 			_headBuffer = new byte[4];
 		}
@@ -85,6 +87,13 @@ namespace Engine
 				}
 			}
 		}
+
+        public ByteArray ReadFromQueue()
+        {
+            if (recvQueue.Count == 0) return null;
+            var byteArray = recvQueue.Dequeue();
+            return byteArray;
+        }
 
 		private void connectedCallback(IAsyncResult ar) {
 			if (connected ()) {

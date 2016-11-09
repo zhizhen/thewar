@@ -68,4 +68,15 @@ public static class UtilsExtends
         dic.TryGetValue(k, out t);
         return t;
     }
+
+    public static void SetParentExt(this GameObject kGO, Transform parent, bool worldPositionStays = false)
+    {
+        kGO.transform.SetParentExt(parent, worldPositionStays);
+    }
+
+    public static void SetParentExt(this Transform trans, Transform parent, bool worldPositionStays = false)
+    {
+        if (trans != null && trans.parent != parent)
+            trans.SetParent(parent, worldPositionStays);
+    }
 }

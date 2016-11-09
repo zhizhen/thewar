@@ -3,7 +3,7 @@ using Engine;
 using System.Collections.Generic;
 namespace Engine 
 {
-    public class ProtoMap
+    public class ProtoMap : Singleton<ProtoMap>
     {
         private Dictionary<int, Type> m_DicProtoType;
         public ProtoBase GetProto(int uiProtoID)

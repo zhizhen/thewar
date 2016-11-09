@@ -365,7 +365,7 @@ class ProtoNifGenerator:
 		code += "using System.Collections.Generic;\n"
 		code += "namespace Engine \n"
 		code += "{\n"
-		code += "    public class ProtoMap\n"
+		code += "    public class ProtoMap : Singleton<ProtoMap>\n"
 		code += "    {\n"
 		code += "        private Dictionary<int, Type> m_DicProtoType;\n"
 		code += "        public ProtoBase GetProto(int uiProtoID)\n"

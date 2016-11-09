@@ -35,6 +35,7 @@ public class IzCommonEffect : IzCommonEffectBase
                 m_kGO = kGO;
                 if (kGO != null)
                 {
+                    m_kGO.SetParentExt(SceneMgr.Instance.curSceneGO.transform);
                     OnEffectLoadFinish();
                     if (fnFinish != null) fnFinish(this, true, kArg);
                 }
