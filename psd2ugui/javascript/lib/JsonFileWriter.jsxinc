@@ -6,4 +6,17 @@
 JsonFileWriter.prototype.writeParseResult = function(data)
 {
     var json = this.formatContainer(data, "");
+    var jsonPath = this.environment.jsonFolderPath + "/" + this.environment.psdName + ".json";
+    this.writeJsonFile(jsonPath, json);
+}
+
+JsonFileWriter.prototype.formatContainer = function(data, indent)
+{
+	var result = indent + "{";
+	result += this.atomFormatPropertyList(data, ["name", "type", "param", "x", "y", "width", "height"], [1, 1, 1, 0, 0, 0, 0]) + ",";
+	result += "\n";
+	result += indent + "\t" + "\"children\":";
+	result += this.formatContainerChildren(data, indent + "\t");
+	result += indent + "}";
+	return result;
 }
