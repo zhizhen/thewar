@@ -6,6 +6,7 @@ namespace Engine
 {
     public class Bullet : SkillObj<Bullet>, IzCollider
     {
+        private IzCommonEffect _effect;
         private GameObject _gameObject;
         private Transform _transform;
         private BoxCollider _collider;
@@ -94,11 +95,41 @@ namespace Engine
         {
             IzCommonEffect.ON_LOAD_RES_FINISH fnLoadFinish = delegate (IzCommonEffect kEffect, bool bSucceed, object kArg)
             {
-
+                if (bSucceed)
+                {
+                    if (SKILL_OBJ_STATE.DEACTIVE == _state)
+                    {
+                        //kEffect.Stop();
+                        //kEffect.Release();
+                        return;
+                    }
+                    if (kEffect.m_kGO != null && kEffect.m_kTRS != null)
+                    {
+                        SetBullet(kEffect);
+                        //kEffect.Play();
+                    }
+                    else
+                        Debug.LogError("子弹资源加载出错：" + bulletId);
+                }
             };
-            Debug.Log("bullet:" + bulletId);
             EffectMgr.Instance.CreateEffect(bulletId).LoadResByType(fnLoadFinish);
             DefaultBullet();
+        }
+
+        private void SetBullet(IzCommonEffect effect)
+        {
+            if (effect.m_kGO == null || effect.m_kTRS == null) return;
+            if (_gameObject != null)
+            {
+                GameObjectExt.Destroy(_gameObject);
+            }
+            _effect = effect;
+            _gameObject = _effect.m_kGO;
+            _gameObject.name = "defaultBullet";
+            _transform = _effect.m_kTRS;
+            _transform.localPosition = _pos;
+            _transform.forward = _dir;
+            //_gameObject.SetActive(false);
         }
 
         public override void Update(float elapseTime)
