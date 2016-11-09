@@ -5,9 +5,6 @@ using Engine;
 
 public class CharaController : Singleton<CharaController>, ITick
 {
-    // Whether this ship is controlled by player input
-    public bool controlledByInput = false;
-
     /// <summary>
     /// Raycast points used to determine if the ship has hit shallow water.
     /// </summary>
@@ -29,6 +26,9 @@ public class CharaController : Singleton<CharaController>, ITick
     float mSteering = 0f;
     float mTargetSpeed = 0f;
     float mTargetSteering = 0f;
+
+    float turningSpeed = 60f;
+    float movementSpeed = 7f;
 
     Transform mTrans;
 //    GameShip mStats;
@@ -118,7 +118,7 @@ public class CharaController : Singleton<CharaController>, ITick
             }
         }
 
-        // Being in shallow water immediately cancels forward-driving input
+        // 触礁停船
         if (shallowWater) mInput.y = 0f;
         float delta = Time.deltaTime;
 
@@ -135,8 +135,8 @@ public class CharaController : Singleton<CharaController>, ITick
         mSteering = Mathf.Lerp(mSteering, mTargetSteering, delta * 5f);
 
         // Move the ship
-//        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * mStats.turningSpeed, 0f);
-//        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * mStats.movementSpeed);
+        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * turningSpeed, 0f);
+        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * movementSpeed);
     }
 
     /// <summary>
