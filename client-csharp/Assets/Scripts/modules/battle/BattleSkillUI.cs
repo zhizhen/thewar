@@ -9,6 +9,7 @@ public class BattleSkillUI : BattleBaseUI
 {
     private GameObject m_joystick;
     private RectTransform m_joystickTransform;
+    public Vector2 skill1Position = new Vector2(-160, 130f);
 
     public void InitSkillJoyStick()
     {
@@ -22,5 +23,6 @@ public class BattleSkillUI : BattleBaseUI
         m_joystickTransform = m_joystick.GetComponent<RectTransform>();
         GameObject uiCanvas = GameObject.Find("UIRootCanvas");
         UtilsExtends.SetParentExt(m_joystick, uiCanvas.transform);
+        m_joystickTransform.anchoredPosition = skill1Position;
     }
 }
