@@ -19,11 +19,11 @@ public class EntityMainRole : EntityPlayer
         attr.type = CONST_ENTITY_TYPE.MAIN_ROLE;
     }
 
-    public void RoleUseSkill(int skillPos)
+	public void RoleUseSkill(int skillPos, Vector3 dir)
     {
         int id = 123;
         int lv = 1;
-        UseSkill(id, lv, null, null, null, null);
+		UseSkill(id, lv, null, null, dir, null);
     }
 
     public override bool UseSkill(int id, int lv, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)

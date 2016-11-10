@@ -14,8 +14,8 @@ public class SoundUtils
         GameTools.mainCameraGO = kCameraObj;
         GameObject.DontDestroyOnLoad(kCameraObj);
         // 加入声音
-        //kCameraObj.AddComponent<SoundMgr>();
+//        kCameraObj.AddComponent<SoundMgr>();
         //Init();
-        //SoundMgr.Instance.PlayUIBGMusic();
+//        SoundMgr.Instance.PlayUIBGMusic();
     }
 }

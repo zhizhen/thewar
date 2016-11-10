@@ -19,7 +19,7 @@ namespace Engine
         public void FireCallBack()
         {
 			Debug.Log("on button click");
-			EntityMainRole.Instance.RoleUseSkill(1);
+//			EntityMainRole.Instance.RoleUseSkill(1);
         }
 
     }
