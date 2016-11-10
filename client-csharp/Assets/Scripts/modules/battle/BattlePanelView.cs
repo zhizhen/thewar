@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
+using UnityEngine.UI;
+using Engine;
 
 public class BattlePanelView : Singleton<BattlePanelView>
 {
     private BattleSkillUI m_battleSkillUI;
+    private GameObject view;
 
     public BattlePanelView()
     {
+        view = UIManager.Instance.GetSingleUI(UIType.battle);
+        GameObject rootcanvas = GameObject.Find("UIRootCanvas");
         m_battleSkillUI = new BattleSkillUI();
     }
 

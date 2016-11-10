@@ -10,10 +10,10 @@ namespace Engine
 	{
         private GameObject view;
 
-		public void Init(GameObject kGO)
+		public void Init()
 		{
 			Debug.Log ("on enter");
-            view = kGO;
+            view = UIManager.Instance.GetSingleUI(UIType.Login);
             GameObject rootcanvas = GameObject.Find("UIRootCanvas");
             Button btn = rootcanvas.GetComponentInChildren<Button>();
             btn.onClick.AddListener(LoginCallBack);

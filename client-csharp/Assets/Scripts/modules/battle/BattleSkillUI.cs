@@ -13,8 +13,9 @@ public class BattleSkillUI : BattleBaseUI
 
     public void InitSkillJoyStick()
     {
-        string uiPath = URLConst.GetUI("UIJoyStick");
-        ResourceMgr.Instance.DownLoadBundle(uiPath, downLoadJoyStickComplete, ResourceMgr.UI_PRIORITY);
+        Debug.Log("Init skill joy stick!");
+        //    string uiPath = URLConst.GetUI("UIJoyStick");
+        //    ResourceMgr.Instance.DownLoadBundle(uiPath, downLoadJoyStickComplete, ResourceMgr.UI_PRIORITY);
     }
 
     private void downLoadJoyStickComplete(object userData)

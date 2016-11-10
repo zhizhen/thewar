@@ -27,7 +27,8 @@ public class URLConst
         SHADER_CONFIG,
         GetUI("UIRootCanvas"),
         GetUI("UIInputAccount"),
-        GetUI("UIMainView")
+        GetUI("UIMainView"),
+        GetUI("UIBattlePanel")
     };
 
     public static string GetScenePrefab(string sceneId)
