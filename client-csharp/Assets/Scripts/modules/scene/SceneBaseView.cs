@@ -29,8 +29,8 @@ public class SceneBaseView
         playerTrans = GetTransform("player");
         bornTrans = GetTransform("born");
 
-        // 显示主界面
-        ContextManager.Instance.Push(new MainMenuContext());
+        // 显示战斗界面
+        BattlePanelView.Instance.Init();
 
         // 播放背景音效
 
@@ -63,7 +63,10 @@ public class SceneBaseView
             (mainEnt, kArg) =>
             {
                 Debug.Log("角色初始成功!");
-                CharaController.Instance.Init();
+                //ModelLoaded += 1;
+                //PlayerLoaded = true;
+                //SceneMgr.Instance.mainCamera.SetFollowTarget(mainEnt, true);
+                SetInteractive(true);
             }
             );
     }
@@ -77,5 +80,13 @@ public class SceneBaseView
             trans.parent = transform;
         }
         return trans;
+    }
+
+    private static void SetInteractive(bool value)
+    {
+        TouchMgr.Instance.SetActiveEx(value);
+        //KeyManager.Instance.SetActiveEx(value);
+        //ModelMoveController.Instance.SetActiveEx(value);
+        CharaController.Instance.Init();
     }
 }

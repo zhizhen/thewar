@@ -12,7 +12,20 @@ public class TouchMgr : Singleton<TouchMgr>
         m_owner = EntityMainRole.Instance;
     }
 
+    public void SetActiveEx(bool active)
+    {
+        if (active)
+            GlobalTimer.Instance.update += OnGUI;
+        else
+            GlobalTimer.Instance.update -= OnGUI;
+    }
+
     public void Run(bool bRun = true)
+    {
+
+    }
+
+    private void OnGUI(float dt)
     {
 
     }

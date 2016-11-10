@@ -94,18 +94,17 @@ public class GameApp : MonoBehaviour
     private void EnterGame()
     {
         InitUGUIMain();
-        ContextManager.GetInstance();
+        //显示登录
+        GameObject view = UIManager.Instance.GetSingleUI(UIType.Login);
+        LoginView.Instance.Init(view);
     }
 
     private void InitUGUIMain()
     {
-        //GameObject UIRootCanvas = ResourceMgr.Instance.GetGameObject("uirootcanvas.ui", "UIRootCanvas");
         GameObject UIRootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
-//        GameObject UICanvas = UIRootCanvas.transform.FindChild("UICanvas").gameObject;
         GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
         GameTools.CanvasCamera = UICamera.GetComponent<Camera>();
 		GameTools.UICanvasCamera = UIRootCanvas;
-
         UIRootCanvas.SetActive(true);
         GameObject.DontDestroyOnLoad(UIRootCanvas);
 
@@ -117,7 +116,6 @@ public class GameApp : MonoBehaviour
             eventSystem.AddComponent<StandaloneInputModule>();
             GameObject.DontDestroyOnLoad(eventSystem);
         }
-
     }
 
 }
