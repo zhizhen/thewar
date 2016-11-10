@@ -9,7 +9,7 @@ using Engine;
 public class BattlePanelView : Singleton<BattlePanelView>
 {
     private BattleSkillUI m_battleSkillUI;
-    private GameObject view;
+	public GameObject view;
 
     public BattlePanelView()
     {

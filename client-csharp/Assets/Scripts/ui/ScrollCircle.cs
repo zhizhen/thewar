@@ -12,6 +12,7 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	private bool isTouched = false;
 	private Vector2 originPosition;
 	private Vector2 touchedAxis;
+	public GameObject bg;
 	public Vector2 TouchedAxis
 	{
 		get
@@ -27,13 +28,14 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		//初始化虚拟摇杆的默认方向
 		selfTransform = this.GetComponent<RectTransform>();
 		originPosition = selfTransform.anchoredPosition;
+		bg = BattlePanelView.Instance.view.transform.FindChild ("bg").gameObject;
 		Debug.Log ("originposition :" + originPosition);
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		isTouched = true;
-		touchedAxis = GetJoyStickAxis (eventData);
+		bg.SetActive (true);
 		Debug.Log ("On Begin Drag :" + TouchedAxis);
 	}
 
@@ -45,6 +47,7 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		isTouched = false;
+		bg.SetActive (false);
 		Debug.Log ("On End Drag!");
 		selfTransform.anchoredPosition = originPosition;
 		EntityMainRole.Instance.RoleUseSkill(1, (Vector3)touchedAxis.normalized);
