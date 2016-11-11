@@ -112,7 +112,8 @@ public class EntityBase : IAIHost
     public virtual void LoadResCompleted(GameObject kGO, object kArg)
     {
 		kGO.SetActiveRecursively (true);
-		kGO.transform.FindChild ("skillarea").gameObject.SetActive(false);
+		kGO.transform.FindChild ("skillbg").gameObject.SetActive(false);
+		kGO.transform.FindChild ("skillarray").gameObject.SetActive(false);
     }
 
     public void ReplaceModel(Transform trans)

@@ -36,20 +36,24 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	{
 		isTouched = true;
 		bg.SetActive (true);
-		EntityMainRole.Instance.transform.FindChild ("skillarea").gameObject.SetActive(true);
+		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(true);
+		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(true);
 		Debug.Log ("On Begin Drag :" + TouchedAxis);
 	}
 
 	public void OnDrag (PointerEventData eventData)
 	{
 		touchedAxis = GetJoyStickAxis(eventData);
+		Vector3 s = new Vector3 (90f, touchedAxis.y, touchedAxis.x);
+		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.transform.localRotation = Quaternion.Euler(s);
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		isTouched = false;
 		bg.SetActive (false);
-		EntityMainRole.Instance.transform.FindChild ("skillarea").gameObject.SetActive(false);
+		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(false);
+		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(false);
 		Debug.Log ("On End Drag!");
 		selfTransform.anchoredPosition = originPosition;
 		EntityMainRole.Instance.RoleUseSkill(1, (Vector3)touchedAxis.normalized);
