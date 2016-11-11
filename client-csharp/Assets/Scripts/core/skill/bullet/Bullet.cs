@@ -26,11 +26,12 @@ namespace Engine
         private float _disTotal;
         private SkillEventBullet _bulletEvt;
 
-        public void Active(SkillEventBullet evt, float speed, float deltaTime = 0)
+		public void Active(SkillEventBullet evt, Vector3 dir, float speed, float deltaTime = 0)
         {
             Debug.Log("bullet active");
             _state = SKILL_OBJ_STATE.ACTIVE;
             _bulletEvt = evt;
+			_dir = dir;
             _speed = speed;
             ActivePath(deltaTime);
         }
@@ -157,8 +158,11 @@ namespace Engine
             float oldSpeed = _speed;
             CalculateSpeed(ref _speed, elapseTime);
             float step = (oldSpeed + _speed) * elapseTime / 2f;
-            if (step != 0f)
-                _transform.Translate(0f, 0f, step);
+			if (step != 0f) {
+				Vector3 dir = new Vector3 ();
+				dir = _dir * step;
+				_transform.Translate (dir.x, dir.y, dir.z);
+			}
             _pos = _transform.position;
             _disMoved += step;
         }

@@ -144,21 +144,22 @@ namespace Engine
             //float range = SkillEventBullet.range;
             //this.FindBulletRange(caster, beginPos, ref range, ref target);
             //CreateBullets(beginPos, beginDir, range, target);
-			CreateBullets();
+			beginDir = (Vector3)this.preData.preBeginDir;
+			CreateBullets(beginDir);
         }
 
-		private void CreateBullets()
+		private void CreateBullets(Vector3 dir)
         {
             SkillEventBullet skillEvtBullet = skillEvt as SkillEventBullet;
             float speed = skillEvtBullet.speed;
-            CreateBullet(speed);
+            CreateBullet(dir, speed);
         }
 
-		private void CreateBullet(float speed)
+		private void CreateBullet(Vector3 dir, float speed)
         {
             SkillProgress sp = SkillUtils.CopySkillProgress(this, false, false, true);
             Bullet bullet = BulletMgr.Instance.GetObj();
-			bullet.Active(sp.skillEvt as SkillEventBullet, speed);
+			bullet.Active(sp.skillEvt as SkillEventBullet, dir, speed);
         }
     }
 }
