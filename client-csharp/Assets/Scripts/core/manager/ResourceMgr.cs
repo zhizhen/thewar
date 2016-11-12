@@ -69,10 +69,10 @@ namespace Engine
             }
         }
 
-#if UNITY_EDITOR
         // Flag to indicate if we want to simulate assetBundles in Editor without building them actually.
         public static bool SimulateAssetBundleInEditor
         {
+#if UNITY_EDITOR
             get
             {
                 if (m_SimulateAssetBundleInEditor == -1)
@@ -89,8 +89,10 @@ namespace Engine
                     EditorPrefs.SetBool(kSimulateAssetBundles, value);
                 }
             }
-        }
+#else
+            get { return false; }
 #endif
+        }
         // 加载ab
         public DownloadTask DownLoadBundle(string bundlePath, Action<object> downloadCall, ushort priority)
         {

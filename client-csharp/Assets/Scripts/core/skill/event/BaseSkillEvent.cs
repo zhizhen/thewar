@@ -176,6 +176,22 @@ namespace Engine
             }
             return layer;
         }
+        
+        private void RefreshType()
+        {
+            if (lastType != eventType)
+            {
+                lastType = eventType;
+                int index = GetParentChildrenEventList().IndexOf(this);
+                BaseSkillEvent nbe = SkillUtils.InstanceEvent(eventType, skillInfo, parent, layer, index);
+                for (int i = 0; i < this.childrenEvents.Count; ++i)
+                {
+                    this.childrenEvents[i].parent = nbe;
+                    nbe.childrenEvents.Add(this.childrenEvents[i]);
+                }
+                DeleteEvent();
+            }
+        }
 #endif
 
         public string GetKey()
@@ -246,20 +262,5 @@ namespace Engine
 
         }
 
-        private void RefreshType()
-        {
-            if (lastType != eventType)
-            {
-                lastType = eventType;
-                int index = GetParentChildrenEventList().IndexOf(this);
-                BaseSkillEvent nbe = SkillUtils.InstanceEvent(eventType, skillInfo, parent, layer, index);
-                for (int i = 0; i < this.childrenEvents.Count; ++i)
-                {
-                    this.childrenEvents[i].parent = nbe;
-                    nbe.childrenEvents.Add(this.childrenEvents[i]);
-                }
-                DeleteEvent();
-            }
-        }
     }
 }
