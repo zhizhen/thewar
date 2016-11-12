@@ -44,8 +44,6 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	public void OnDrag (PointerEventData eventData)
 	{
 		touchedAxis = GetJoyStickAxis(eventData);
-		Vector3 s = new Vector3 (90f, touchedAxis.y, touchedAxis.x);
-		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.transform.localRotation = Quaternion.Euler(s);
     }
 
 	public void OnPointerUp(PointerEventData eventData)
