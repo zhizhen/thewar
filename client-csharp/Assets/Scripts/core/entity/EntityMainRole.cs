@@ -23,7 +23,8 @@ public class EntityMainRole : EntityPlayer
     {
         int id = 123;
         int lv = 1;
-		UseSkill(id, lv, null, null, dir, null);
+        Vector3 preBeginPos = Instance.transform.position;
+		UseSkill(id, lv, null, preBeginPos, dir, null);
     }
 
     public override bool UseSkill(int id, int lv, EntityBase target, Vector3? preBeginPos, Vector3? preBeginDir, Vector3? preEndPos)

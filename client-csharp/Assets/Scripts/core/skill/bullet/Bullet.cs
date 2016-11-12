@@ -26,12 +26,13 @@ namespace Engine
         private float _disTotal;
         private SkillEventBullet _bulletEvt;
 
-		public void Active(SkillEventBullet evt, Vector3 dir, float speed, float deltaTime = 0)
+		public void Active(SkillEventBullet evt, Vector3 beginPos, Vector3 dir, float speed, float deltaTime = 0)
         {
             Debug.Log("bullet active");
             _state = SKILL_OBJ_STATE.ACTIVE;
             _bulletEvt = evt;
-			_dir = dir;
+            _beginPos = beginPos;
+            _beginDir = dir;
             _speed = speed;
             ActivePath(deltaTime);
         }
@@ -52,6 +53,8 @@ namespace Engine
         private void ActivePath_Line(float deltaTime)
         {
             _disMoved = 0f;
+            _pos = _beginPos;
+            _dir = _beginDir;
             _disTotal = _range;
             _time = deltaTime;
             LoadBullet(_bulletEvt.bulletId.ToString());
