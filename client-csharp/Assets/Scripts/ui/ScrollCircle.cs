@@ -56,8 +56,20 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(false);
 		Debug.Log ("On End Drag!" + touchedAxis.normalized);
 		selfTransform.anchoredPosition = originPosition;
-		EntityMainRole.Instance.RoleUseSkill(1, new Vector3(touchedAxis.normalized.x, 0, touchedAxis.normalized.y));
-		touchedAxis = Vector2.zero;
+
+        Vector3 joystick_dir = new Vector3(touchedAxis.normalized.x, 0, touchedAxis.normalized.y).normalized;
+        Vector3 role_normal = EntityMainRole.Instance.transform.forward.normalized;
+        
+
+        float role_angle = angle_360(new Vector2(1f, 0f), new Vector2(role_normal.x, role_normal.z));
+        float skill_role_angle = angle_360(new Vector2(0f, 1f), new Vector2(joystick_dir.x, joystick_dir.z));
+        float world_skill_angle = (role_angle + skill_role_angle) % 360;
+        Vector3 world_skill_dir = new Vector3(Mathf.Cos(world_skill_angle * Mathf.PI / 180), 0f, Mathf.Sin(world_skill_angle * Mathf.PI / 180));
+
+        
+        EntityMainRole.Instance.RoleUseSkill(1, world_skill_dir.normalized);
+
+        touchedAxis = Vector2.zero;
 	}
 
 	void Update()
@@ -82,4 +94,20 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		}
 		return touchAxis;
 	}
+
+    private float angle_360(Vector2 from, Vector2 to)
+    {
+        Vector3 v3 = new Vector3();
+        Vector3 v3_from = new Vector3(from.x, from.y, 0);
+        Vector3 v3_to = new Vector3(to.x, to.y, 0);
+        v3=Vector3.Cross(v3_from, v3_to);
+        if(v3.z >= 0)
+        {
+            return Vector2.Angle(from, to); 
+        }
+        else
+        {
+            return 360 - Vector2.Angle(from, to);
+        }
+    }
 }
