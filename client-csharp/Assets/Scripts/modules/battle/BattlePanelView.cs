@@ -13,8 +13,12 @@ public class BattlePanelView : Singleton<BattlePanelView>
 
     public BattlePanelView()
     {
-        view = UIManager.Instance.GetSingleUI(UIType.battle);
-        GameObject rootcanvas = GameObject.Find("UIRootCanvas");
+        GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
+        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+        GameObject view = ResourceMgr.GetGameObject(URLConst.GetUI(UIType.battle.Name));
+        view.transform.SetParent(UIRootCanvas.transform);
+        view.transform.localPosition = new Vector3(0, 0, 0);
+        view.transform.localScale = new Vector3(1, 1, 1);
         m_battleSkillUI = new BattleSkillUI();
     }
 
