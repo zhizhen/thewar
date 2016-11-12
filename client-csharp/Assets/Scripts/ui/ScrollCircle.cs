@@ -46,7 +46,7 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		touchedAxis = GetJoyStickAxis(eventData);
 		Vector3 s = new Vector3 (90f, touchedAxis.y, touchedAxis.x);
 		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.transform.localRotation = Quaternion.Euler(s);
-	}
+    }
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
@@ -54,15 +54,14 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		bg.SetActive (false);
 		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(false);
 		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(false);
-		Debug.Log ("On End Drag!");
+		Debug.Log ("On End Drag!" + touchedAxis.normalized);
 		selfTransform.anchoredPosition = originPosition;
-		EntityMainRole.Instance.RoleUseSkill(1, (Vector3)touchedAxis.normalized);
+		EntityMainRole.Instance.RoleUseSkill(1, new Vector3(touchedAxis.normalized.x, 0, touchedAxis.normalized.y));
 		touchedAxis = Vector2.zero;
 	}
 
 	void Update()
 	{
-		//当虚拟摇杆移动到最大半径时摇杆无法拖动
 		//松开虚拟摇杆后让虚拟摇杆回到默认位置
 		if(selfTransform.anchoredPosition.magnitude > originPosition.magnitude)
 			selfTransform.anchoredPosition -= TouchedAxis * Time.deltaTime * JoyStickResetSpeed;

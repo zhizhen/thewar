@@ -21,7 +21,8 @@ public class TestCircle : MonoBehaviour {
 
 	void Update()  
 	{  
-		_meshFilter.mesh = _creator.CreateMesh(Radius, Segments, InnerRadius, AngleDegree);  
+		_meshFilter.mesh = _creator.CreateMesh(Radius, Segments, InnerRadius, AngleDegree);
+        //gameObject.transform.Translate(new Vector3(0f, 0f, -1f));
 	}  
 
 	void OnDrawGizmos()  

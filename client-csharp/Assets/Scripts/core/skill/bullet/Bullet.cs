@@ -75,7 +75,7 @@ namespace Engine
             _transform = _gameObject.transform;
             _transform.localScale = Vector3.one * 1.0f;
             _transform.localPosition = _pos;
-            _transform.forward = _dir;
+            //_transform.forward = _dir;
             _collider = _gameObject.GetComponent<BoxCollider>();
             if (ISNeedBoxCollider())
             {
@@ -132,7 +132,7 @@ namespace Engine
             _gameObject.name = "defaultBullet";
             _transform = _effect.m_kTRS;
             _transform.localPosition = _pos;
-            _transform.forward = _dir;
+            //_transform.forward = _dir;
             //_gameObject.SetActive(false);
         }
 
@@ -163,8 +163,8 @@ namespace Engine
             float step = (oldSpeed + _speed) * elapseTime / 2f;
 			if (step != 0f) {
 				Vector3 dir = new Vector3 ();
-				dir = _dir * step;
-				_transform.Translate (dir.x, dir.y, dir.z);
+                dir = _dir * step;
+				_transform.Translate (dir);
 			}
             _pos = _transform.position;
             _disMoved += step;
