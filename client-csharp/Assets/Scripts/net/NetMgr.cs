@@ -6,7 +6,7 @@ namespace Engine {
 	public class NetMgr : Singleton<NetMgr> , ITick
 	{
         //心跳间隔
-        private const double HEART_BEAT_INTEVAL = 5;
+        private const double HEART_BEAT_INTEVAL = 1;
         //每帧处理协议数
         private const int frameCMDNum = 30;
         //立即处理
@@ -125,7 +125,7 @@ namespace Engine {
         public void OnTick(float dt)
 		{
 			t += dt;
-			if (t > 5) {
+			if (t > HEART_BEAT_INTEVAL) {
 				t = 0;
 				Debug.Log ("heart beat tick : " + dt);
                 sendHeartbeat();

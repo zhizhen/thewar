@@ -83,6 +83,7 @@ proc_tcp(Bin,#state{socket_cache=Cache} =  State) ->
             State;
         _ ->
             %% route DataBin
+            lager:info("recv databin: ~p~n", [{DataBin}]),
             proc_tcp([], State#state{socket_cache=Cache2})
     end.
 

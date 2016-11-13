@@ -8,12 +8,10 @@ net_packet_init() ->
 
 net_packet(CurNetBin, NetCache) ->
     #netcache{need_len = NeedLen, bin = Bin} = NetCache,
-    NetBin = 
-    case CurNetBin of
+    NetBin = case CurNetBin of
         [] -> Bin;
         _ -> l2b([Bin|CurNetBin])
     end,
-
     BinSize = bsz(NetBin),
 
     case NeedLen of

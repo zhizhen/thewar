@@ -59,17 +59,17 @@ namespace Engine
 
 		public void send(ProtoBase proto) {
 			string protoName = proto.GetType ().Name;
-			Debug.LogError ("send proto :" + protoName);
+			Debug.Log ("send proto :" + protoName);
 			send (Encode (proto));
 		}
 
 		public void send(ByteArray byteArray) {
-			int BigLen = IPAddress.HostToNetworkOrder (byteArray.Length);
 			//proto length
+			short BigLen = IPAddress.HostToNetworkOrder ((short)byteArray.Length);
 			byte[] lenBytes = BitConverter.GetBytes(BigLen);
-			byte[] sendBytes = new byte[byteArray.Length + 4];
+			byte[] sendBytes = new byte[byteArray.Length + 2];
 			Array.Copy (lenBytes, sendBytes, lenBytes.Length);
-			Array.Copy (byteArray.Buff, 0, sendBytes, 4, byteArray.Length);
+			Array.Copy (byteArray.Buff, 0, sendBytes, 2, byteArray.Length);
 			send (sendBytes);
 		}
 
@@ -78,6 +78,7 @@ namespace Engine
 				if (connected () && _socket.Poll (1, SelectMode.SelectWrite)) {
 					try {
 						int sendSize = _socket.Send(data);
+						Debug.Log("send size : " + sendSize);
 					} catch (SocketException ex) {
 						Debug.LogError ("send data error :" + ex.Message + ";error code: " + ex.ErrorCode);
 						errorClose ();
@@ -178,13 +179,13 @@ namespace Engine
 			_sendBuffer.Reset ();
 			proto.write (_sendBuffer);
 
-			int BigLen = IPAddress.HostToNetworkOrder (_sendBuffer.Length);
+			short BigLen = IPAddress.HostToNetworkOrder ((short)_sendBuffer.Length);
 			byte[] lenBytes = BitConverter.GetBytes (BigLen);
 
-			byte[] sendBytes = new byte[_sendBuffer.Length + 4];
+			byte[] sendBytes = new byte[_sendBuffer.Length + 2];
 			Array.Copy (lenBytes, sendBytes, lenBytes.Length);
 
-			Array.Copy (_sendBuffer.Buff, 0, sendBytes, 4, _sendBuffer.Length);
+			Array.Copy (_sendBuffer.Buff, 0, sendBytes, 2, _sendBuffer.Length);
 			return sendBytes;
 		}
 
