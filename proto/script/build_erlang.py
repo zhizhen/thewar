@@ -238,9 +238,10 @@ class ProtoNifGenerator:
         code += "    <<MsgId:32, _/binary>> = BinData,\n"
         code += "    FuncName = string:concat(\"decode_\", integer_to_list(MsgId)),\n"
         code += "    Record = apply('game_pb', list_to_atom(FuncName), [BinData]),\n"
-        code += "    RecordName = element(1, Record),\n"
-        code += "    [_, M, F, _] = re:split(atom_to_list(RecordName), \"__\", [{return, list}]),\n"
-        code += "    {ok, {list_to_atom(M ++ \"_api\"), list_to_atom(F), Record}}.\n"
+        # code += "    RecordName = element(1, Record),\n"
+        # code += "    [_, M, F, _] = re:split(atom_to_list(RecordName), \"__\", [{return, list}]),\n"
+        # code += "    {ok, {list_to_atom(M ++ \"_api\"), list_to_atom(F), Record}}.\n"
+        code += "    {ok, Record}.\n"
         return code
     
 

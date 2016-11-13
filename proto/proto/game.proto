@@ -54,6 +54,17 @@ message m__proto__test__s2c {
     repeated p_test v10;
 }
 
+// 心跳
 message m__system__heartbeat__c2s {
     required int32 msg_id [default = 1000];
+}
+
+// 登陆
+message m__role__login__c2s {
+    required int32 msg_id [default = 1001];
+}
+
+// 角色信息
+message m__role__login__s2c {
+    required int32 msg_id [default = 1002];
 }

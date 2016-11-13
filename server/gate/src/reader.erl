@@ -5,6 +5,7 @@
 %% API
 -export([start_link/4]).
 -include("gate.hrl").
+-include("game_pb.hrl").
 
 %% gen_server
 -export([
@@ -36,6 +37,7 @@ start_link(Ref, Socket, Transport, Opts) ->
 %% gen_server
 init([Ref, Socket, Transport, Opts]) ->
     lager:info("init socket connect."),
+    global:register_name(?MODULE, self()),
     ok = proc_lib:init_ack({ok, self()}),
     ok = ranch:accept_ack(Ref),
     ok = Transport:setopts(Socket, [{active, once}]),
@@ -59,13 +61,13 @@ handle_info({tcp, Socket, <<Bin/binary>>}, #state{transport = Transport} = State
     Transport:setopts(Socket, [{active, once}]),
     State1 = proc_tcp(Bin, State),
     {noreply, State1, ?TIMEOUT};
+handle_info({send, Bin}, #state{socket = Socket, transport = Transport} = State) ->
+    Transport:send(Socket, Bin),
+    {noreply, State};
 handle_info(Info, State) ->
     lager:error("unhandled into : ~p~n", [Info]),
     {noreply, State}.
 
-handle_cast({send, Bin}, #state{socket = Socket, transport = Transport} = State) ->
-    Transport:send(Socket, Bin),
-    {noreply, State};
 handle_cast(Msg, State) ->
     lager:error("unhandled msg : ~p~n", [Msg]),
     {noreply, State}.
@@ -83,7 +85,24 @@ proc_tcp(Bin,#state{socket_cache=Cache} =  State) ->
             State;
         _ ->
             %% route DataBin
-            lager:info("recv databin: ~p~n", [{DataBin}]),
+            {ok, Proto} = game_pb:decode(DataBin),
+            lager:info("recv proto: ~p~n", [Proto]),
+            handle_proto(Proto),
             proc_tcp([], State#state{socket_cache=Cache2})
     end.
 
+handle_proto(#m__system__heartbeat__c2s{}) -> ok;
+handle_proto(#m__role__login__c2s{}) ->
+    Name = "123",
+    global:register_name(Name, self()),
+    Proto = #m__role__login__s2c{},
+    {ok, Bin} = game_pb:encode(Proto),
+    Len = erlang:byte_size(Bin) + 1,
+    Iszip = 0,
+    Final = <<Len:32, Iszip:8, Bin/binary>>,
+    self() ! {send, Final},
+    ok;
+handle_proto(Proto) ->
+    lager:info("unhandled proto: ~p~n", [Proto]),
+    RoleMgr = global:whereis_name(role_mgr),
+    RoleMgr ! {proto, Proto}.

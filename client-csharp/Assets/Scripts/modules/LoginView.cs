@@ -22,7 +22,7 @@ namespace Engine
         public void LoginCallBack()
         {
             Debug.Log("on button click");
-            SceneMgr.Instance.Init();
+			RoleMgr.Instance.LoginC2S ();
             view.SetActive(false);
         }
 	}

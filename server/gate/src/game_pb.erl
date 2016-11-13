@@ -1,16 +1,22 @@
 -module(game_pb).
 -include("game_pb.hrl").
 -export([
+    encode_999/1,
+    encode_998/1,
+    encode_p_tests/2,
+    encode_p_test/1,
+    decode_p_tests/2,
     encode_1001/1,
     encode_1000/1,
-    decode_p_tests/2,
-    encode_p_tests/2,
-    encode_p_test/1
+    encode_1002/1
 ]).
 
 -export([
+    decode_999/1,
+    decode_998/1,
     decode_1001/1,
     decode_1000/1,
+    decode_1002/1,
     decode_p_test/1
 ]).
 
@@ -56,9 +62,7 @@ decode(BinData) ->
     <<MsgId:32, _/binary>> = BinData,
     FuncName = string:concat("decode_", integer_to_list(MsgId)),
     Record = apply('game_pb', list_to_atom(FuncName), [BinData]),
-    RecordName = element(1, Record),
-    [_, M, F, _] = re:split(atom_to_list(RecordName), "__", [{return, list}]),
-    {ok, {list_to_atom(M ++ "_api"), list_to_atom(F), Record}}.
+    {ok, Record}.
 encode_bytes([], Bin) ->
     Bin;
 encode_bytes([H|T], Bin) ->
@@ -171,41 +175,32 @@ decode_bools(Bin, List) ->
             Bool = false
     end,
     decode_bools(Bin2, [Bool|List]).
-encode_p_test(Record) when is_record(Record, p_test) ->
-    #p_test{v1=V1,v2=V2} = Record,
-    V1Final =
-    case V1 =:= undefined of
+encode_1002(Record) when is_record(Record, m__role__login__s2c) ->
+    #m__role__login__s2c{msg_id=Msg_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
         true ->
-            throw({required_field_not_assigned, p_test, v1}),
-            undefined;
+            1002;
         false ->
-            V1
+            Msg_id
     end,
-    V2Final =
-    case V2 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, p_test, v2}),
-            undefined;
-        false ->
-            V2
-    end,
-    <<V1Final:32/signed,V2Final:32/signed>>;
+    <<Msg_idFinal:32/signed>>;
 
-encode_p_test(_) -> <<>>.
+encode_1002(_) -> <<>>.
 
-decode_p_test(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<V1:32/signed,V2:32/signed>> = Bin0,
-    {p_test, V1,V2};
+decode_1002(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed>> = Bin0,
+    {m__role__login__s2c, Msg_id};
 
-decode_p_test(_) ->
+decode_1002(_) ->
     undefined.
 
-encode_1000(Record) when is_record(Record, m__proto__test__c2s) ->
+encode_998(Record) when is_record(Record, m__proto__test__c2s) ->
     #m__proto__test__c2s{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            1000;
+            998;
         false ->
             Msg_id
     end,
@@ -297,9 +292,9 @@ encode_1000(Record) when is_record(Record, m__proto__test__c2s) ->
     BinLen_v10 = erlang:byte_size(V10_bin),
     <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
 
-encode_1000(_) -> <<>>.
+encode_998(_) -> <<>>.
 
-decode_1000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+decode_998(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
     <<Msg_id:32/signed,V1:8/signed,V2:16/signed,V3:16/unsigned,V4:32/signed,V5:32/unsigned,V6:64/signed,V7Len:16, Bin1/binary>> = Bin0,
     <<V7:V7Len/binary,SubBinSizev8:32, Bin2/binary>> = Bin1,
     <<SubBinv8:SubBinSizev8/binary, Bin3/binary>> = Bin2,
@@ -311,15 +306,15 @@ decode_1000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
     V10 = lists:reverse(decode_p_tests(SubBinv10, [])),
     {m__proto__test__c2s, Msg_id,V1,V2,V3,V4,V5,V6,V7,V8,V9,V10};
 
-decode_1000(_) ->
+decode_998(_) ->
     undefined.
 
-encode_1001(Record) when is_record(Record, m__proto__test__s2c) ->
+encode_999(Record) when is_record(Record, m__proto__test__s2c) ->
     #m__proto__test__s2c{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            1001;
+            999;
         false ->
             Msg_id
     end,
@@ -411,9 +406,9 @@ encode_1001(Record) when is_record(Record, m__proto__test__s2c) ->
     BinLen_v10 = erlang:byte_size(V10_bin),
     <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
 
-encode_1001(_) -> <<>>.
+encode_999(_) -> <<>>.
 
-decode_1001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+decode_999(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
     <<Msg_id:32/signed,V1:8/signed,V2:16/signed,V3:16/unsigned,V4:32/signed,V5:32/unsigned,V6:64/signed,V7Len:16, Bin1/binary>> = Bin0,
     <<V7:V7Len/binary,SubBinSizev8:32, Bin2/binary>> = Bin1,
     <<SubBinv8:SubBinSizev8/binary, Bin3/binary>> = Bin2,
@@ -425,7 +420,76 @@ decode_1001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
     V10 = lists:reverse(decode_p_tests(SubBinv10, [])),
     {m__proto__test__s2c, Msg_id,V1,V2,V3,V4,V5,V6,V7,V8,V9,V10};
 
+decode_999(_) ->
+    undefined.
+
+encode_1000(Record) when is_record(Record, m__system__heartbeat__c2s) ->
+    #m__system__heartbeat__c2s{msg_id=Msg_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1000;
+        false ->
+            Msg_id
+    end,
+    <<Msg_idFinal:32/signed>>;
+
+encode_1000(_) -> <<>>.
+
+decode_1000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed>> = Bin0,
+    {m__system__heartbeat__c2s, Msg_id};
+
+decode_1000(_) ->
+    undefined.
+
+encode_1001(Record) when is_record(Record, m__role__login__c2s) ->
+    #m__role__login__c2s{msg_id=Msg_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1001;
+        false ->
+            Msg_id
+    end,
+    <<Msg_idFinal:32/signed>>;
+
+encode_1001(_) -> <<>>.
+
+decode_1001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed>> = Bin0,
+    {m__role__login__c2s, Msg_id};
+
 decode_1001(_) ->
+    undefined.
+
+encode_p_test(Record) when is_record(Record, p_test) ->
+    #p_test{v1=V1,v2=V2} = Record,
+    V1Final =
+    case V1 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, p_test, v1}),
+            undefined;
+        false ->
+            V1
+    end,
+    V2Final =
+    case V2 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, p_test, v2}),
+            undefined;
+        false ->
+            V2
+    end,
+    <<V1Final:32/signed,V2Final:32/signed>>;
+
+encode_p_test(_) -> <<>>.
+
+decode_p_test(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<V1:32/signed,V2:32/signed>> = Bin0,
+    {p_test, V1,V2};
+
+decode_p_test(_) ->
     undefined.
 
 encode_p_tests([], Bin) ->
