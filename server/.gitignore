@@ -1,6 +1,4 @@
 ebin
-.rebar*
 gate/deps/*
 game/deps/*
-gate/rel/gate
-game/rel/game
+
