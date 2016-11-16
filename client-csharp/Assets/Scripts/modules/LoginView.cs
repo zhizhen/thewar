@@ -23,6 +23,7 @@ namespace Engine
         {
             Debug.Log("on button click");
 			RoleMgr.Instance.LoginC2S ();
+			SceneMgr.Instance.Init();
             view.SetActive(false);
         }
 	}
