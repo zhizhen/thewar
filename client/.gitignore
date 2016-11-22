@@ -4,4 +4,4 @@ ProjectSettings
 Temp
 .DS_Store
 Assembly-CSharp*
-client-csharp*
+client*
