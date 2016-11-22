@@ -59,7 +59,7 @@ namespace Engine
 
 		public void send(ProtoBase proto) {
 			string protoName = proto.GetType ().Name;
-			Debug.Log ("send proto :" + protoName);
+//			Debug.Log ("send proto :" + protoName);
 			send (Encode (proto));
 		}
 
@@ -77,8 +77,8 @@ namespace Engine
 			if (data != null) {
 				if (connected () && _socket.Poll (1, SelectMode.SelectWrite)) {
 					try {
-						int sendSize = _socket.Send(data);
-						Debug.Log("send size : " + sendSize);
+						_socket.Send(data);
+//						Debug.Log("send size : " + sendSize);
 					} catch (SocketException ex) {
 						Debug.LogError ("send data error :" + ex.Message + ";error code: " + ex.ErrorCode);
 						errorClose ();

@@ -16,6 +16,7 @@ start(_StartType, _StartArgs) ->
         pang ->
             lager:info("connect gate fail, nodes: ~p~n", [nodes()])
     end,
+    role_manager:start_link(),
     game_sup:start_link().
 
 stop(_State) ->

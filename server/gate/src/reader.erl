@@ -44,14 +44,14 @@ init([Ref, Socket, Transport, Opts]) ->
     {ok, {Ip, Port}} = inet:peername(Socket),
     lager:debug("connect:~p~n", [{Ip, Port}]),
     State = #state{
-               ref = Ref, 
-               socket = Socket,
-               transport = Transport,
-               opt = Opts,
-               ip = Ip,
-               port = Port,
-               socket_cache = netsake:net_packet_init()
-              },
+        ref = Ref, 
+        socket = Socket,
+        transport = Transport,
+        opt = Opts,
+        ip = Ip,
+        port = Port,
+        socket_cache = netsake:net_packet_init()
+    },
     gen_server:enter_loop(?MODULE, [], State, ?TIMEOUT).
 
 handle_call(_Req, _From, State) ->
@@ -86,23 +86,31 @@ proc_tcp(Bin,#state{socket_cache=Cache} =  State) ->
         _ ->
             %% route DataBin
             {ok, Proto} = game_pb:decode(DataBin),
-            lager:info("recv proto: ~p~n", [Proto]),
             handle_proto(Proto),
             proc_tcp([], State#state{socket_cache=Cache2})
     end.
 
 handle_proto(#m__system__heartbeat__c2s{}) -> ok;
 handle_proto(#m__role__login__c2s{}) ->
-    Name = "123",
-    global:register_name(Name, self()),
-    Proto = #m__role__login__s2c{},
-    {ok, Bin} = game_pb:encode(Proto),
-    Len = erlang:byte_size(Bin) + 1,
-    Iszip = 0,
-    Final = <<Len:32, Iszip:8, Bin/binary>>,
-    self() ! {send, Final},
+    {ok, DefaultGameSrv} = application:get_env(gate, default_game),
+    lager:info("rpc call: ~p~n", [{DefaultGameSrv}]),
+    rpc:call(DefaultGameSrv, role_manager, create, [self()]),
+    receive
+        {role_login, {pid, Pid}, {id, Id}} ->
+            Proto = #m__role__login__s2c{},
+            {ok, Bin} = game_pb:encode(Proto),
+            Len = erlang:byte_size(Bin) + 1,
+            Iszip = 0,
+            Final = <<Len:32, Iszip:8, Bin/binary>>,
+            self() ! {send, Final},
+            ok;
+        Error ->
+            lager:error("start role error : ~p~n", [{Error}])
+    after 10000 ->
+            lager:error("start role timeout : ~p~n", [{}])
+    end,
     ok;
 handle_proto(Proto) ->
     lager:info("unhandled proto: ~p~n", [Proto]),
-    RoleMgr = global:whereis_name(role_mgr),
+    RoleMgr = global:whereis_name(role_manager),
     RoleMgr ! {proto, Proto}.

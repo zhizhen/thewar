@@ -127,7 +127,7 @@ namespace Engine {
 			t += dt;
 			if (t > HEART_BEAT_INTEVAL) {
 				t = 0;
-				Debug.Log ("heart beat tick : " + dt);
+//				Debug.Log ("heart beat tick : " + dt);
                 sendHeartbeat();
 			}
             cacheCMD();
