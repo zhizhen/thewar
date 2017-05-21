@@ -1,4 +1,6 @@
-﻿Shader "Custom/SkillHintBg" {  
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/SkillHintBg" {  
 Properties {  
     _MainTex ("Base Texture", 2D) = "white" {}  
     _Color ("Main Color", Color) = (1,1,1,1)    
@@ -34,7 +36,7 @@ Category {
                 v2f vert(appdata_tan v)     
                 {     
                     v2f o;     
-                    o.pos = mul (UNITY_MATRIX_MVP, v.vertex);    
+                    o.pos = UnityObjectToClipPos (v.vertex);    
                     o.uv = v.texcoord;   
                     return o;      
                 }     
@@ -65,7 +67,7 @@ Category {
                 v2f vert(appdata_tan v)     
                 {     
                     v2f o;     
-                    o.pos = mul (UNITY_MATRIX_MVP, v.vertex);    
+                    o.pos = UnityObjectToClipPos (v.vertex);    
                     o.uv = v.texcoord;   
                     return o;      
                 }     

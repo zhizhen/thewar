@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #warning Upgrade NOTE: unity_Scale shader variable was removed; replaced 'unity_Scale.w' with '1.0'
 
 Shader "Game/Water"
@@ -73,7 +75,7 @@ CGPROGRAM
 	v2f vert(appdata v)
 	{
 		v2f o;
-		o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos (v.vertex);
 		
 		// OpenGL
 		//o.uv = (v.vertex.xz + _OffsetScale.xy) * _OffsetScale.zw;

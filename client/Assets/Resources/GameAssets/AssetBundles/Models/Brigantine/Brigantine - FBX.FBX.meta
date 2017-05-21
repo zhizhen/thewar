@@ -3,10 +3,23 @@ guid: 2f0ccd722dfdec04c88dabc81df11f5c
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
+    100000: //RootNode
+    100002: Brigantine - Rigging
+    100004: Brigantine - Sails
+    400000: //RootNode
+    400002: Brigantine - Rigging
+    400004: Brigantine - Sails
+    2300000: //RootNode
+    2300002: Brigantine - Rigging
+    2300004: Brigantine - Sails
+    3300000: //RootNode
+    3300002: Brigantine - Rigging
+    3300004: Brigantine - Sails
     4300000: Brigantine
     4300002: Brigantine - Hull
     4300004: Brigantine - Sails
     4300006: Brigantine - Rigging
+    11100000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
@@ -17,6 +30,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -53,6 +68,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -63,7 +79,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 1
   humanoidOversampling: 1
