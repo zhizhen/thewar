@@ -28,7 +28,7 @@ public class SceneMgr : Singleton<SceneMgr>
     public void Init()
     {
         m_Scenes = new Dictionary<int, SceneBaseView>();
-        EnterScene("1004");
+        EnterScene("1003");
     }
 
     private void EnterScene(string sceneId)
