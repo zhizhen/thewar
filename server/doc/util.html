@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset='utf-8'">
+<title>Module util</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module util</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>MYSQL util.
+<p>Copyright � (C) 2013, goddess.rekoo.com</p>
+
+<p><b>Authors:</b> goddess (<a href="mailto:goddess@rekoo.com"><tt>goddess@rekoo.com</tt></a>).</p>
+
+<h2><a name="description">Description</a></h2>MYSQL util
+  
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#ceil-1">ceil/1</a></td><td>取整 大于X的最小整数.</td></tr>
+<tr><td valign="top"><a href="#combine_lists-2">combine_lists/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#f2s-1">f2s/1</a></td><td>convert float to string,  f2s(1.5678) -&gt; 1.57.</td></tr>
+<tr><td valign="top"><a href="#floor-1">floor/1</a></td><td>取整 小于X的最大整数.</td></tr>
+<tr><td valign="top"><a href="#for-3">for/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_heap-0">get_heap/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_heap-1">get_heap/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_memory-0">get_memory/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_memory-1">get_memory/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_msg_queue-0">get_msg_queue/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_type-2">get_type/2</a></td><td>get data type {0=integer,1=list,2=atom,3=binary}.</td></tr>
+<tr><td valign="top"><a href="#ip-1">ip/1</a></td><td>get IP address string from Socket.</td></tr>
+<tr><td valign="top"><a href="#list_random-1">list_random/1</a></td><td>get random list.</td></tr>
+<tr><td valign="top"><a href="#list_to_atom2-1">list_to_atom2/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#md5-1">md5/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#md5_to_hex-1">md5_to_hex/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#odds-2">odds/2</a></td><td>机率.</td></tr>
+<tr><td valign="top"><a href="#odds_list-1">odds_list/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#odds_list-2">odds_list/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#odds_list_sum-1">odds_list_sum/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#random-2">random/2</a></td><td>get a random integer between Min and Max.</td></tr>
+<tr><td valign="top"><a href="#random_dice-2">random_dice/2</a></td><td>掷骰子.</td></tr>
+<tr><td valign="top"><a href="#sleep-1">sleep/1</a></td><td>暂停多少毫秒.</td></tr>
+<tr><td valign="top"><a href="#sort-1">sort/1</a></td><td>quick sort.</td></tr>
+<tr><td valign="top"><a href="#subatom-2">subatom/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td>convert other type to atom.</td></tr>
+<tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td>convert other type to binary.</td></tr>
+<tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td>convert other type to float.</td></tr>
+<tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td>convert other type to integer.</td></tr>
+<tr><td valign="top"><a href="#to_list-1">to_list/1</a></td><td>convert other type to list.</td></tr>
+<tr><td valign="top"><a href="#to_tuple-1">to_tuple/1</a></td><td>convert other type to tuple.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="ceil-1">ceil/1</a></h3>
+<div class="spec">
+<p><tt>ceil(X) -&gt; any()</tt></p>
+</div><p>取整 大于X的最小整数</p>
+
+<h3 class="function"><a name="combine_lists-2">combine_lists/2</a></h3>
+<div class="spec">
+<p><tt>combine_lists(L1, L2) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="f2s-1">f2s/1</a></h3>
+<div class="spec">
+<p><tt>f2s(N) -&gt; any()</tt></p>
+</div><p>convert float to string,  f2s(1.5678) -&gt; 1.57</p>
+
+<h3 class="function"><a name="floor-1">floor/1</a></h3>
+<div class="spec">
+<p><tt>floor(X) -&gt; any()</tt></p>
+</div><p>取整 小于X的最大整数</p>
+
+<h3 class="function"><a name="for-3">for/3</a></h3>
+<div class="spec">
+<p><tt>for(Max, X2, F) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_heap-0">get_heap/0</a></h3>
+<div class="spec">
+<p><tt>get_heap() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_heap-1">get_heap/1</a></h3>
+<div class="spec">
+<p><tt>get_heap(Value) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_memory-0">get_memory/0</a></h3>
+<div class="spec">
+<p><tt>get_memory() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_memory-1">get_memory/1</a></h3>
+<div class="spec">
+<p><tt>get_memory(Value) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_msg_queue-0">get_msg_queue/0</a></h3>
+<div class="spec">
+<p><tt>get_msg_queue() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="get_type-2">get_type/2</a></h3>
+<div class="spec">
+<p><tt>get_type(DataValue, DataType) -&gt; any()</tt></p>
+</div><p>get data type {0=integer,1=list,2=atom,3=binary}</p>
+
+<h3 class="function"><a name="ip-1">ip/1</a></h3>
+<div class="spec">
+<p><tt>ip(Socket) -&gt; any()</tt></p>
+</div><p>get IP address string from Socket</p>
+
+<h3 class="function"><a name="list_random-1">list_random/1</a></h3>
+<div class="spec">
+<p><tt>list_random(List) -&gt; any()</tt></p>
+</div><p>get random list</p>
+
+<h3 class="function"><a name="list_to_atom2-1">list_to_atom2/1</a></h3>
+<div class="spec">
+<p><tt>list_to_atom2(List) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="md5-1">md5/1</a></h3>
+<div class="spec">
+<p><tt>md5(S) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="md5_to_hex-1">md5_to_hex/1</a></h3>
+<div class="spec">
+<p><tt>md5_to_hex(Str) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="odds-2">odds/2</a></h3>
+<div class="spec">
+<p><tt>odds(Numerator, Denominator) -&gt; any()</tt></p>
+</div><p>机率</p>
+
+<h3 class="function"><a name="odds_list-1">odds_list/1</a></h3>
+<div class="spec">
+<p><tt>odds_list(List) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="odds_list-2">odds_list/2</a></h3>
+<div class="spec">
+<p><tt>odds_list(List, Sum) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="odds_list_sum-1">odds_list_sum/1</a></h3>
+<div class="spec">
+<p><tt>odds_list_sum(List) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="random-2">random/2</a></h3>
+<div class="spec">
+<p><tt>random(Min, Max) -&gt; any()</tt></p>
+</div><p>get a random integer between Min and Max</p>
+
+<h3 class="function"><a name="random_dice-2">random_dice/2</a></h3>
+<div class="spec">
+<p><tt>random_dice(Face, Times) -&gt; any()</tt></p>
+</div><p>掷骰子</p>
+
+<h3 class="function"><a name="sleep-1">sleep/1</a></h3>
+<div class="spec">
+<p><tt>sleep(Msec) -&gt; any()</tt></p>
+</div><p>暂停多少毫秒</p>
+
+<h3 class="function"><a name="sort-1">sort/1</a></h3>
+<div class="spec">
+<p><tt>sort(T) -&gt; any()</tt></p>
+</div><p>quick sort</p>
+
+<h3 class="function"><a name="subatom-2">subatom/2</a></h3>
+<div class="spec">
+<p><tt>subatom(Atom, Len) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="to_atom-1">to_atom/1</a></h3>
+<div class="spec">
+<p><tt>to_atom(Msg) -&gt; any()</tt></p>
+</div><p>convert other type to atom</p>
+
+<h3 class="function"><a name="to_binary-1">to_binary/1</a></h3>
+<div class="spec">
+<p><tt>to_binary(Msg) -&gt; any()</tt></p>
+</div><p>convert other type to binary</p>
+
+<h3 class="function"><a name="to_float-1">to_float/1</a></h3>
+<div class="spec">
+<p><tt>to_float(Msg) -&gt; any()</tt></p>
+</div><p>convert other type to float</p>
+
+<h3 class="function"><a name="to_integer-1">to_integer/1</a></h3>
+<div class="spec">
+<p><tt>to_integer(Msg::any()) -&gt; integer()</tt><br></p>
+</div><p>convert other type to integer</p>
+
+<h3 class="function"><a name="to_list-1">to_list/1</a></h3>
+<div class="spec">
+<p><tt>to_list(Msg) -&gt; any()</tt></p>
+</div><p>convert other type to list</p>
+
+<h3 class="function"><a name="to_tuple-1">to_tuple/1</a></h3>
+<div class="spec">
+<p><tt>to_tuple(T) -&gt; any()</tt></p>
+</div><p>convert other type to tuple</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Apr 17 2013, 17:25:29.</i></p>
+</body>
+</html>

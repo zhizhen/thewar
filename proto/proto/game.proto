@@ -23,6 +23,25 @@ message p_test {
     required int32 v2;
 }
 
+message p_role {
+    required int32 id;
+}
+
+message p_pos {
+    required string  role_id;
+    required string  role_name;
+    required int32   job;
+    required short   level;
+    required int32   pos_x[default = 0];
+    required int32   pos_y[default = 0];
+    required int32   dest_x;
+    required int32   dest_y;
+    required string   weapon;
+    required string   armor;
+    required string   wing;
+    required int32  title_id;              
+}
+
 //-------------------------------------
 // 协议部分
 //-------------------------------------
@@ -59,12 +78,127 @@ message m__system__heartbeat__c2s {
     required int32 msg_id [default = 1000];
 }
 
+message m__system__notify__s2c {
+    required int32 msg_id [default = 1001];
+    required int32 code;
+}
+
+-------------------------------------------------------------------------------
+// 账号登陆
+message m__account__login__c2s {
+    required int32 msg_id [default = 1100];
+    required string account_id;
+    required string ticket;
+    required int32 platform;
+    required int32 server_id;
+}
+
+message m__role__list__s2c {
+    required int32 msg_id [default = 1101];
+    repeated p_role role_list;
+}
+
+message m__role__create__c2s {
+    required int32 msg_id [default = 1102];
+    required string name;
+    required int32 job;
+}
+
+message m__role__create__s2c {
+    required int32 msg_id [default 1103];
+    required int32 id;
+}
+
 // 登陆
 message m__role__login__c2s {
-    required int32 msg_id [default = 1001];
+    required int32 msg_id [default = 1104];
+    required int32 id;
+}
+
+message m__role__login__s2c {
+    required int32 msg_id [default = 1105];
+    required p_role role_info;
 }
 
 // 角色信息
-message m__role__login__s2c {
-    required int32 msg_id [default = 1002];
+message m__role__info__c2s {
+    required int32 msg_id [default = 1106];
+    required int32 id;
+}
+
+message m__role__info__s2c {
+    required int32 msg_id [default = 1107];
+    required p_role role_info;
+}
+
+-------------------------------------------------------------------------------
+// 周围人的摘要信息
+message m__scene__neighbours__s2c{
+    required int32  msg_id [default = 5001];
+    repeated p_pos roles;
+}
+
+// 开始移动
+message m__scene__move__c2s{
+    required int32  msg_id [default = 5002];
+    required int32  dest_x;
+    required int32  dest_y;
+}
+
+// 周围人移动
+message m__scene__move__s2c{
+    required int32  msg_id [default = 5003];
+    required p_pos role_summary;
+}
+
+// 同步位置
+message m__scene__update_pos__c2s{
+    required int32  msg_id [default = 5004];
+    required int32 pos_x;
+    required int32 pos_y;
+}
+
+// 周围人同步位置
+message m__scene__update_pos__s2c{
+    required int32  msg_id [default = 5005];
+    required p_pos role_summary;
+}
+
+// 有人离开
+message m__scene__leave__s2c{
+    required int32  msg_id [default = 5006];
+    required string role_id;
+}
+
+// 停下来
+message m__scene__stop__c2s{
+    required int32  msg_id [default = 5007];
+}
+
+// 离开
+message m__scene__leave__c2s{
+    required int32  msg_id [default = 5008];
+}
+
+// 进入 + 切场景
+message m__scene__enter__c2s{
+    required int32  msg_id [default = 5009];
+    required int32 scene_id;
+}
+
+// 切线
+message m__scene__switch_line__c2s{
+    required int32  msg_id [default = 5010];
+    required int32 line_id;
+}
+
+message m__scene__roleline__s2c{
+    required int32 msg_id [default = 5011];
+    required int32 line;
+    repeated int32 openlines;
+}
+
+message m__scene__lineinfo__s2c{
+    required int32 msg_id [default = 5012];
+    repeated int32 openlines;
 }

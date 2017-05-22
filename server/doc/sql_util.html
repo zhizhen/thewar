@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset='utf-8'">
+<title>Module sql_util</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module sql_util</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>MYSQL util.
+<p>Copyright © (C) 2013, goddess.rekoo.com</p>
+
+<p><b>Authors:</b> goddess (<a href="mailto:goddess@rekoo.com"><tt>goddess@rekoo.com</tt></a>).</p>
+
+<h2><a name="description">Description</a></h2>MYSQL util
+  
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#generate_create_sql-2">generate_create_sql/2</a></td><td>Generate create sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_delete_sql-2">generate_delete_sql/2</a></td><td>Generate delete sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_insert_sql-2">generate_insert_sql/2</a></td><td>input FieldValueList = [{Key, Value}, ...].</td></tr>
+<tr><td valign="top"><a href="#generate_insert_sql-3">generate_insert_sql/3</a></td><td>input FieldList = [Key, ...], ValueList = [Value, ...].</td></tr>
+<tr><td valign="top"><a href="#generate_replace_sql-2">generate_replace_sql/2</a></td><td>Generate replace sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_replace_sql-3">generate_replace_sql/3</a></td><td>Generate replace sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_select_sql-5">generate_select_sql/5</a></td><td>generate select sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_update_sql-3">generate_update_sql/3</a></td><td>Generate update sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_update_sql-4">generate_update_sql/4</a></td><td>Generate update sql sentence.</td></tr>
+<tr><td valign="top"><a href="#generate_update_sql-5">generate_update_sql/5</a></td><td>Generate update sql sentence.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="generate_create_sql-2">generate_create_sql/2</a></h3>
+<div class="spec">
+<p><tt>generate_create_sql(Table::atom(), Fields::list()) -&gt; list()</tt><br></p>
+</div><p>Generate create sql sentence.</p>
+
+<h3 class="function"><a name="generate_delete_sql-2">generate_delete_sql/2</a></h3>
+<div class="spec">
+<p><tt>generate_delete_sql(Table::atom(), Wheres::list()) -&gt; list()</tt><br></p>
+</div><p>Generate delete sql sentence.</p>
+
+<h3 class="function"><a name="generate_insert_sql-2">generate_insert_sql/2</a></h3>
+<div class="spec">
+<p><tt>generate_insert_sql(Table::atom(), FieldValues::list()) -&gt; list()</tt><br></p>
+</div><p>input FieldValueList = [{Key, Value}, ...]</p>
+
+<h3 class="function"><a name="generate_insert_sql-3">generate_insert_sql/3</a></h3>
+<div class="spec">
+<p><tt>generate_insert_sql(Table::atom(), Fields::list(), Values::list()) -&gt; string()</tt><br></p>
+</div><p>input FieldList = [Key, ...], ValueList = [Value, ...]</p>
+
+<h3 class="function"><a name="generate_replace_sql-2">generate_replace_sql/2</a></h3>
+<div class="spec">
+<p><tt>generate_replace_sql(Table::atom(), FieldValues::list()) -&gt; list()</tt><br></p>
+</div><p>Generate replace sql sentence.</p>
+
+<h3 class="function"><a name="generate_replace_sql-3">generate_replace_sql/3</a></h3>
+<div class="spec">
+<p><tt>generate_replace_sql(Table::atom(), Fields::list(), Values::list()) -&gt; list()</tt><br></p>
+</div><p>Generate replace sql sentence.</p>
+
+<h3 class="function"><a name="generate_select_sql-5">generate_select_sql/5</a></h3>
+<div class="spec">
+<p><tt>generate_select_sql(Table::atom(), Fields::string(), Wheres::list(), Orders::list(), Limit::integer()) -&gt; string()</tt><br></p>
+</div><p>generate select sentence</p>
+
+<h3 class="function"><a name="generate_update_sql-3">generate_update_sql/3</a></h3>
+<div class="spec">
+<p><tt>generate_update_sql(Table::atom(), FieldValues::list(), Wheres::list()) -&gt; list()</tt><br></p>
+</div><p>Generate update sql sentence.</p>
+
+<h3 class="function"><a name="generate_update_sql-4">generate_update_sql/4</a></h3>
+<div class="spec">
+<p><tt>generate_update_sql(Table::atom(), Fields::list(), Values::list(), Wheres::list()) -&gt; list()</tt><br></p>
+</div><p>Generate update sql sentence.</p>
+
+<h3 class="function"><a name="generate_update_sql-5">generate_update_sql/5</a></h3>
+<div class="spec">
+<p><tt>generate_update_sql(Table::atom(), Fields::list(), Values::list(), Key::term(), Value::term()) -&gt; list()</tt><br></p>
+</div><p>Generate update sql sentence.</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Apr 17 2013, 17:25:29.</i></p>
+</body>
+</html>

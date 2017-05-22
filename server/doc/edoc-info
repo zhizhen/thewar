@@ -1,0 +1,12 @@
+%% encoding: UTF-8
+{application,goddess}.
+{packages,[]}.
+{modules,[account_api,account_db,account_mod,system_db,buff_db,cache,cache_cfg,
+          cache_core,dynamic_compile,edoc_layout_utf8,equip_db,game_pb,
+          goddess_app,goddess_client_receiver,goddess_client_sender,
+          goddess_ctl,goddess_env,goddess_misc,goddess_net,goddess_networking,
+          goddess_sup,item_db,logger_h,loglevel,mysql_auth,mysql_conn,
+          mysql_db,mysql_recv,quest_db,reloader,robot,robot_manager,role_api,
+          role_conf,role_db,role_mod,role_robot,role_srv,scene_0,scene_1,
+          scene_2,scene_3,scene_4,scene_api,scene_mod,scene_robot,scene_srv,
+          scene_sup,slave_srv,sql_util,system_robot,timer_srv,util]}.

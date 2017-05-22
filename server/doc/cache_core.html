@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset='utf-8'">
+<title>Module cache_core</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module cache_core</h1>
+<ul class="index"><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#add-1">add/1</a></td><td>save k v.</td></tr>
+<tr><td valign="top"><a href="#add_ets-1">add_ets/1</a></td><td>add new key to ets.</td></tr>
+<tr><td valign="top"><a href="#cleanup_other-0">cleanup_other/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#delete-1">delete/1</a></td><td>delete key when not locked or frozen.</td></tr>
+<tr><td valign="top"><a href="#delete_ets-1">delete_ets/1</a></td><td>delete.</td></tr>
+<tr><td valign="top"><a href="#destory_other-2">destory_other/2</a></td><td>destory by Identity.</td></tr>
+<tr><td valign="top"><a href="#destroy-1">destroy/1</a></td><td>delete key by force, always return true.</td></tr>
+<tr><td valign="top"><a href="#destroy_ets-1">destroy_ets/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#find-1">find/1</a></td><td>fetch value corresponded to key.</td></tr>
+<tr><td valign="top"><a href="#find_ets-1">find_ets/1</a></td><td>fetch key.</td></tr>
+<tr><td valign="top"><a href="#find_other-2">find_other/2</a></td><td>get by Identity.</td></tr>
+<tr><td valign="top"><a href="#freeze-1">freeze/1</a></td><td>freeze key, can't modify forever.</td></tr>
+<tr><td valign="top"><a href="#init-1">init/1</a></td><td>just like init/0, make process identity for cache by yourself.</td></tr>
+<tr><td valign="top"><a href="#insert_other-2">insert_other/2</a></td><td>insert by Identity.</td></tr>
+<tr><td valign="top"><a href="#is_frozen-1">is_frozen/1</a></td><td>return the freeze state of key.</td></tr>
+<tr><td valign="top"><a href="#is_locked-1">is_locked/1</a></td><td>return the lock state of key.</td></tr>
+<tr><td valign="top"><a href="#lock-1">lock/1</a></td><td>can't modify this key after lock.</td></tr>
+<tr><td valign="top"><a href="#unlock-1">unlock/1</a></td><td>unlock the key, then can modify this key.</td></tr>
+<tr><td valign="top"><a href="#update-1">update/1</a></td><td>brute to overlap the value, when the key is exist.</td></tr>
+<tr><td valign="top"><a href="#update_ets-1">update_ets/1</a></td><td>update key to ets.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="add-1">add/1</a></h3>
+<div class="spec">
+<p><tt>add(Value::tuple()) -&gt; boolean()</tt><br></p>
+</div><p>save k v</p>
+
+<h3 class="function"><a name="add_ets-1">add_ets/1</a></h3>
+<div class="spec">
+<p><tt>add_ets(Value::tuple()) -&gt; boolean()</tt><br></p>
+</div><p>add new key to ets</p>
+
+<h3 class="function"><a name="cleanup_other-0">cleanup_other/0</a></h3>
+<div class="spec">
+<p><tt>cleanup_other() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="delete-1">delete/1</a></h3>
+<div class="spec">
+<p><tt>delete(Key::term()) -&gt; boolean()</tt><br></p>
+</div><p>delete key when not locked or frozen</p>
+
+<h3 class="function"><a name="delete_ets-1">delete_ets/1</a></h3>
+<div class="spec">
+<p><tt>delete_ets(Key::term()) -&gt; true</tt><br></p>
+</div><p>delete</p>
+
+<h3 class="function"><a name="destory_other-2">destory_other/2</a></h3>
+<div class="spec">
+<p><tt>destory_other(Identity, Key) -&gt; any()</tt></p>
+</div><p>destory by Identity</p>
+
+<h3 class="function"><a name="destroy-1">destroy/1</a></h3>
+<div class="spec">
+<p><tt>destroy(Key::term()) -&gt; true</tt><br></p>
+</div><p>delete key by force, always return true.</p>
+
+<h3 class="function"><a name="destroy_ets-1">destroy_ets/1</a></h3>
+<div class="spec">
+<p><tt>destroy_ets(Key) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="find-1">find/1</a></h3>
+<div class="spec">
+<p><tt>find(Key::term()) -&gt; term()</tt><br></p>
+</div><p>fetch value corresponded to key</p>
+
+<h3 class="function"><a name="find_ets-1">find_ets/1</a></h3>
+<div class="spec">
+<p><tt>find_ets(Key::term) -&gt; false | term()</tt><br></p>
+</div><p>fetch key</p>
+
+<h3 class="function"><a name="find_other-2">find_other/2</a></h3>
+<div class="spec">
+<p><tt>find_other(Identity, Key) -&gt; any()</tt></p>
+</div><p>get by Identity</p>
+
+<h3 class="function"><a name="freeze-1">freeze/1</a></h3>
+<div class="spec">
+<p><tt>freeze(Key::term()) -&gt; already_frozen | boolean()</tt><br></p>
+</div><p>freeze key, can't modify forever</p>
+
+<h3 class="function"><a name="init-1">init/1</a></h3>
+<div class="spec">
+<p><tt>init(Identity::term()) -&gt; boolean()</tt><br></p>
+</div><p>just like init/0, make process identity for cache by yourself</p>
+
+<h3 class="function"><a name="insert_other-2">insert_other/2</a></h3>
+<div class="spec">
+<p><tt>insert_other(Identity, Value) -&gt; any()</tt></p>
+</div><p>insert by Identity</p>
+
+<h3 class="function"><a name="is_frozen-1">is_frozen/1</a></h3>
+<div class="spec">
+<p><tt>is_frozen(Key::term()) -&gt; boolean()</tt><br></p>
+</div><p>return the freeze state of key</p>
+
+<h3 class="function"><a name="is_locked-1">is_locked/1</a></h3>
+<div class="spec">
+<p><tt>is_locked(Key::term()) -&gt; boolean()</tt><br></p>
+</div><p>return the lock state of key</p>
+
+<h3 class="function"><a name="lock-1">lock/1</a></h3>
+<div class="spec">
+<p><tt>lock(Key::term()) -&gt; boolean()</tt><br></p>
+</div><p>can't modify this key after lock</p>
+
+<h3 class="function"><a name="unlock-1">unlock/1</a></h3>
+<div class="spec">
+<p><tt>unlock(Key::term()) -&gt; boolean()</tt><br></p>
+</div><p>unlock the key, then can modify this key.</p>
+
+<h3 class="function"><a name="update-1">update/1</a></h3>
+<div class="spec">
+<p><tt>update(Value::tuple()) -&gt; boolean()</tt><br></p>
+</div><p>brute to overlap the value, when the key is exist</p>
+
+<h3 class="function"><a name="update_ets-1">update_ets/1</a></h3>
+<div class="spec">
+<p><tt>update_ets(Value::tuple()) -&gt; boolean()</tt><br></p>
+</div><p>update key to ets</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Apr 17 2013, 17:25:30.</i></p>
+</body>
+</html>
