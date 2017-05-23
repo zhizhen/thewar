@@ -21,6 +21,7 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
 		UILoading.ShowLoading(string.Concat("正在进入", Vo.id, "场景..."), "正在预加载", 0);
         this.callBack = callBack;
 		this.m_sceneId = Vo.id;
+		SceneMgr.Instance.SceneVo = Vo;
         isLoading = true;
         _isLoadingComplete = false;
         GameObjectExt.Destroy(m_kScenePrefab);
@@ -49,8 +50,8 @@ public class SceneLoaderMgr : Singleton<SceneLoaderMgr>, ITick
     private void DownLoadComplete(object userData)
     {
         _isLoadingComplete = true;
-        TickMgr.Instance.AddTick(this);
         SceneManager.LoadSceneAsync("scene" + sceneId);
+		TickMgr.Instance.AddTick(this);
     }
 
     private void DownLoadCompleteAll()

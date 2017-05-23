@@ -25,6 +25,7 @@ namespace Engine
 			RoleMgr.Instance.LoginC2S ();
 			SceneMgr.Instance.Init();
             view.SetActive(false);
+			MainMenuView.Instance.Init ();
         }
 	}
 }
