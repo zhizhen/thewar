@@ -10,6 +10,13 @@ public class SceneMgr : Singleton<SceneMgr>
     private SceneBaseView _baseView;
     private GameObject m_CurSceneGO;
     private MainCamera m_mainCamera;
+	private SceneVo _sceneVo;
+
+	public SceneVo SceneVo
+	{
+		get { return _sceneVo; }
+		set { _sceneVo = value; }
+	}
 
     public MainCamera mainCamera
     {
@@ -28,7 +35,7 @@ public class SceneMgr : Singleton<SceneMgr>
     public void Init()
     {
         m_Scenes = new Dictionary<int, SceneBaseView>();
-        EnterScene("1003");
+        EnterScene("1001");
     }
 
     private void EnterScene(string sceneId)
@@ -51,7 +58,7 @@ public class SceneMgr : Singleton<SceneMgr>
             //MouseMgr.Instance.Run();
 #endif
         };
-        SceneLoaderMgr.Instance.Load(sceneId, fnLoadFinish);
+		SceneLoaderMgr.Instance.Load(DataMgr.sceneModel.GetVo(sceneId), fnLoadFinish);
     }
 
     public GameObject curSceneGO

@@ -32,7 +32,7 @@ public class URLConst
         GetUI("UIBattlePanel")
     };
 
-    public static string GetScenePrefab(string sceneId)
+    public static string GetScenePrefab(int sceneId)
     {
         return SCENE_PATH + "ScenePrefab" + sceneId + EXTEND_ASSETBUNDLE;
     }

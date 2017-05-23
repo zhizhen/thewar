@@ -29,16 +29,18 @@ public class SceneBaseView
         playerTrans = GetTransform("player");
         bornTrans = GetTransform("born");
 
-        // 显示战斗界面
-        BattlePanelView.Instance.Init();
+		if (SceneMgr.Instance.SceneVo.id != 1001) {
+			// 显示战斗界面
+			BattlePanelView.Instance.Init ();
 
-        // 播放背景音效
+			// 播放背景音效
 
-        //摄像机调整
-        InitCamera(bornTrans);
+			//摄像机调整
+			InitCamera (bornTrans);
 
-        //加载玩家
-        OnRoleInfo();
+			//加载玩家
+			OnRoleInfo ();
+		}
     }
 
     virtual public void InitCamera(Transform bornTrans)

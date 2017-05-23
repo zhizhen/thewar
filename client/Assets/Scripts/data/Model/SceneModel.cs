@@ -7,5 +7,13 @@ using Engine;
 
 public class SceneModel : BaseModel
 {
+	public SceneModel()
+	{
+		InitData<SceneVo> ();
+	}
 
+	public SceneVo GetVo(string key)
+	{
+		return __GetVo<SceneVo> (key);
+	}
 }

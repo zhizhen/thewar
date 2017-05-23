@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 [System.Serializable]
-public class SkillVo : IConfig<string>
+public class SceneVo : IConfig<string>
 {
     public string key;
     public int id;
