@@ -15,11 +15,11 @@ public class ModelElement : GlobalBase
 
     }
 
-    public void LoadRes(Action<GameObject, object> loadCompleted = null, bool resetRes = false)
+    public void LoadRes(int MonId, Action<GameObject, object> loadCompleted = null, bool resetRes = false)
     {
         if (resetRes == false)
             own.attr.GetDefaultPrefabId();
-        m_strURL = URLConst.GetModel(own.attr.prefabId.ToString());
+		m_strURL = URLConst.GetModel(MonId.ToString());
         ModelMgr.Instance.GetModel(m_strURL, delegate (GameObject kGO, object kArg)
         {
             m_kGO = kGO;

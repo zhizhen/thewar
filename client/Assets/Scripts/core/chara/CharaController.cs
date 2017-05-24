@@ -104,39 +104,39 @@ public class CharaController : Singleton<CharaController>, ITick
         bool shallowWater = false;
 
         // Determine if the ship has hit shallow water
-        if (raycastPoints.Count != 0)
-        {
-            for (int i = 0; i < raycastPoints.Count; i++)
-            {
-                Transform point = raycastPoints[i];
-                if (Physics.Raycast(point.position + Vector3.up * 10f, Vector3.down, 10f, raycastMask))
-                {
-                    shallowWater = true;
-                    Debug.Log("shallow water !!!!!");
-                    break;
-                }
-            }
-        }
-
-        // 触礁停船
-        if (shallowWater) mInput.y = 0f;
-        float delta = Time.deltaTime;
-
-        // Slowly decay the speed and steering values over time and make sharp turns slow down the ship.
-        mTargetSpeed = Mathf.Lerp(mTargetSpeed, 0f, delta * (0.5f + Mathf.Abs(mTargetSteering)));
-        mTargetSteering = Mathf.Lerp(mTargetSteering, 0f, delta * 3f);
-
-        // Calculate the input-modified speed
-        mTargetSpeed = shallowWater ? 0f : Mathf.Clamp01(mTargetSpeed + delta * mSensitivity.y * mInput.y);
-        mSpeed = Mathf.Lerp(mSpeed, mTargetSpeed, Mathf.Clamp01(delta * (shallowWater ? 8f : 5f)));
-
-        // Steering is affected by speed -- the slower the ship moves, the less maneuverable is the ship
-        mTargetSteering = Mathf.Clamp(mTargetSteering + delta * mSensitivity.x * mInput.x * (0.1f + 0.9f * mSpeed), -1f, 1f);
-        mSteering = Mathf.Lerp(mSteering, mTargetSteering, delta * 5f);
-
-        // Move the ship
-        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * turningSpeed, 0f);
-        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * movementSpeed);
+//        if (raycastPoints.Count != 0)
+//        {
+//            for (int i = 0; i < raycastPoints.Count; i++)
+//            {
+//                Transform point = raycastPoints[i];
+//                if (Physics.Raycast(point.position + Vector3.up * 10f, Vector3.down, 10f, raycastMask))
+//                {
+//                    shallowWater = true;
+//                    Debug.Log("shallow water !!!!!");
+//                    break;
+//                }
+//            }
+//        }
+//
+//        // 触礁停船
+//        if (shallowWater) mInput.y = 0f;
+//        float delta = Time.deltaTime;
+//
+//        // Slowly decay the speed and steering values over time and make sharp turns slow down the ship.
+//        mTargetSpeed = Mathf.Lerp(mTargetSpeed, 0f, delta * (0.5f + Mathf.Abs(mTargetSteering)));
+//        mTargetSteering = Mathf.Lerp(mTargetSteering, 0f, delta * 3f);
+//
+//        // Calculate the input-modified speed
+//        mTargetSpeed = shallowWater ? 0f : Mathf.Clamp01(mTargetSpeed + delta * mSensitivity.y * mInput.y);
+//        mSpeed = Mathf.Lerp(mSpeed, mTargetSpeed, Mathf.Clamp01(delta * (shallowWater ? 8f : 5f)));
+//
+//        // Steering is affected by speed -- the slower the ship moves, the less maneuverable is the ship
+//        mTargetSteering = Mathf.Clamp(mTargetSteering + delta * mSensitivity.x * mInput.x * (0.1f + 0.9f * mSpeed), -1f, 1f);
+//        mSteering = Mathf.Lerp(mSteering, mTargetSteering, delta * 5f);
+//
+//        // Move the ship
+//        mTrans.localRotation = mTrans.localRotation * Quaternion.Euler(0f, mSteering * delta * turningSpeed, 0f);
+//        mTrans.localPosition = mTrans.localPosition + mTrans.localRotation * Vector3.forward * (mSpeed * delta * movementSpeed);
     }
 
     /// <summary>

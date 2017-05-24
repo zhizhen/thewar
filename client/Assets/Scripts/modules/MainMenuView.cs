@@ -24,6 +24,8 @@ namespace Engine
         {
 			Debug.Log("on button click");
 //			EntityMainRole.Instance.RoleUseSkill(1);
+			//加载玩家
+			SceneMgr.Instance.GetCurSceneView().addMonster(100101);
         }
 
     }

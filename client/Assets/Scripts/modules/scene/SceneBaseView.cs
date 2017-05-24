@@ -39,7 +39,7 @@ public class SceneBaseView
 			InitCamera (bornTrans);
 
 			//加载玩家
-			OnRoleInfo ();
+//			OnRoleInfo ();
 		}
     }
 
@@ -55,23 +55,41 @@ public class SceneBaseView
 
     }
 
-    private void OnRoleInfo()
-    {
-        EntityBase mainRole;
-        mainRole = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
-        mainRole.transform.parent = bornTrans;
-        mainRole.SetExtraInfo();
-        mainRole.LoadRes(
-            (mainEnt, kArg) =>
-            {
-                Debug.Log("角色初始成功!");
-                //ModelLoaded += 1;
-                //PlayerLoaded = true;
-                //SceneMgr.Instance.mainCamera.SetFollowTarget(mainEnt, true);
-                SetInteractive(true);
-            }
-            );
-    }
+//    private void OnRoleInfo()
+//    {
+//        EntityBase mainRole;
+//        mainRole = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
+//        mainRole.transform.parent = bornTrans;
+//        mainRole.SetExtraInfo();
+//        mainRole.LoadRes(
+//            (mainEnt, kArg) =>
+//            {
+//                Debug.Log("角色初始成功!");
+//                //ModelLoaded += 1;
+//                //PlayerLoaded = true;
+//                //SceneMgr.Instance.mainCamera.SetFollowTarget(mainEnt, true);
+//                SetInteractive(true);
+//            }
+//            );
+//    }
+
+	public void addMonster(int MonId)
+	{
+		EntityBase monster;
+		monster = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
+		monster.transform.parent = bornTrans;
+//		mainRole.SetExtraInfo();
+		monster.LoadRes(MonId,
+			(mainEnt, kArg) =>
+			{
+				Debug.Log("角色初始成功!");
+				//ModelLoaded += 1;
+				//PlayerLoaded = true;
+				//SceneMgr.Instance.mainCamera.SetFollowTarget(mainEnt, true);
+				SetInteractive(true);
+			}
+		);
+	}
 
     protected Transform GetTransform(string name)
     {

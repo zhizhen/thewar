@@ -26,7 +26,7 @@ public class EntityMgr : Singleton<EntityMgr>
 
     public void Creator()
     {
-        m_dicEntityCreator[CONST_ENTITY_TYPE.MAIN_ROLE] = EntityMainRole.Creator;
+		m_dicEntityCreator[CONST_ENTITY_TYPE.MAIN_ROLE] = EntityMainRole.Creator;
         GlobalTimer.Instance.update += OnUpdate;
     }
 

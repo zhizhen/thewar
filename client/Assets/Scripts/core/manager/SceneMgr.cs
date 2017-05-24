@@ -66,4 +66,9 @@ public class SceneMgr : Singleton<SceneMgr>
         get { return m_CurSceneGO; }
         set { m_CurSceneGO = value; }
     }
+
+	public SceneBaseView GetCurSceneView()
+	{
+		return _baseView;
+	}
 }

@@ -97,9 +97,9 @@ public class EntityBase : IAIHost
         if (m_ModelElement != null) m_ModelElement.OnUpdate(dt);
     }
 
-    public void LoadRes(Action<EntityBase, object> OnComplete = null, bool resetRes = false)
+    public void LoadRes(int Monid, Action<EntityBase, object> OnComplete = null, bool resetRes = false)
     {
-        elem.LoadRes(
+		elem.LoadRes(Monid, 
             (kGO, kArg) =>
             {
                 LoadResCompleted(kGO, kArg);
@@ -112,8 +112,8 @@ public class EntityBase : IAIHost
     public virtual void LoadResCompleted(GameObject kGO, object kArg)
     {
 		kGO.SetActiveRecursively (true);
-		kGO.transform.FindChild ("skillbg").gameObject.SetActive(false);
-		kGO.transform.FindChild ("skillarray").gameObject.SetActive(false);
+//		kGO.transform.FindChild ("skillbg").gameObject.SetActive(false);
+//		kGO.transform.FindChild ("skillarray").gameObject.SetActive(false);
     }
 
     public void ReplaceModel(Transform trans)
