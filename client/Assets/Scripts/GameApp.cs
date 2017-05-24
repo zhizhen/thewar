@@ -17,7 +17,7 @@ public class GameApp : MonoBehaviour
 
     // Use this for initialization
     void Start () {
-		NetMgr.Instance.connect ("127.0.0.1", 8000);
+		NetMgr.Instance.connect ("127.0.0.1", 8888);
         gameObject.AddComponent<GlobalTimer>();
         GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
         ShowLoadingBar();

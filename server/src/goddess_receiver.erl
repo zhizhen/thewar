@@ -83,27 +83,24 @@ start_client_process(State=#state{role_id=RoleId, account_id=AccountId, sock=Soc
         false -> 0                                                                               % 返回错误数
     end,
     case goddess_net:recv(Sock, NewStep) of
-        {ok, {Mod, Fun, DataRecord}} ->
+        {ok, DataRecord} ->
             NewState = State#state{step=NewStep, last_proto_time=NowTime, proto_error_times=NewProtoErrorTimes},
-            client_process(Mod, Fun, DataRecord, NewState);
+            client_process(DataRecord, NewState);
         {ok, http_get, DataBin} ->     %% 处理HTTP GET请求
             http_api:handle_http_request(get, Sock, DataBin);
             %gen_tcp:close(Sock);
         {ok, http_post, DataBin} ->    %% 处理HTTP POST请求
             http_api:handle_http_request(post, Sock, DataBin);
             %gen_tcp:close(Sock);
-        {error, timeout} ->
-            throw(timeout);
-        {error, closed} ->
-            throw(closed);
         {error, Reason} ->
+            ?ERROR_MSG("recv error: ~p~n", [{Reason}]),
             throw(Reason);
         {'EXIT', _, _} = Reason ->
             throw(Reason)
     end.
 
 %% 处理心跳
-client_process(system_api, heartbeat, DataRecord, State=#state{sock=Sock, role_id = RoleId}) ->
+client_process(#m__system__heartbeat__c2s{} = DataRecord, State=#state{sock=Sock, role_id = RoleId}) ->
     case system_api:heartbeat(DataRecord) of
         {ok, TimeStamp} ->
             % case goddess_misc:get_role_pid(RoleId)of
@@ -117,16 +114,16 @@ client_process(system_api, heartbeat, DataRecord, State=#state{sock=Sock, role_i
     start_client_process(State);
 
 %% 更换角色
-client_process(role_api, logout, _, State=#state{auth_state=?ROLE_PASSED}) ->
-    State#state.client_receiver_pid ! role_logout,
-    start_client_process(State#state{auth_state = ?ACCOUNT_PASSED});
+% client_process(#m__role__logout__c2s{}, State=#state{auth_state=?ROLE_PASSED}) ->
+%     State#state.client_receiver_pid ! role_logout,
+%     start_client_process(State#state{auth_state = ?ACCOUNT_PASSED});
 
 %% @doc 客户端账号认证，角色认证及其他业务分发处理
 %% 玩家账号登录
-client_process(Mod, Fun, DataRecord, State=#state{auth_state=?ACCOUNT_NOT_PASS}) ->
-    case {Mod, Fun, DataRecord} of
+client_process(DataRecord, State=#state{auth_state=?ACCOUNT_NOT_PASS}) ->
+    case DataRecord of
         %% 玩家账号登录
-        {account_api, login, DataRecord} ->
+        #m__account__login__c2s{} ->
             account_login(DataRecord, State);
         %% 玩家账号登录成功之前，不处理任何业务
         _ ->
@@ -135,21 +132,21 @@ client_process(Mod, Fun, DataRecord, State=#state{auth_state=?ACCOUNT_NOT_PASS})
     start_client_process(State);
 
 %% 玩家角色登录（玩家在游戏服务器中创建角色或已经存在角色才可进入游戏服务器）
-client_process(Mod, Fun, DataRecord, State=#state{account_id=AccountId, sock=Sock, auth_state=?ACCOUNT_PASSED}) ->
-    case {Mod, Fun, DataRecord} of
+client_process(DataRecord, State=#state{account_id=AccountId, sock=Sock, auth_state=?ACCOUNT_PASSED}) ->
+    case DataRecord of
         %% 玩家创建角色
-        {role_api, create, DataRecord} ->
+        #m__role__create__c2s{} ->
             role_create(DataRecord, State);
         %% 玩家角色登录游戏
-        {role_api, login, DataRecord} ->
+        #m__role__login__c2s{} ->
             role_login(DataRecord, State);
         %% delete role
-        {role_api, delete, DataRecord} ->
-            case role_api:delete(AccountId, DataRecord) of
-                {ok, RoleList} ->
-                    goddess_net:send(Sock, RoleList);
-                _ -> ok
-            end;
+        % #m__role__delete__c2s{} ->
+        %     case role_api:delete(AccountId, DataRecord) of
+        %         {ok, RoleList} ->
+        %             goddess_net:send(Sock, RoleList);
+        %         _ -> ok
+        %     end;
         %% 玩家角色登录之前，不处理任何业务
         _ ->
             %%             throw(role_not_login)
@@ -158,8 +155,10 @@ client_process(Mod, Fun, DataRecord, State=#state{account_id=AccountId, sock=Soc
     start_client_process(State);
 
 %% 玩家业务处理
-client_process(Mod, Fun, DataRecord, State=#state{auth_state=?ROLE_PASSED}) ->
+client_process(DataRecord, State=#state{auth_state=?ROLE_PASSED}) ->
     RolePid = goddess_misc:get_role_pid(State#state.role_id),
+    Mod = a,
+    Fun = b,
     gen_server:cast(RolePid, {route, Mod, Fun, DataRecord}),
     start_client_process(State).
 

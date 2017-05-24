@@ -27,7 +27,7 @@
 
 -define(RECV_MAX_LEN, 1024).        % 接收的最大包长
 -define(RECV_TIMEOUT, 60 * 1000).  % 接收数据包超时时间
--define(PACKET_HEADER_LENGTH, 4). % 数据包头字节数，数据包头二进制位数为：?PACKET_HEADER_LENGTH * 8
+-define(PACKET_HEADER_LENGTH, 2). % 数据包头字节数，数据包头二进制位数为：?PACKET_HEADER_LENGTH * 8
 -define(PACKAGE_ZIP_LINE,   300000).
 %%%===================================================================
 %%% API
@@ -37,34 +37,34 @@
 recv(Sock, Step) ->
     %% 接收数据包头
     case recv(Sock, ?PACKET_HEADER_LENGTH, ?RECV_TIMEOUT) of
-        %% 处理HTTP GET请求
-        {ok, <<"GET ">>} ->
-            case recv(Sock, 0, ?RECV_TIMEOUT) of
-                {ok, DataBin} ->
-                    {ok, http_get, DataBin};
-                {error, _}=Error ->
-                    Error;
-                {'EXIT', _, _}=Exit ->
-                    Exit
-            end;
-        %% 处理HTTP POST请求
-        {ok, <<"POST">>} ->
-            case recv(Sock, 0, ?RECV_TIMEOUT) of
-                {ok, DataBin} ->
-                    {ok, http_post, DataBin};
-                {error, _}=Error ->
-                    Error;
-                {'EXIT', _, _}=Exit ->
-                    Exit
-            end;
-        {ok, <<PacketLen:32>>} ->
+        % %% 处理HTTP GET请求
+        % {ok, <<"GET ">>} ->
+        %     case recv(Sock, 0, ?RECV_TIMEOUT) of
+        %         {ok, DataBin} ->
+        %             {ok, http_get, DataBin};
+        %         {error, _}=Error ->
+        %             Error;
+        %         {'EXIT', _, _}=Exit ->
+        %             Exit
+        %     end;
+        % %% 处理HTTP POST请求
+        % {ok, <<"POST">>} ->
+        %     case recv(Sock, 0, ?RECV_TIMEOUT) of
+        %         {ok, DataBin} ->
+        %             {ok, http_post, DataBin};
+        %         {error, _}=Error ->
+        %             Error;
+        %         {'EXIT', _, _}=Exit ->
+        %             Exit
+        %     end;
+        {ok, <<PacketLen:16>>} ->
             case PacketLen >= ?RECV_MAX_LEN of
                 false ->
                     %% 接收数据包体
                     case recv(Sock, PacketLen, ?RECV_TIMEOUT) of
                         {ok, DataBin} ->
-                            {Mod, Fun, DataRecord} = unpack(DataBin, Step),
-                            {ok, {Mod, Fun, DataRecord}};
+                            DataRecord = decode(DataBin),
+                            {ok, DataRecord};
                         {error, _}=Error ->
                             Error;
                         {'EXIT', _, _}=Exit ->
@@ -145,9 +145,9 @@ unpack(Bin, no_xxtea) ->
 
 unpack(Bin, Step) ->
     try
-        HashKey = util:to_list(?PROTOCOL_KEY) ++ util:to_list(Step),
-        DecryptoBin = xxtea:decrypt(Bin, HashKey),
-        unpack(DecryptoBin, no_xxtea)
+        % HashKey = util:to_list(?PROTOCOL_KEY) ++ util:to_list(Step),
+        % DecryptoBin = xxtea:decrypt(Bin, HashKey),
+        unpack(Bin, no_xxtea)
     catch
         _Class:Reason ->
             {error, Reason}
