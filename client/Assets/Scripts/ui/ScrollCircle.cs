@@ -36,8 +36,8 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	{
 		isTouched = true;
 		bg.SetActive (true);
-		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(true);
-		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(true);
+//		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(true);
+//		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(true);
 		Debug.Log ("On Begin Drag :" + TouchedAxis);
 	}
 
@@ -65,9 +65,11 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         Vector3 world_skill_dir = new Vector3(Mathf.Cos(world_skill_angle * Mathf.PI / 180), 0f, Mathf.Sin(world_skill_angle * Mathf.PI / 180));
 
         
-        EntityMainRole.Instance.RoleUseSkill(1, world_skill_dir.normalized);
+//        EntityMainRole.Instance.RoleUseSkill(1, world_skill_dir.normalized);
 
         touchedAxis = Vector2.zero;
+//
+		SceneMgr.Instance.GetCurSceneView().addMonster(100101);
 	}
 
 	void Update()
