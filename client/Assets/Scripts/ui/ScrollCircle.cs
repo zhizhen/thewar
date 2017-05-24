@@ -50,8 +50,8 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	{
 		isTouched = false;
 		bg.SetActive (false);
-		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(false);
-		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(false);
+//		EntityMainRole.Instance.transform.FindChild ("skillbg").gameObject.SetActive(false);
+//		EntityMainRole.Instance.transform.FindChild ("skillarray").gameObject.SetActive(false);
 		Debug.Log ("On End Drag!" + touchedAxis.normalized);
 		selfTransform.anchoredPosition = originPosition;
 

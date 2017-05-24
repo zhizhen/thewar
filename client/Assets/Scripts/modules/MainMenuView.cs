@@ -23,9 +23,11 @@ namespace Engine
 		public void MatchCallBack()
         {
 			Debug.Log("on button click");
+			view.SetActive(false);
+			SceneMgr.Instance.EnterScene("1003");
 //			EntityMainRole.Instance.RoleUseSkill(1);
 			//加载玩家
-			SceneMgr.Instance.GetCurSceneView().addMonster(100101);
+//			SceneMgr.Instance.GetCurSceneView().addMonster(100101);
         }
 
     }

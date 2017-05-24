@@ -38,7 +38,7 @@ public class SceneMgr : Singleton<SceneMgr>
         EnterScene("1001");
     }
 
-    private void EnterScene(string sceneId)
+    public void EnterScene(string sceneId)
     {
         Action<GameObject> fnLoadFinish = delegate (GameObject kSceneGO)
         {
