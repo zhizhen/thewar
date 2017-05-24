@@ -7,7 +7,6 @@
     {applications, [kernel, stdlib, sasl]},
     {mod, {goddess_app, []}},
     {env, [
-        {server_id, 1000},     %% 当前平台/服务器ID
         {logger_conf, [
             {log_level, 4},
             {dir, log},
@@ -16,12 +15,12 @@
         {tcp_opts, [binary, {packet, 0}, {active, false}, {reuseaddr, true}, {nodelay, false}, {delay_send, true}, {send_timeout, 5000}, {keepalive, true}, {exit_on_close, true}]},
         {tcp_listener,8888},
         {acceptor_num, 32},
-        {system_db_conf, [
-            {host, "192.168.1.14"},
+        {db_conf, [
+            {host, "127.0.0.1"},
             {port, 3306},
             {user, "root"},
-            {password, "rekoo"},
-            {database, "gm_server"},
+            {password, "123456"},
+            {database, "server"},
             {encoding, utf8}
         ]},
         {mysql_conn_num, 64}

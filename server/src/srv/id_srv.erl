@@ -91,23 +91,23 @@ gen_treasure_id() ->
 %% @doc 初始化ID生成服务
 init([]) ->
     MaxRoleId = init_max_role_id(),
-    MaxItemId = init_max_item_id(),
-    MaxMailId = init_max_mail_id(),
-    MaxSpiritId = init_max_spirit_id(),
-    MaxArenaRank = init_max_arena_rank(),
-    MaxGroupId = init_max_group_id(),
-    MaxNoticeId = init_max_notice_id(),
-    MaxTreasureId = init_max_treasure_id(),
+    % MaxItemId = init_max_item_id(),
+    % MaxMailId = init_max_mail_id(),
+    % MaxSpiritId = init_max_spirit_id(),
+    % MaxArenaRank = init_max_arena_rank(),
+    % MaxGroupId = init_max_group_id(),
+    % MaxNoticeId = init_max_notice_id(),
+    % MaxTreasureId = init_max_treasure_id(),
 
     State = #state{
-            max_role_id=MaxRoleId, 
-            max_item_id=MaxItemId, 
-            max_mail_id=MaxMailId, 
-            max_arena_rank=MaxArenaRank, 
-            max_spirit_id=MaxSpiritId, 
-            max_group_id=MaxGroupId, 
-            max_notice_id=MaxNoticeId,
-            max_treasure_id=MaxTreasureId
+            max_role_id=MaxRoleId
+            % max_item_id=MaxItemId, 
+            % max_mail_id=MaxMailId, 
+            % max_arena_rank=MaxArenaRank, 
+            % max_spirit_id=MaxSpiritId, 
+            % max_group_id=MaxGroupId, 
+            % max_notice_id=MaxNoticeId,
+            % max_treasure_id=MaxTreasureId
         },
     {ok, State}.
 

@@ -77,13 +77,13 @@ acceptor_num() ->
 %% @doc 获取mysql数据库配置，默认为[]
 -spec system_db_conf() -> list().
 system_db_conf() ->
-    case get_goddess_env(erlang:list_to_atom("system_db_conf")) of
+    case get_goddess_env(erlang:list_to_atom("db_conf")) of
         MySQLConf when is_list(MySQLConf) ->
             Host     = proplists:get_value(host, MySQLConf, "127.0.0.1"),
             Port     = proplists:get_value(port, MySQLConf, 3306),
             User     = proplists:get_value(user, MySQLConf, "root"),
-            Password = proplists:get_value(password, MySQLConf, "rekoo"),
-            Database = proplists:get_value(database, MySQLConf, "goddess"),
+            Password = proplists:get_value(password, MySQLConf, "123456"),
+            Database = proplists:get_value(database, MySQLConf, "server"),
             Encoding = proplists:get_value(encoding, MySQLConf, utf8),
             [Host, Port, User, Password, Database, Encoding];
         _ ->
