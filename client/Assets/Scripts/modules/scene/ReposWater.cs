@@ -9,7 +9,7 @@ public class ReposWater : MonoBehaviour
     void Start()
     {
         mTrans = transform;
-        mCamTrans = SceneMgr.Instance.mainCamera.transform;
+//        mCamTrans = SceneMgr.Instance.mainCamera.transform;
         //mCamTrans = Camera.main.transform;
     }
 

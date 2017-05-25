@@ -73,11 +73,12 @@ public class SceneBaseView
 //            );
 //    }
 
-	public void addMonster(int MonId)
+	public void addMonster(int MonId, Vector3 pos)
 	{
 		EntityBase monster;
 		monster = EntityMgr.Instance.CreateEntity(CONST_ENTITY_TYPE.MAIN_ROLE, 123456);
 		monster.transform.parent = bornTrans;
+		monster.transform.position = pos;
 //		mainRole.SetExtraInfo();
 		monster.LoadRes(MonId,
 			(mainEnt, kArg) =>

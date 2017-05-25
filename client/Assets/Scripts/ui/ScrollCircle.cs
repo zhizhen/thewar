@@ -69,7 +69,6 @@ public class ScrollCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         touchedAxis = Vector2.zero;
 //
-		SceneMgr.Instance.GetCurSceneView().addMonster(100101);
 	}
 
 	void Update()

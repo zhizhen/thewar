@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Engine;
 
 public class SceneMgr : Singleton<SceneMgr>
@@ -18,19 +19,19 @@ public class SceneMgr : Singleton<SceneMgr>
 		set { _sceneVo = value; }
 	}
 
-    public MainCamera mainCamera
-    {
-        get
-        {
-            if (m_mainCamera == null)
-            {
-                Camera camera = GameTools.mainCameraGO.AddComponent<Camera>();
-                m_mainCamera = GameTools.mainCameraGO.AddComponent<MainCamera>();
-                m_mainCamera.SetCamera(camera);
-            }
-            return m_mainCamera;
-        }
-    }
+//    public MainCamera mainCamera
+//    {
+//        get
+//        {
+//            if (m_mainCamera == null)
+//            {
+//                Camera camera = GameTools.mainCameraGO.AddComponent<Camera>();
+//                m_mainCamera = GameTools.mainCameraGO.AddComponent<MainCamera>();
+//                m_mainCamera.SetCamera(camera);
+//            }
+//            return m_mainCamera;
+//        }
+//    }
 
     public void Init()
     {
@@ -42,7 +43,8 @@ public class SceneMgr : Singleton<SceneMgr>
     {
         Action<GameObject> fnLoadFinish = delegate (GameObject kSceneGO)
         {
-            m_CurSceneGO = kSceneGO;
+//            m_CurSceneGO = kSceneGO;
+			m_CurSceneGO = SceneManager.GetActiveScene().GetRootGameObjects()[0];
             if (_baseView == null)
             {
                 _baseView = new SceneBaseView();
@@ -57,6 +59,7 @@ public class SceneMgr : Singleton<SceneMgr>
 #if UNITY_EDITOR
             //MouseMgr.Instance.Run();
 #endif
+
         };
 		SceneLoaderMgr.Instance.Load(DataMgr.sceneModel.GetVo(sceneId), fnLoadFinish);
     }

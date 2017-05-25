@@ -10,9 +10,9 @@ public class SoundUtils
     {
         if (hasInitSound == true) return;
         hasInitSound = true;
-        GameObject kCameraObj = new GameObject("MainCamera");
-        GameTools.mainCameraGO = kCameraObj;
-        GameObject.DontDestroyOnLoad(kCameraObj);
+//        GameObject kCameraObj = new GameObject("MainCamera");
+//        GameTools.mainCameraGO = kCameraObj;
+//        GameObject.DontDestroyOnLoad(kCameraObj);
         // 加入声音
 //        kCameraObj.AddComponent<SoundMgr>();
         //Init();
