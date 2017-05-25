@@ -25,15 +25,15 @@ namespace Engine
 			if (_UIDict.ContainsKey(uiType) == false || _UIDict[uiType] == null)
 			{
 				GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
-				GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+//				GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
                 GameObject go = ResourceMgr.GetGameObject(URLConst.GetUI(uiType.Name));
 				go.transform.SetParent (UIRootCanvas.transform);
 				go.transform.localPosition = new Vector3 (0, 0, 0);
 				go.transform.localScale = new Vector3 (1, 1, 1);
 				Canvas canvas = go.GetComponent<Canvas>();
-				Camera camera = UICamera.GetComponent<Camera>();
+//				Camera camera = UICamera.GetComponent<Camera>();
 				canvas.renderMode = RenderMode.ScreenSpaceCamera;
-				canvas.worldCamera = camera;
+//				canvas.worldCamera = camera;
 				_UIDict.AddOrReplace(uiType, go);
 				return go;
 			}

@@ -14,7 +14,7 @@ public class BattlePanelView : Singleton<BattlePanelView>
     public BattlePanelView()
     {
         GameObject UIRootCanvas = GameObject.Find("UIRootCanvas");
-        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+//        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
         view = ResourceMgr.GetGameObject(URLConst.GetUI(UIType.battle.Name));
         view.transform.SetParent(UIRootCanvas.transform);
         view.transform.localPosition = new Vector3(0, 0, 0);

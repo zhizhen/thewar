@@ -94,9 +94,9 @@ public class GameApp : MonoBehaviour
     private void InitUGUIMain()
     {
         GameObject UIRootCanvas = ResourceMgr.GetGameObject(URLConst.GetUI("UIRootCanvas"));
-        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
-        GameTools.CanvasCamera = UICamera.GetComponent<Camera>();
-		GameTools.UICanvasCamera = UIRootCanvas;
+//        GameObject UICamera = UIRootCanvas.transform.FindChild("UICamera").gameObject;
+//        GameTools.CanvasCamera = UICamera.GetComponent<Camera>();
+//		GameTools.UICanvasCamera = UIRootCanvas;
         UIRootCanvas.SetActive(true);
         GameObject.DontDestroyOnLoad(UIRootCanvas);
 
