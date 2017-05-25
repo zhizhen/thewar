@@ -5,9 +5,9 @@ public class GameConst
 {
 	
 	public static AIType aiType = AIType.怪物;
-	public static int mapX = 9;
-	public static int mapY = 6;
-	public static float cell = 0.8f;
+	public static int mapX = 35;
+	public static int mapY = 15;
+	public static float cell = 0.4f;
 }
 
 public enum AIType
