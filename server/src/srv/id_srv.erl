@@ -169,115 +169,15 @@ init_max_role_id() ->
     case role_db:get_max_role_id() of
         undefined ->
             ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000;
+            1;
         MaxRoleId ->
             util:to_integer(MaxRoleId)
-    end.
-
-init_max_item_id() ->
-    case item_db:get_max_item_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        MaxItemId ->
-            util:to_integer(MaxItemId)
-    end.
-
-init_max_mail_id() ->
-    case mail_db:get_max_mail_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        MaxMailId ->
-            util:to_integer(MaxMailId)
-    end.
-
-init_max_spirit_id() ->
-    case spirit_db:get_max_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        MaxSpiritId ->
-            util:to_integer(MaxSpiritId)
-    end.
-
-init_max_arena_rank() ->
-    case sys_arena_db:get_max_rank() of
-        undefined ->
-            0;
-        MaxMailId ->
-            util:to_integer(MaxMailId)
-    end.
-
-init_max_group_id() ->
-    case group_db:get_max_group_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        Id ->
-            util:to_integer(Id)
-    end.
-
-init_max_notice_id() ->
-    case notice_db:get_max_notice_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        Id ->
-            util:to_integer(Id)
-    end.
-
-init_max_treasure_id() ->
-    case treasure_db:get_max_treasure_id() of
-        undefined ->
-            ServerId = goddess_env:server_id(),
-            (ServerId + 1000) * 1000000000;
-        Id when is_integer(Id) ->
-            Id
     end.
 
 %% @doc 生成角色ID
 do_call(gen_role_id, _From, State) ->
     NewMaxRoleId = State#state.max_role_id + 1,
-    {reply, util:to_binary(NewMaxRoleId), State#state{max_role_id=NewMaxRoleId}};
-
-%% @doc 生成ITEM ID
-do_call(gen_item_id, _From, State) ->
-    NewMaxItemId = State#state.max_item_id + 1,
-    {reply, util:to_binary(NewMaxItemId), State#state{max_item_id=NewMaxItemId}};
-
-%% @doc 生成MAIL ID
-do_call(gen_mail_id, _From, State) ->
-    NewMaxMailId = State#state.max_mail_id + 1,
-    {reply, util:to_binary(NewMaxMailId), State#state{max_mail_id=NewMaxMailId}};
-
-%% @doc 生成最大排名
-do_call(gen_arena_rank, _From, State) ->
-    NewMaxArenaRank = State#state.max_arena_rank + 1,
-    {reply, NewMaxArenaRank, State#state{max_arena_rank=NewMaxArenaRank}};
-
-do_call(get_max_arena_rank, _From, State) ->
-    {reply, State#state.max_arena_rank, State};
-
-%% @doc 生成魂技ID
-do_call(gen_spirit_id, _From, State) ->
-    NewMaxSpiritId = State#state.max_spirit_id + 1,
-    {reply, util:to_list(NewMaxSpiritId), State#state{max_spirit_id=NewMaxSpiritId}};
-
-%% @doc group id
-do_call(gen_group_id, _From, State) ->
-   Id = State#state.max_group_id + 1,
-   {reply, util:to_binary(Id), State#state{max_group_id=Id}};
-
-%% @doc notice id
-do_call(gen_notice_id, _From, State) ->
-    Id = State#state.max_notice_id + 1,
-    {reply, util:to_binary(Id), State#state{max_notice_id=Id}};
-
-%% @doc treasure id
-do_call(gen_treasure_id, _From, State) ->
-    Id = State#state.max_treasure_id + 1,
-    {reply, util:to_binary(Id), State#state{max_treasure_id=Id}};
+    {reply, NewMaxRoleId, State#state{max_role_id=NewMaxRoleId}};
 
 do_call(Request, From, State) ->
     ?ERROR_MSG("Unhandled Call Warning, Request: ~p, From: ~p, State: ~p~n", [Request, From, State]),

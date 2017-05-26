@@ -18,7 +18,7 @@
 -record(m__role__login__s2c, {msg_id=1105,role_info}).
 -record(m__scene__update_pos__s2c, {msg_id=5005,role_summary}).
 -record(m__role__list__s2c, {msg_id=1101,role_list}).
--record(m__role__create__s2c, {id}).
+-record(m__role__create__s2c, {msg_id=1103,id}).
 -record(m__scene__neighbours__s2c, {msg_id=5001,roles}).
 -record(m__role__login__c2s, {msg_id=1104,id}).
 -record(m__scene__move__s2c, {msg_id=5003,role_summary}).

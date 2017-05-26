@@ -78,7 +78,7 @@ get_role_name_by_id(Id) ->
 
 get_role_by_account_id_and_role_id(AccountId, RoleId) ->
     %% state 为0时角色正常，为1时被封禁，为2时被删除。
-    Template = <<"SELECT * FROM roles WHERE account_id=~p AND role_id=~p AND state in (0, 1)">>,
+    Template = <<"SELECT * FROM roles WHERE account_id=~p AND role_id=~p">>,
     Params = [AccountId, RoleId],
     Query = ?FILTER_SQL(Template, Params),
     Row = mysql_db:get(Query),
@@ -120,13 +120,13 @@ create(RoleId, AccountId, Name) ->
         % guide = ""
     },
 
-    SceneIds = serilize(Role#role.open_scene),
-    FuncIds = serilize(Role#role.open_function),
-    StoryIds = serilize(Role#role.story),
-    Guide = serilize(Role#role.guide),
-    NewRole = Role#role{open_scene=SceneIds, open_function=FuncIds, story=StoryIds, guide=Guide},
+    % SceneIds = serilize(Role#role.open_scene),
+    % FuncIds = serilize(Role#role.open_function),
+    % StoryIds = serilize(Role#role.story),
+    % Guide = serilize(Role#role.guide),
+    % NewRole = Role#role{open_scene=SceneIds, open_function=FuncIds, story=StoryIds, guide=Guide},
 
-    Query = ?FILTER_SQL(?update_role_sql, ?TAIL(NewRole)),
+    Query = ?FILTER_SQL(?update_role_sql, ?TAIL(Role)),
     try
         mysql_db:update(Query)
     catch
@@ -136,18 +136,18 @@ create(RoleId, AccountId, Name) ->
 
 %% @doc 存储角色信息
 save(Role) ->
-    NowTime = util:unixtime(),
-    UpdateRole = Role#role{update_time=NowTime, ol_time=role_api:get_all_ol_time()},
-    game_info:update(UpdateRole),
+    % NowTime = util:unixtime(),
+    % UpdateRole = Role#role{update_time=NowTime, ol_time=role_api:get_all_ol_time()},
+    % game_info:update(UpdateRole),
 
-    SceneIds = serilize(Role#role.open_scene),
-    FuncIds = serilize(Role#role.open_function),
-    StoryIds = serilize(Role#role.story),
-    Guide = serilize(Role#role.guide),
-    Treasure = serialize_treasure(Role#role.treasure),
-    NewRole = Role#role{open_scene=SceneIds, open_function=FuncIds, update_time=NowTime, story=StoryIds, treasure = Treasure, ol_time=role_api:get_all_ol_time(), guide=Guide},
+    % SceneIds = serilize(Role#role.open_scene),
+    % FuncIds = serilize(Role#role.open_function),
+    % StoryIds = serilize(Role#role.story),
+    % Guide = serilize(Role#role.guide),
+    % Treasure = serialize_treasure(Role#role.treasure),
+    % NewRole = Role#role{open_scene=SceneIds, open_function=FuncIds, update_time=NowTime, story=StoryIds, treasure = Treasure, ol_time=role_api:get_all_ol_time(), guide=Guide},
 
-    Query = ?FILTER_SQL(?update_role_sql, ?TAIL(NewRole)),
+    Query = ?FILTER_SQL(?update_role_sql, ?TAIL(Role)),
     try
         mysql_db:update(Query)
     catch
@@ -230,17 +230,17 @@ erase(RoleId) ->
 %%%===================================================================
 build_role_data(null) -> null;
 build_role_data(Row) ->
-    BaseRole = list_to_tuple([role|Row]),
-    SceneIds = string:tokens(to_list(BaseRole#role.open_scene), ","),
-    FuncIds = string:tokens(to_list(BaseRole#role.open_function), ","),
-    StoryIds = string:tokens(to_list(BaseRole#role.story), ","),
-    Guide = string:tokens(to_list(BaseRole#role.guide), ","),
+    Role = list_to_tuple([role|Row]),
+    % SceneIds = string:tokens(to_list(BaseRole#role.open_scene), ","),
+    % FuncIds = string:tokens(to_list(BaseRole#role.open_function), ","),
+    % StoryIds = string:tokens(to_list(BaseRole#role.story), ","),
+    % Guide = string:tokens(to_list(BaseRole#role.guide), ","),
 
-    NewSceneIds = [util:to_integer(X) || X <- SceneIds],
-    NewFuncIds = [util:to_integer(X) || X <- sets:to_list(sets:from_list(FuncIds))],
-    NewStoryIds = [util:to_integer(X) || X <- StoryIds],
-    NewTreasure = deserialize_treasure(BaseRole#role.treasure),
-    Role = BaseRole#role{open_scene=NewSceneIds, open_function=NewFuncIds, story=NewStoryIds, treasure = NewTreasure, guide=Guide},
+    % NewSceneIds = [util:to_integer(X) || X <- SceneIds],
+    % NewFuncIds = [util:to_integer(X) || X <- sets:to_list(sets:from_list(FuncIds))],
+    % NewStoryIds = [util:to_integer(X) || X <- StoryIds],
+    % NewTreasure = deserialize_treasure(BaseRole#role.treasure),
+    % Role = BaseRole#role{open_scene=NewSceneIds, open_function=NewFuncIds, story=NewStoryIds, treasure = NewTreasure, guide=Guide},
     Role.
 
 to_list(Bin) ->
@@ -254,24 +254,24 @@ serilize([]) -> "";
 serilize(L) ->
     string:join([util:to_list(X) || X <- L], ",").
 
-serialize_treasure(undefined) -> "";
-serialize_treasure(Treasure) when is_record(Treasure, treasure)->
-    NewTreasure = Treasure#treasure{guarders = treasure_db:serialize(Treasure#treasure.guarders)},
-    V = ?TAIL(NewTreasure),
-    string:join([util:to_list(T)||T<-V], ";").
+% serialize_treasure(undefined) -> "";
+% serialize_treasure(Treasure) when is_record(Treasure, treasure)->
+%     NewTreasure = Treasure#treasure{guarders = treasure_db:serialize(Treasure#treasure.guarders)},
+%     V = ?TAIL(NewTreasure),
+%     string:join([util:to_list(T)||T<-V], ";").
     
-deserialize_treasure(<<>>) -> undefined;
-deserialize_treasure(<<"undefined">>) -> undefined;
-deserialize_treasure(undefined) -> undefined;
-deserialize_treasure(Row) ->
-    L = re:split(util:to_list(Row), ";", [{return, list}]),
-    R = list_to_tuple([treasure|L]),
-    R#treasure{
-        id = util:to_integer(R#treasure.id),
-        role_id = util:to_binary(R#treasure.role_id),
-        helper_id = util:to_binary(R#treasure.helper_id),
-        treasure_id = util:to_integer(R#treasure.treasure_id),
-        explore_time = util:to_integer(R#treasure.explore_time),
-        del = util:to_integer(R#treasure.del),
-        guarders = treasure_db:deserialize(R#treasure.guarders)
-    }.
+% deserialize_treasure(<<>>) -> undefined;
+% deserialize_treasure(<<"undefined">>) -> undefined;
+% deserialize_treasure(undefined) -> undefined;
+% deserialize_treasure(Row) ->
+%     L = re:split(util:to_list(Row), ";", [{return, list}]),
+%     R = list_to_tuple([treasure|L]),
+%     R#treasure{
+%         id = util:to_integer(R#treasure.id),
+%         role_id = util:to_binary(R#treasure.role_id),
+%         helper_id = util:to_binary(R#treasure.helper_id),
+%         treasure_id = util:to_integer(R#treasure.treasure_id),
+%         explore_time = util:to_integer(R#treasure.explore_time),
+%         del = util:to_integer(R#treasure.del),
+%         guarders = treasure_db:deserialize(R#treasure.guarders)
+%     }.

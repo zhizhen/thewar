@@ -104,7 +104,7 @@ message m__role__create__c2s {
 }
 
 message m__role__create__s2c {
-    required int32 msg_id [default 1103];
+    required int32 msg_id [default = 1103];
     required int32 id;
 }
 

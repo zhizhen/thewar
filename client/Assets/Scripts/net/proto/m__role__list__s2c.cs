@@ -13,9 +13,11 @@ public class m__role__list__s2c : ProtoBase
         base.read(byteArray);
         short sLen = 0;
         int i = 0;
+        byteArray.ReadInt32 ();//erlang decode
 
         sLen = byteArray.Readshort();
         for (i = 0; i < sLen; i++) {
+            byteArray.ReadInt32 ();//erlang decode
             p_role kp_role = new p_role ();
             kp_role.read(byteArray);
             role_list.Add(kp_role);

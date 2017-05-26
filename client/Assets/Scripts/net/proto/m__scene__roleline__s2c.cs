@@ -15,6 +15,7 @@ public class m__scene__roleline__s2c : ProtoBase
         line = byteArray.ReadInt32();
         short sLen = 0;
         int i = 0;
+        byteArray.ReadInt32 ();//erlang decode
 
         sLen = byteArray.Readshort();
         for (i = 0; i < sLen; i++) {

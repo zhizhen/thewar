@@ -36,7 +36,7 @@ namespace Engine
         public static readonly int m__role__login__s2c = 1105;
         public static readonly int m__scene__update_pos__s2c = 5005;
         public static readonly int m__role__list__s2c = 1101;
-        public static readonly int m__role__create__s2c = 0;
+        public static readonly int m__role__create__s2c = 1103;
         public static readonly int m__scene__neighbours__s2c = 5001;
         public static readonly int m__role__login__c2s = 1104;
         public static readonly int m__scene__move__s2c = 5003;

@@ -4,7 +4,7 @@
     encode_p_poss/2,
     encode_5009/1,
     decode_p_tests/2,
-    encode_m__role__create__s2c/1,
+    encode_1105/1,
     encode_p_pos/1,
     encode_p_roles/2,
     encode_5005/1,
@@ -17,11 +17,11 @@
     encode_1100/1,
     encode_1101/1,
     encode_1102/1,
+    encode_1103/1,
     encode_1104/1,
     encode_5008/1,
     encode_1106/1,
     encode_1107/1,
-    encode_1105/1,
     encode_999/1,
     encode_998/1,
     encode_p_test/1,
@@ -50,6 +50,7 @@
     decode_1100/1,
     decode_1101/1,
     decode_1102/1,
+    decode_1103/1,
     decode_1104/1,
     decode_1105/1,
     decode_1106/1,
@@ -62,7 +63,6 @@
     decode_999/1,
     decode_998/1,
     decode_p_test/1,
-    decode_m__role__create__s2c/1,
     decode_p_role/1
 ]).
 
@@ -1028,8 +1028,15 @@ decode_1101(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
 decode_1101(_) ->
     undefined.
 
-encode_m__role__create__s2c(Record) when is_record(Record, m__role__create__s2c) ->
-    #m__role__create__s2c{id=Id} = Record,
+encode_1103(Record) when is_record(Record, m__role__create__s2c) ->
+    #m__role__create__s2c{msg_id=Msg_id,id=Id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1103;
+        false ->
+            Msg_id
+    end,
     IdFinal =
     case Id =:= undefined of
         true ->
@@ -1038,15 +1045,15 @@ encode_m__role__create__s2c(Record) when is_record(Record, m__role__create__s2c)
         false ->
             Id
     end,
-    <<IdFinal:32/signed>>;
+    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
 
-encode_m__role__create__s2c(_) -> <<>>.
+encode_1103(_) -> <<>>.
 
-decode_m__role__create__s2c(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Id:32/signed>> = Bin0,
-    {m__role__create__s2c, Id};
+decode_1103(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
+    {m__role__create__s2c, Msg_id,Id};
 
-decode_m__role__create__s2c(_) ->
+decode_1103(_) ->
     undefined.
 
 encode_5001(Record) when is_record(Record, m__scene__neighbours__s2c) ->

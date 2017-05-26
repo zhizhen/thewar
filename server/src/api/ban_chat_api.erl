@@ -8,41 +8,41 @@
 %%%-------------------------------------------------------------------
 -module(ban_chat_api).
 
--include("table_etc.hrl").
--include("table_record.hrl").
+% -include("table_etc.hrl").
+% -include("table_record.hrl").
 
--export([
-    ban/1,
-    un_ban/0,
-    is_banned/0
-]).
+% -export([
+%     ban/1,
+%     un_ban/0,
+%     is_banned/0
+% ]).
 
-%%%===================================================================
-%%% INTERNAL API
-%%%===================================================================
+% %%%===================================================================
+% %%% INTERNAL API
+% %%%===================================================================
 
-ban(Minute) ->
-    GameInfo = role_api:get_user_data(),
-    RoleId = GameInfo#game_info.role#role.role_id,
-    Seconds = Minute * 60,
-    EndTime = util:unixtime() + Seconds,
-    B = #ban_chat{role_id=RoleId, end_time=EndTime},
-    game_info:update(B),
-    ban_chat_db:save(B).
-    %todo send msg to client
+% ban(Minute) ->
+%     GameInfo = role_api:get_user_data(),
+%     RoleId = GameInfo#game_info.role#role.role_id,
+%     Seconds = Minute * 60,
+%     EndTime = util:unixtime() + Seconds,
+%     B = #ban_chat{role_id=RoleId, end_time=EndTime},
+%     game_info:update(B),
+%     ban_chat_db:save(B).
+%     %todo send msg to client
 
-un_ban() ->
-    GameInfo = role_api:get_user_data(),
-    RoleId = GameInfo#game_info.role#role.role_id,
-    B = #ban_chat{role_id=RoleId, end_time=0},
-    game_info:update(B),
-    ban_chat_db:save(B).
-    %todo send msg to client
+% un_ban() ->
+%     GameInfo = role_api:get_user_data(),
+%     RoleId = GameInfo#game_info.role#role.role_id,
+%     B = #ban_chat{role_id=RoleId, end_time=0},
+%     game_info:update(B),
+%     ban_chat_db:save(B).
+%     %todo send msg to client
 
-is_banned() ->
-    GameInfo = role_api:get_user_data(),
-    #ban_chat{end_time=EndTime} = GameInfo#game_info.ban_chat,
-    util:unixtime() < EndTime.
+% is_banned() ->
+%     GameInfo = role_api:get_user_data(),
+%     #ban_chat{end_time=EndTime} = GameInfo#game_info.ban_chat,
+%     util:unixtime() < EndTime.
 
 %%%===================================================================
 %%% Internal functions

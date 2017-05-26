@@ -66,7 +66,7 @@ call addField("accounts", "login_time", "int(11)", "", "DEFAULT '0'", "登录时
 --  Table structure for `roles`
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS `roles` (
-  `role_id` varchar(64) NOT NULL DEFAULT '' COMMENT '角色编号',
+  `role_id` int(64) NOT NULL DEFAULT 0 COMMENT '角色编号',
   `role_name` varchar(64) DEFAULT '' COMMENT '角色名字',
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
