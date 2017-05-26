@@ -23,9 +23,10 @@ namespace Engine
         {
             Debug.Log("on button click");
 //			RoleMgr.Instance.LoginC2S ();
-			SceneMgr.Instance.Init();
+			AccountController.Instance.AccountLogin();
+//			SceneMgr.Instance.Init();
             view.SetActive(false);
-			MainMenuView.Instance.Init ();
+//			MainMenuView.Instance.Init ();
         }
 	}
 }

@@ -140,7 +140,7 @@ namespace Engine
 				}
 				if (_msgLen == 0) {
 					//header
-					if (_socket.Available < 4)
+					if (_socket.Available < 2)
 						continue;
 					_socket.Receive (_headBuffer);
 					Int32 value = (Int32)BitConverter.ToUInt32 (_headBuffer, 0);

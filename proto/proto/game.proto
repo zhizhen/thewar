@@ -101,7 +101,6 @@ message m__role__list__s2c {
 message m__role__create__c2s {
     required int32 msg_id [default = 1102];
     required string name;
-    required int32 job;
 }
 
 message m__role__create__s2c {

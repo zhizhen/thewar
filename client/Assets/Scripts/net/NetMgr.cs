@@ -93,6 +93,7 @@ namespace Engine {
                 if (byteArray == null) break;
                 //协议号
                 var protoId = byteArray.ReadInt32();
+				Debug.Log ("收到协议：" + protoId);
                 var protocolData = ProtoMap.Instance.GetProto(protoId);
                 if (protocolData != null)
                 {
