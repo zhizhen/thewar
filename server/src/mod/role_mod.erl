@@ -299,7 +299,7 @@ put_user_data() ->
 list(AccountId) ->
     Rows = role_db:list(AccountId),
     [begin
-         [RoleId, RoleName, Job, Level, State, Weapon, Helm] = Row,
+         [RoleId, RoleName, _, _, _] = Row,
          #p_role{
              id = util:to_list(RoleId)
              % name = util:to_list(RoleName),

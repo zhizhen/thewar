@@ -21,7 +21,7 @@
     gets/1,
     save/1,
     list/1,
-    create/4,
+    create/3,
     incr/3,
     set/3,
     get_role_by_name/1,
@@ -92,36 +92,32 @@ get_max_role_id() ->
 
 %% @doc 玩家角色列表
 list(AccountId) ->
-    Template = <<"SELECT r.role_id, r.role_name, r.job, r.level, r.state, i1.item_id AS weapon, i2.item_id AS armor 
-        FROM roles AS r, equips AS e, items i1, items i2 
-        WHERE r.account_id=~p 
-        AND r.state <> 2 
-        AND r.role_id=e.role_id 
-        AND e.weapon = i1.id 
-        AND e.armor = i2.id 
-        ORDER BY r.login_time DESC">>,
+    Template = <<"SELECT role_id, role_name, account_id, create_time, login_time
+        FROM roles
+        WHERE account_id=~p 
+        ORDER BY login_time DESC">>,
     Params = [AccountId],
     Query = ?FILTER_SQL(Template, Params),
     mysql_db:select(Query).
 
 %% @doc 创建玩家角色
-create(RoleId, AccountId, Name, Job) ->
+create(RoleId, AccountId, Name) ->
     CreateTime = util:unixtime(),
-    Cfg = scene_info_cfg:get(20001),
-    #scene_info_cfg{born_x=PosX, born_y=PosY} = Cfg,
+    % Cfg = scene_info_cfg:get(20001),
+    % #scene_info_cfg{born_x=PosX, born_y=PosY} = Cfg,
 
     Role = #role{
         role_id = RoleId,
         account_id = AccountId,
         role_name = util:to_binary(Name),
         create_time = CreateTime,
-        login_time = CreateTime,
-        job = Job,
-        scene_id = 20001,
-        pos_x = PosX,
-        pos_y = PosY,
-        story = "",
-        guide = ""
+        login_time = CreateTime
+        % job = Job,
+        % scene_id = 20001,
+        % pos_x = PosX,
+        % pos_y = PosY,
+        % story = "",
+        % guide = ""
     },
 
     SceneIds = serilize(Role#role.open_scene),

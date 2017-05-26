@@ -718,7 +718,7 @@ decode_5011(_) ->
     undefined.
 
 encode_1102(Record) when is_record(Record, m__role__create__c2s) ->
-    #m__role__create__c2s{msg_id=Msg_id,name=Name,job=Job} = Record,
+    #m__role__create__c2s{msg_id=Msg_id,name=Name} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
@@ -734,24 +734,16 @@ encode_1102(Record) when is_record(Record, m__role__create__c2s) ->
         false ->
             Name
     end,
-    JobFinal =
-    case Job =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__role__create__c2s, job}),
-            undefined;
-        false ->
-            Job
-    end,
     Name2 = if is_bitstring(NameFinal) -> NameFinal; true -> list_to_binary(NameFinal) end,
     NameLen = erlang:byte_size(Name2),
-    <<Msg_idFinal:32/signed,NameLen:16, Name2/binary,JobFinal:32/signed>>;
+    <<Msg_idFinal:32/signed,NameLen:16, Name2/binary>>;
 
 encode_1102(_) -> <<>>.
 
 decode_1102(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
     <<Msg_id:32/signed,NameLen:16, Bin1/binary>> = Bin0,
-    <<Name:NameLen/binary,Job:32/signed>> = Bin1,
-    {m__role__create__c2s, Msg_id,Name,Job};
+    <<Name:NameLen/binary>> = Bin1,
+    {m__role__create__c2s, Msg_id,Name};
 
 decode_1102(_) ->
     undefined.

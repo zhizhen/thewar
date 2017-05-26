@@ -126,40 +126,40 @@
 
 %% @doc 玩家角色创建API
 -spec create(string(), tuple()) -> {error, integer()} | {ok, integer()}.
-create(AccountId, #m__role__create__c2s{name=BaseName, job=Job}) ->
+create(AccountId, #m__role__create__c2s{name=BaseName}) ->
     ?DEBUG_MSG("role create name:~ts~n", [util:to_list(BaseName)]),
     Extension = string:concat(".s", util:to_list(goddess_env:server_id())),
     Name = string:concat(util:to_list(BaseName), util:to_list(Extension)),
     HasSensitive = sensitive_srv:check_words(BaseName),
-    RoleCfg = role_cfg:get({Job, 1}),
+    % RoleCfg = role_cfg:get({Job, 1}),
     NameRepeat = role_mod:exists_role_name(Name),
     if
         HasSensitive ->
             {error, ?SENSITIVE_WORDS};
-        RoleCfg =:= false ->
-            {error, ?ROLE_JOB_ERROR};
+        % RoleCfg =:= false ->
+        %     {error, ?ROLE_JOB_ERROR};
         NameRepeat ->
             {error, ?ROLE_NAME_REPEAT};
         true ->
             RoleId = id_srv:gen_role_id(),
             role_db:create(RoleId, AccountId, Name, Job),
-            equip_db:create(RoleId),
-            package_db:create(RoleId),
-            quest_db:create(RoleId),
-            shop_db:create(RoleId),
-            mall_db:create(RoleId),
-            daily_db:create(RoleId),
-            ban_chat_db:create(RoleId),
-            spirit_db:create(RoleId),
-            arena_db:create(RoleId),
-            universe_db:create(RoleId),
-            cultivate_db:create(RoleId),
-            offline_db:create(RoleId),
-            coin2exp_db:create(RoleId),
-            boudoir_db:create(RoleId),
-            achievement_db:create(RoleId),
-            item_db:free_get(RoleId, Job),
-            equip_db:equip(RoleId),
+            % equip_db:create(RoleId),
+            % package_db:create(RoleId),
+            % quest_db:create(RoleId),
+            % shop_db:create(RoleId),
+            % mall_db:create(RoleId),
+            % daily_db:create(RoleId),
+            % ban_chat_db:create(RoleId),
+            % spirit_db:create(RoleId),
+            % arena_db:create(RoleId),
+            % universe_db:create(RoleId),
+            % cultivate_db:create(RoleId),
+            % offline_db:create(RoleId),
+            % coin2exp_db:create(RoleId),
+            % boudoir_db:create(RoleId),
+            % achievement_db:create(RoleId),
+            % item_db:free_get(RoleId, Job),
+            % equip_db:equip(RoleId),
             case account_db:get(AccountId) of
                 null ->
                     account_db:create(AccountId);

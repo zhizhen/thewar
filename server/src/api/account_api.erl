@@ -35,20 +35,20 @@
 %% @end
 %%--------------------------------------------------------------------
 login(#m__account__login__c2s{account_id=AccountId, ticket=Ticket, platform=Platform, server_id=ServerId}) ->
-    {AllowPlatform, AllowServerId, _} = goddess_env:client_identity(),
+    % {AllowPlatform, AllowServerId, _} = goddess_env:client_identity(),
     F = fun() ->
-        case lists:member(Platform, AllowPlatform) of
-            false -> 
-                ?ERROR_MSG("Not In AllowPlat:~p~n", [{Platform, AllowPlatform}]),
-                throw({error, ?AUTH_FAIL});
-            true -> ok
-        end,
-        case lists:member(ServerId, AllowServerId) of
-            false -> 
-                ?ERROR_MSG("Not In AllowServer:~p~n", [{ServerId, AllowServerId}]),
-                throw({error, ?AUTH_FAIL});
-            true -> ok
-        end,
+        % case lists:member(Platform, AllowPlatform) of
+        %     false -> 
+        %         ?ERROR_MSG("Not In AllowPlat:~p~n", [{Platform, AllowPlatform}]),
+        %         throw({error, ?AUTH_FAIL});
+        %     true -> ok
+        % end,
+        % case lists:member(ServerId, AllowServerId) of
+        %     false -> 
+        %         ?ERROR_MSG("Not In AllowServer:~p~n", [{ServerId, AllowServerId}]),
+        %         throw({error, ?AUTH_FAIL});
+        %     true -> ok
+        % end,
 %%         case lists:member(Version, AllowClientVersion) of
 %%             false -> throw({error, ?AUTH_FAIL});
 %%             true -> ok

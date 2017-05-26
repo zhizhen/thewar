@@ -25,7 +25,7 @@ mysql2record(MysqlTables, TargetFile, TmpPath) ->
     %%    "[ :]","_",[global,{return,list}]),
     %%file:rename(TargetFile, Bakfile),
     {ok, WriteIo} = file:open(TargetFile, [write]),
-    Header = module_head("从数据库生成，勿手动修改，手动改此文件者木有小JJ !!!!"),
+    Header = module_head("auto generated, don't modify!!!!"),
     io:format(WriteIo, "~s", [Header]),
 
     [ table2record(Table, TmpPath, RecordName, Describe, WriteIo) || 
@@ -80,8 +80,8 @@ module_head(Descript) ->
 table_describe(Describe, Table) ->
     io_lib:format(
         "%% @doc \n"
-        "%% ~s\n"
-        "%% 从数据库 ~s 表生成，勿手动修改\n"
+        "%% ~p\n"
+        "%% generated from mysql table ~s, don't modify!\n"
         "%% @end\n",
         [Describe, Table]).
 

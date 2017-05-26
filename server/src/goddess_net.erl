@@ -98,7 +98,7 @@ recv(Sock, Length, Timeout) when is_port(Sock), is_integer(Length), Length >= 0 
 
 %% @doc 发送封包后的socket数据包
 send(Sock, Data) ->
-%%     ?DEBUG_MSG("SEND DATA: ~p~n", [Data]),
+    ?INFO_MSG("SEND DATA: ~p~n", [Data]),
     DataBin = pack(Data),
     gen_tcp:send(Sock, DataBin).
 

@@ -170,7 +170,10 @@ start_mysql() ->
     % mysql_db:connect(Host1, Port1, User1, Password1, Database1, Encoding, ConnNum),
 
     % {ok, {AllowPlatform, AllowServerId, AllowClientVersion}} = system_db:get_client_identity_info(),
-    % ets:insert(?ETS_SERVER_ENV, {client_identity, {AllowPlatform, AllowServerId, AllowClientVersion}}),
+    AllowPlatform = 0,
+    AllowServerId = 1000,
+    AllowClientVersion = "",
+    ets:insert(?ETS_SERVER_ENV, {client_identity, {AllowPlatform, AllowServerId, AllowClientVersion}}),
     ?INFO_MSG("Start Mysql Service Done!~p~n", []),
     ok.
 

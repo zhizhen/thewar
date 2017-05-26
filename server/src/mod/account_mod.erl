@@ -31,25 +31,26 @@
 %% @doc  玩家账号登录
 
 check_login(AccountId, Ticket) ->
-    Bin = util:to_binary(Ticket),
-    <<TimeStamp:10/binary, ClientHash:32/binary>> = Bin,
-    case erlang:abs(util:unixtime() - util:to_integer(TimeStamp)) < ?EXPIRE_TIME of
-        true ->
-            HashStr = io_lib:format("~s~s~s", [?SECRET_KEY, util:to_list(AccountId), util:to_list(TimeStamp)]),
-            ServerHash = util:md5_to_hex(HashStr),
-            case string:to_upper(util:to_list(ServerHash)) == string:to_upper(util:to_list(ClientHash)) of
-                true ->
-                    {ok, AccountId};
-                false ->
-                    % 认证失败
-                    ?DEBUG_MSG("ticket auth failed! ~nServerHash:~n~p ~nClientHash:~n~p~n", [ServerHash, ClientHash]),
-                    {error, ?AUTH_FAIL}
-            end;
-        false ->
-            %% 认证过期
-            ?DEBUG_MSG("ticket auth timeout:~p~n", [{util:unixtime(), util:to_integer(TimeStamp)}]),
-            {error, ?AUTH_EXPIRED}
-    end.
+    % Bin = util:to_binary(Ticket),
+    % <<TimeStamp:10/binary, ClientHash:32/binary>> = Bin,
+    % case erlang:abs(util:unixtime() - util:to_integer(TimeStamp)) < ?EXPIRE_TIME of
+    %     true ->
+    %         HashStr = io_lib:format("~s~s~s", [?SECRET_KEY, util:to_list(AccountId), util:to_list(TimeStamp)]),
+    %         ServerHash = util:md5_to_hex(HashStr),
+    %         case string:to_upper(util:to_list(ServerHash)) == string:to_upper(util:to_list(ClientHash)) of
+    %             true ->
+    %                 {ok, AccountId};
+    %             false ->
+    %                 % 认证失败
+    %                 ?DEBUG_MSG("ticket auth failed! ~nServerHash:~n~p ~nClientHash:~n~p~n", [ServerHash, ClientHash]),
+    %                 {error, ?AUTH_FAIL}
+    %         end;
+    %     false ->
+    %         %% 认证过期
+    %         ?DEBUG_MSG("ticket auth timeout:~p~n", [{util:unixtime(), util:to_integer(TimeStamp)}]),
+    %         {error, ?AUTH_EXPIRED}
+    % end,
+    {ok, AccountId}.
 
 % build_p_account(Account, Coin) ->
 %     #p_account{

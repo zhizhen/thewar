@@ -8,7 +8,7 @@
 -record(p_pos, {role_id,role_name,job,level,pos_x=0,pos_y=0,dest_x,dest_y,weapon,armor,wing,title_id}).
 -record(m__proto__test__s2c, {msg_id=999,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10}).
 -record(m__scene__roleline__s2c, {msg_id=5011,line,openlines}).
--record(m__role__create__c2s, {msg_id=1102,name,job}).
+-record(m__role__create__c2s, {msg_id=1102,name}).
 -record(m__account__login__c2s, {msg_id=1100,account_id,ticket,platform,server_id}).
 -record(m__scene__lineinfo__s2c, {msg_id=5012,openlines}).
 -record(m__scene__leave__c2s, {msg_id=5008}).

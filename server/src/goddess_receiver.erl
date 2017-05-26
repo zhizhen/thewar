@@ -84,6 +84,7 @@ start_client_process(State=#state{role_id=RoleId, account_id=AccountId, sock=Soc
     end,
     case goddess_net:recv(Sock, NewStep) of
         {ok, DataRecord} ->
+            % ?ERROR_MSG("recv record : ~p~n", [{DataRecord}]),
             NewState = State#state{step=NewStep, last_proto_time=NowTime, proto_error_times=NewProtoErrorTimes},
             client_process(DataRecord, NewState);
         {ok, http_get, DataBin} ->     %% 处理HTTP GET请求

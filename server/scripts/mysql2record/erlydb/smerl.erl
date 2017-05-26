@@ -151,8 +151,7 @@ for_module(ModuleName) ->
 for_module(ModuleName, IncludePaths) when is_list(ModuleName) ->
     for_file(ModuleName, IncludePaths);
 for_module(ModuleName, IncludePaths) when is_atom(ModuleName) ->
-    [_Exports, _Imports, _Attributes,
-     {compile, [_Options, _Version, _Time, {source, Path}]}] =
+    [_, _Exports, _Attributes, {compile, [_Options, _Version, {source, Path}]}|_] =
     ModuleName:module_info(),
     case for_file(Path, IncludePaths) of
     {ok, _Mod} = Res->
@@ -999,7 +998,7 @@ extend(Parent, Child, ArityDiff, Options) ->
     NewChild.
 
 get_extend_data(Parent, Child) when is_atom(Parent) ->
-    [{exports, Exports} |_] = Parent:module_info(),
+    [{module, _}, {exports, Exports} |_] = Parent:module_info(),
     Exports1 = Exports -- [{module_info, 0}],
     Exports2 = Exports1 -- [{module_info, 1}],
     ParentMod = case smerl:for_module(Parent) of
