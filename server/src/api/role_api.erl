@@ -122,16 +122,16 @@ info(#m__role__info__c2s{id=RoleId}, Sender) ->
 %         true -> ok
 %     end.
 
-% %% 登陆后的一些操作
-% after_login(Sender) ->
-%     GameInfo = role_api:get_user_data(),
-%     friend_api:online(Sender),
-%     group_api:list(Sender),
-%     gen_act:trigger_level_acts(GameInfo#game_info.role#role.level, Sender),
-%     gen_act:trigger_login_acts(Sender),
-%     vip_api:login_refresh(Sender),
-%     Sender ! {send, warrior_api:show_info(GameInfo)},
-%     ok.
+%% 登陆后的一些操作
+after_login(Sender) ->
+    % GameInfo = role_api:get_user_data(),
+    % friend_api:online(Sender),
+    % group_api:list(Sender),
+    % gen_act:trigger_level_acts(GameInfo#game_info.role#role.level, Sender),
+    % gen_act:trigger_login_acts(Sender),
+    % vip_api:login_refresh(Sender),
+    % Sender ! {send, warrior_api:show_info(GameInfo)},
+    ok.
 
 % after_midnight(Sender) ->
 %     gen_act:trigger_login_acts(Sender),
@@ -200,48 +200,48 @@ notify(Code, ClientSender) ->
 % %%%===================================================================
 % %%% Process API
 % %%%===================================================================
-% get_user_data() ->
-%     #process_global_info{role_id=RoleId} = cache:find(process_global_info),
-%     role_mod:get_myself_data(RoleId).
+get_user_data() ->
+    #process_global_info{role_id=RoleId} = cache:find(process_global_info),
+    role_mod:get_myself_data(RoleId).
 
-% build_login_s2c() ->
-%     GameInfo = role_api:get_user_data(),
-%     RoleInfo = role_mod:build_p_role(GameInfo#game_info.role),
-%     % AccountInfo = account_mod:build_p_account(GameInfo#game_info.account, GameInfo#game_info.role#role.coin),
-%     % EquipInfo = equip_mod:build_p_equip(GameInfo#game_info.equip),
-%     % PackageInfo = package_mod:build_p_package(all, GameInfo#game_info.package, GameInfo#game_info.item),
-%     % QuestInfo = quest_mod:build_p_quests(GameInfo#game_info.quest),
-%     % SkillInfo = skill_mod:build_p_skills(GameInfo#game_info.skills),
-%     % SpiritInfo = spirit_mod:build_p_spiritinfo(GameInfo#game_info.spiritinfo),
-%     % UniverseInfo = universe_mod:build_p_universe(GameInfo#game_info.universe),
-%     % CultivateInfo = cultivate_mod:build_p_cultivate(GameInfo#game_info.cultivate),
-%     % Offline = offline_mod:build_p_offline(GameInfo#game_info.offline, GameInfo#game_info.buff, GameInfo#game_info.daily),
-%     % BoudoirInfo = boudoir_mod:build_p_boudoir(GameInfo#game_info.boudoir),
-%     % GroupInfo = group_api:role_group(GameInfo),
-%     % % WarriorInfo1 = warrior_api:warrior_info(GameInfo,1),
-%     % [WarriorInfo2]= warrior_api:warrior_info(GameInfo,2),
-%     % DailyInfo = daily_mod:build_daily_info(GameInfo#game_info.daily),
-%     % ChallengeNum = challenge_api:get_completed_num(GameInfo),
+build_login_s2c() ->
+    GameInfo = role_api:get_user_data(),
+    RoleInfo = role_mod:build_p_role(GameInfo#game_info.role),
+    % AccountInfo = account_mod:build_p_account(GameInfo#game_info.account, GameInfo#game_info.role#role.coin),
+    % EquipInfo = equip_mod:build_p_equip(GameInfo#game_info.equip),
+    % PackageInfo = package_mod:build_p_package(all, GameInfo#game_info.package, GameInfo#game_info.item),
+    % QuestInfo = quest_mod:build_p_quests(GameInfo#game_info.quest),
+    % SkillInfo = skill_mod:build_p_skills(GameInfo#game_info.skills),
+    % SpiritInfo = spirit_mod:build_p_spiritinfo(GameInfo#game_info.spiritinfo),
+    % UniverseInfo = universe_mod:build_p_universe(GameInfo#game_info.universe),
+    % CultivateInfo = cultivate_mod:build_p_cultivate(GameInfo#game_info.cultivate),
+    % Offline = offline_mod:build_p_offline(GameInfo#game_info.offline, GameInfo#game_info.buff, GameInfo#game_info.daily),
+    % BoudoirInfo = boudoir_mod:build_p_boudoir(GameInfo#game_info.boudoir),
+    % GroupInfo = group_api:role_group(GameInfo),
+    % % WarriorInfo1 = warrior_api:warrior_info(GameInfo,1),
+    % [WarriorInfo2]= warrior_api:warrior_info(GameInfo,2),
+    % DailyInfo = daily_mod:build_daily_info(GameInfo#game_info.daily),
+    % ChallengeNum = challenge_api:get_completed_num(GameInfo),
 
-%     #m__role__login__s2c{
-%         % account_info = AccountInfo,
-%         role_info = RoleInfo
-%         % equip_info = EquipInfo,
-%         % package_info = PackageInfo,
-%         % quest_info = QuestInfo,
-%         % skill_info = SkillInfo,
-%         % spirit_info = SpiritInfo,
-%         % universe_info = UniverseInfo,
-%         % cultivate_info = CultivateInfo,
-%         % offline = Offline,
-%         % boudoir_info = BoudoirInfo,
-%         % group_info = GroupInfo,
-%         % warrior_len = warrior_api:warrior_len(GameInfo#game_info.warrior),
-%         % warrior_info = [],
-%         % warrior_info2 = WarriorInfo2,
-%         % daily_info = DailyInfo,
-%         % challenge_num = ChallengeNum
-%     }.
+    #m__role__login__s2c{
+        % account_info = AccountInfo,
+        role_info = RoleInfo
+        % equip_info = EquipInfo,
+        % package_info = PackageInfo,
+        % quest_info = QuestInfo,
+        % skill_info = SkillInfo,
+        % spirit_info = SpiritInfo,
+        % universe_info = UniverseInfo,
+        % cultivate_info = CultivateInfo,
+        % offline = Offline,
+        % boudoir_info = BoudoirInfo,
+        % group_info = GroupInfo,
+        % warrior_len = warrior_api:warrior_len(GameInfo#game_info.warrior),
+        % warrior_info = [],
+        % warrior_info2 = WarriorInfo2,
+        % daily_info = DailyInfo,
+        % challenge_num = ChallengeNum
+    }.
 
 build_role_sample_info(GameInfo) ->
     RoleInfo = role_mod:build_p_role(GameInfo#game_info.role),

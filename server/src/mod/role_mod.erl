@@ -43,11 +43,11 @@
 %% @doc 进入游戏逻辑(加载并计算数据，计算离线经验，创建buff，计算功能开启列表，判断并处理每日上限)
 enter_game(RoleId) ->
     GameInfo = get_myself_data(RoleId),
-    NewGameInfo = enter_game_after(GameInfo),
+    % NewGameInfo = enter_game_after(GameInfo),
 
-    cache:update(NewGameInfo),
-    role_db:save(NewGameInfo#game_info.role),
-    game_info:update_online_ets(NewGameInfo),
+    cache:update(GameInfo),
+    role_db:save(GameInfo#game_info.role),
+    % game_info:update_online_ets(NewGameInfo),
     % catch group_srv:update_member(NewGameInfo),
 
     % role_api:check_open_function(),
@@ -75,84 +75,15 @@ enter_game(RoleId) ->
 %     NewRole2 = NewRole#role{login_time=?NOW, update_time=?NOW, online_state=?ONLINE},
 %     GameInfo#game_info{role = NewRole2}.
 
-% %% @doc 加载并计算数据
-% get_user_data_by_db(RoleId) ->
-%     Role = role_db:get(RoleId),
-%     Account = account_db:get(Role#role.account_id),
-%     Equip = equip_db:get(RoleId),
-%     Package = package_db:get(RoleId),
-%     Mission = mission_db:get(RoleId),
-%     Buff = buff_db:get(RoleId),
-%     Quest = quest_db:get(RoleId),
-%     Item = item_db:get(RoleId),
-%     Shop = shop_db:get(RoleId),
-%     Daily = daily_db:get(RoleId),
-%     BanChat = ban_chat_db:get(RoleId),
-%     SpiritInfo = spirit_db:get(RoleId),
-%     Mail = mail_db:get(RoleId),
-%     Skill = skill_db:get(RoleId),
-%     Arena = arena_db:get(RoleId),
-%     Friend = friend_db:get(RoleId),
-%     FriendEtc = friend_db:gets(Friend#friends.all),
-%     FollowerEtc = friend_db:get_follower(RoleId),
-%     Universe = universe_db:get(RoleId),
-%     Cultivate = cultivate_db:get(RoleId),
-%     Acts = act_db:gets(RoleId),
-%     Sign = sign_db:get(RoleId),
-%     Offline = offline_db:get(RoleId),
-%     Coin2exp = coin2exp_db:get(RoleId),
-%     Boudoir = boudoir_db:get(RoleId),
+%% @doc 加载并计算数据
+get_user_data_by_db(RoleId) ->
+    Role = role_db:get(RoleId),
+    Account = account_db:get(Role#role.account_id),
 
-%     GroupMember2 = group_db:get_member(Role#role.role_id),
-%     GroupEtc = group_db:get_role_state(Role#role.role_id),
-%     GroupMember = GroupMember2#group_member{group_id=GroupEtc#group_state.group_id},
-
-%     GroupPool = group_db:get_pool(RoleId),
-%     GroupMeeting = group_db:get_meeting(RoleId),
-%     Warrior = warrior_db:get(RoleId),
-%     RoleWarrior = warrior_db:get_role(RoleId),
-%     Achievements = achievement_db:get(RoleId),
-%     Contest = contest_db:get(RoleId),
-%     Title = title_db:get(RoleId),
-%     Mall = mall_db:get(RoleId),
-
-%     #game_info{
-%         account =   Account,
-%         role    =   Role,
-%         equip   =   Equip,
-%         package =   Package,
-%         mission =   Mission,
-%         buff    =   Buff,
-%         quest   =   Quest,
-%         item    =   Item,
-%         shop    =   Shop,
-%         daily   =   Daily,
-%         ban_chat =  BanChat,
-%         spiritinfo = SpiritInfo,
-%         mail    =   Mail,
-%         skills  =   Skill,
-%         arena   =   Arena,
-%         friends =   Friend,
-%         friends_etc = FriendEtc,
-%         followers_etc = FollowerEtc,
-%         universe =  Universe,
-%         cultivate = Cultivate,
-%         acts = Acts,
-%         sign = Sign,
-%         offline = Offline,
-%         coin2exp = Coin2exp,
-%         boudoir = Boudoir,
-%         group_member = GroupMember,
-%         group_etc = GroupEtc,
-%         group_pool = GroupPool,
-%         group_role_meeting = GroupMeeting,
-%         warrior = Warrior,
-%         role_warrior = RoleWarrior,
-%         achievements = Achievements,
-%         contest = Contest,
-%         titles = Title,
-%         mall = Mall
-%     }.
+    #game_info{
+        account =   Account,
+        role    =   Role
+    }.
 
 get_myself_data(RoleId) ->
     GameInfo = cache:find(game_info),
@@ -160,9 +91,9 @@ get_myself_data(RoleId) ->
         false ->
             BaseInfo = get_user_data_by_db(RoleId),
             NewGameInfo1 = build_data(BaseInfo),
-            {_, NewGameInfo2} = update_fight(NewGameInfo1),
+            % {_, NewGameInfo2} = update_fight(NewGameInfo1),
             cache:add(NewGameInfo1),
-            NewGameInfo2;
+            NewGameInfo1;
         #game_info{} ->
             NewGameInfo = build_data(GameInfo),
             cache:update(NewGameInfo),
@@ -362,51 +293,51 @@ account_exists_role(AccountId, RoleId) ->
 %             end
 %     end.
 
-% build_data(BaseInfo) ->
-%     BaseInfo1 = fix_data(BaseInfo),
-%     BaseInfo2 = build_etc(BaseInfo1),
-%     BaseInfo2.
+build_data(BaseInfo) ->
+    BaseInfo1 = fix_data(BaseInfo),
+    % BaseInfo2 = build_etc(BaseInfo1),
+    BaseInfo1.
 
-% fix_data(BaseInfo) ->
-%     % TODO 各种数据修正在这里实现 看我来个例子
-%     % #game_info{account=Account, role=Role, daily=Daily, titles = Titles} = BaseInfo,
-%     % NewRole = case Role#role.power >= ?MAX_POWER of
-%     %     true -> Role;
-%     %     false when Role#role.power_recover_time == 0 ->
-%     %         % 新用户,最后恢复时间取当前时间,体力默认满
-%     %         Role#role{power_recover_time=?NOW, power=?MAX_POWER};
-%     %     false ->
-%     %         LastRecoverTime = Role#role.power_recover_time,
-%     %         AddNum = util:to_integer((?NOW - LastRecoverTime) / ?POWER_RECOVER_TIME) * ?POWER_RECOVER_NUM,
-%     %         NewPower = erlang:min(Role#role.power + AddNum, ?MAX_POWER),
-%     %         case NewPower - Role#role.power of
-%     %             0 -> Role;
-%     %             RealyAddNum ->
-%     %                 AddTime = util:to_integer(RealyAddNum / ?POWER_RECOVER_NUM) * ?POWER_RECOVER_TIME,
-%     %                 NewRecoverTime = Role#role.power_recover_time + AddTime,
-%     %                 self() ! {send, #m__role__update_attr__s2c{attr_type = ?POWER, channel = ?ATTR_CHANNEL_QUIET, value = NewPower}},
-%     %                 Role#role{power = NewPower, power_recover_time = NewRecoverTime}
-%     %         end
-%     % end,
-%     % NewDaily = case calendar:time_difference(Daily#daily.today, erlang:localtime()) of     % 判断是否是同一天
-%     %     {0, _} -> Daily;
-%     %     _ ->
-%     %         ?DAU_MSG(Account#account.account_id, Role#role.role_id),
-%     %         self() ! {process, role_api, after_midnight, []},
-%     %         daily_db:build_new_data(Role#role.role_id)
-%     % end,
-%     % NewRole1 = case NewRole#role.title_id of 
-%     %             undefined -> NewRole#role{title_id = 0};
-%     %             _ -> NewRole
-%     %         end,
-%     % NewRole2 = 
-%     %     case title_api:check_valid1(NewRole1, Titles) of
-%     %         false -> NewRole1;
-%     %         true -> NewRole1#role{title_id = 0}
-%     %     end,
+fix_data(BaseInfo) ->
+    % TODO 各种数据修正在这里实现 看我来个例子
+    % #game_info{account=Account, role=Role, daily=Daily, titles = Titles} = BaseInfo,
+    % NewRole = case Role#role.power >= ?MAX_POWER of
+    %     true -> Role;
+    %     false when Role#role.power_recover_time == 0 ->
+    %         % 新用户,最后恢复时间取当前时间,体力默认满
+    %         Role#role{power_recover_time=?NOW, power=?MAX_POWER};
+    %     false ->
+    %         LastRecoverTime = Role#role.power_recover_time,
+    %         AddNum = util:to_integer((?NOW - LastRecoverTime) / ?POWER_RECOVER_TIME) * ?POWER_RECOVER_NUM,
+    %         NewPower = erlang:min(Role#role.power + AddNum, ?MAX_POWER),
+    %         case NewPower - Role#role.power of
+    %             0 -> Role;
+    %             RealyAddNum ->
+    %                 AddTime = util:to_integer(RealyAddNum / ?POWER_RECOVER_NUM) * ?POWER_RECOVER_TIME,
+    %                 NewRecoverTime = Role#role.power_recover_time + AddTime,
+    %                 self() ! {send, #m__role__update_attr__s2c{attr_type = ?POWER, channel = ?ATTR_CHANNEL_QUIET, value = NewPower}},
+    %                 Role#role{power = NewPower, power_recover_time = NewRecoverTime}
+    %         end
+    % end,
+    % NewDaily = case calendar:time_difference(Daily#daily.today, erlang:localtime()) of     % 判断是否是同一天
+    %     {0, _} -> Daily;
+    %     _ ->
+    %         ?DAU_MSG(Account#account.account_id, Role#role.role_id),
+    %         self() ! {process, role_api, after_midnight, []},
+    %         daily_db:build_new_data(Role#role.role_id)
+    % end,
+    % NewRole1 = case NewRole#role.title_id of 
+    %             undefined -> NewRole#role{title_id = 0};
+    %             _ -> NewRole
+    %         end,
+    % NewRole2 = 
+    %     case title_api:check_valid1(NewRole1, Titles) of
+    %         false -> NewRole1;
+    %         true -> NewRole1#role{title_id = 0}
+    %     end,
 
-%     % BaseInfo#game_info{role=NewRole2, daily=NewDaily}.
-%     BaseInfo.
+    % BaseInfo#game_info{role=NewRole2, daily=NewDaily}.
+    BaseInfo.
 
 
 % %% @doc 构建二级属性
