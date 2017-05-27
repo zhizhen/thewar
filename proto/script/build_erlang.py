@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
+
+
+
 import sys
 import re
 import copy
@@ -42,6 +45,7 @@ class ProtoParse:
             fieldObj.type = info[0].strip()
             fieldObj.dataType = info[1].strip()
             fieldObj.name = info[2].strip()
+
             fieldObj.default = info[4].strip() if info[4] != '' else None
             pm.push(fieldObj)
 
@@ -503,8 +507,8 @@ class ProtoNifGenerator:
                 #填充数组大小，两个字节表示
                 sizeVName = "Size%s" % (vNameFinal)
                 declareCode += "    %s = erlang:length(%s),\n" % (sizeVName, vNameFinal)
-                declareCode += "    BinLen_%s = erlang:byte_size(%s),\n" % (name, repeatedVName)
-                assignCode += "%s:16, BinLen_%s:32, %s/binary," % (sizeVName, name, repeatedVName)
+                # declareCode += "    BinLen_%s = erlang:byte_size(%s),\n" % (name, repeatedVName)
+                assignCode += "%s:16, %s/binary," % (sizeVName, repeatedVName)
             else:
                 if dataType == 'byte':
                     assignCode += "%s:8/signed," % (vNameFinal)
@@ -529,8 +533,11 @@ class ProtoNifGenerator:
                     assignCode += "%sLen:16, %s2/binary," % (vName, vName)
                 elif dataType == 'bool':
                     assignCode += "%s:8," % (vNameFinal)
+                # elif dataType == 'bytes':
+                #     assignCode += "%s/binary," % (vNameFinal)
                 elif dataType == 'bytes':
-                    assignCode += "%s/binary," % (vNameFinal)
+                    declareCode += "    %sLen = erlang:byte_size(%s),\n" % (vName, vNameFinal)
+                    assignCode += "%sLen:16, %s/binary," % (vName, vName)
                 else:
                     #自定义类型
                     subMessage = self.allMessage.get(dataType)
@@ -538,12 +545,12 @@ class ProtoNifGenerator:
                         binVName = (vName + "_bin").capitalize()
                         funcName = "encode_" + dataType
                         declareCode += "    %s = %s(%s),\n" % (binVName, funcName, vNameFinal)
-                        declareCode += "    BinLen_%s = erlang:byte_size(%s),\n" % (name, binVName)
+                        # declareCode += "    BinLen_%s = erlang:byte_size(%s),\n" % (name, binVName)
                         if dataType not in self.inTypes:
                             self.erlEncodeFuncArray[dataType] = funcName
 
                         #复杂结构体:   bin长度  ,  bin
-                        assignCode += "BinLen_%s:32, %s/binary," % (name, binVName)
+                        assignCode += "%s/binary," % (binVName)
                     else:
                         print ("unkown data type: ", dataType)
 
@@ -574,8 +581,8 @@ class ProtoNifGenerator:
         code += "    Bin;\n"
         code += "%s([H|T], Bin) ->\n" % (funcName)
         code += "    NewBin = encode_%s(H),\n" % (name)
-        code += "     NewBinSize = erlang:byte_size(NewBin),\n"
-        code += "    %s(T, <<Bin/binary, NewBinSize:32, NewBin/binary>>).\n" % (funcName)
+        # code += "     NewBinSize = erlang:byte_size(NewBin),\n"
+        code += "    %s(T, <<Bin/binary, NewBin/binary>>).\n" % (funcName)
         return code
 
 

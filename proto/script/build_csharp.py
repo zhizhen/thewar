@@ -323,12 +323,12 @@ class ProtoNifGenerator:
 					if has_repeated == False:
 						code += "        short sLen = 0;\n"
 						code += "        int i = 0;\n"
-						code += "        byteArray.ReadInt32 ();//erlang decode\n"
+						# code += "        byteArray.ReadInt32 ();//erlang decode\n"
 						has_repeated = True
 					code += "\n        sLen = byteArray.Readshort();\n"
 					code += "        for (i = 0; i < sLen; i++) {\n"
 					if dataType.split("_")[0] == "p":
-						code += "            byteArray.ReadInt32 ();//erlang decode\n"
+						# code += "            byteArray.ReadInt32 ();//erlang decode\n"
 						code += "            %s k%s = new %s ();\n" % (dataType, dataType, dataType)
 						code += "            k%s.read(byteArray);\n" % dataType
 						code += "            %s.Add(k%s);\n" % (field.name, dataType)

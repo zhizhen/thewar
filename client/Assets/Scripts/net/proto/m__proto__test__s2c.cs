@@ -30,7 +30,6 @@ public class m__proto__test__s2c : ProtoBase
         v8.read(byteArray);
         short sLen = 0;
         int i = 0;
-        byteArray.ReadInt32 ();//erlang decode
 
         sLen = byteArray.Readshort();
         for (i = 0; i < sLen; i++) {
@@ -39,7 +38,6 @@ public class m__proto__test__s2c : ProtoBase
 
         sLen = byteArray.Readshort();
         for (i = 0; i < sLen; i++) {
-            byteArray.ReadInt32 ();//erlang decode
             p_test kp_test = new p_test ();
             kp_test.read(byteArray);
             v10.Add(kp_test);

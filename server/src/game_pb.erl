@@ -309,14 +309,11 @@ encode_998(Record) when is_record(Record, m__proto__test__c2s) ->
     V72 = if is_bitstring(V7Final) -> V7Final; true -> list_to_binary(V7Final) end,
     V7Len = erlang:byte_size(V72),
     V8_bin = encode_p_test(V8Final),
-    BinLen_v8 = erlang:byte_size(V8_bin),
     V9_bin = encode_int32s(V9Final, <<>>),
     SizeV9Final = erlang:length(V9Final),
-    BinLen_v9 = erlang:byte_size(V9_bin),
     V10_bin = encode_p_tests(V10Final, <<>>),
     SizeV10Final = erlang:length(V10Final),
-    BinLen_v10 = erlang:byte_size(V10_bin),
-    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
+    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,V8_bin/binary,SizeV9Final:16, V9_bin/binary,SizeV10Final:16, V10_bin/binary>>;
 
 encode_998(_) -> <<>>.
 
@@ -353,8 +350,7 @@ encode_1107(Record) when is_record(Record, m__role__info__s2c) ->
             Role_info
     end,
     Role_info_bin = encode_p_role(Role_infoFinal),
-    BinLen_role_info = erlang:byte_size(Role_info_bin),
-    <<Msg_idFinal:32/signed,BinLen_role_info:32, Role_info_bin/binary>>;
+    <<Msg_idFinal:32/signed,Role_info_bin/binary>>;
 
 encode_1107(_) -> <<>>.
 
@@ -653,14 +649,11 @@ encode_999(Record) when is_record(Record, m__proto__test__s2c) ->
     V72 = if is_bitstring(V7Final) -> V7Final; true -> list_to_binary(V7Final) end,
     V7Len = erlang:byte_size(V72),
     V8_bin = encode_p_test(V8Final),
-    BinLen_v8 = erlang:byte_size(V8_bin),
     V9_bin = encode_int32s(V9Final, <<>>),
     SizeV9Final = erlang:length(V9Final),
-    BinLen_v9 = erlang:byte_size(V9_bin),
     V10_bin = encode_p_tests(V10Final, <<>>),
     SizeV10Final = erlang:length(V10Final),
-    BinLen_v10 = erlang:byte_size(V10_bin),
-    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,BinLen_v8:32, V8_bin/binary,SizeV9Final:16, BinLen_v9:32, V9_bin/binary,SizeV10Final:16, BinLen_v10:32, V10_bin/binary>>;
+    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,V8_bin/binary,SizeV9Final:16, V9_bin/binary,SizeV10Final:16, V10_bin/binary>>;
 
 encode_999(_) -> <<>>.
 
@@ -704,8 +697,7 @@ encode_5011(Record) when is_record(Record, m__scene__roleline__s2c) ->
     end,
     Openlines_bin = encode_int32s(OpenlinesFinal, <<>>),
     SizeOpenlinesFinal = erlang:length(OpenlinesFinal),
-    BinLen_openlines = erlang:byte_size(Openlines_bin),
-    <<Msg_idFinal:32/signed,LineFinal:32/signed,SizeOpenlinesFinal:16, BinLen_openlines:32, Openlines_bin/binary>>;
+    <<Msg_idFinal:32/signed,LineFinal:32/signed,SizeOpenlinesFinal:16, Openlines_bin/binary>>;
 
 encode_5011(_) -> <<>>.
 
@@ -823,8 +815,7 @@ encode_5012(Record) when is_record(Record, m__scene__lineinfo__s2c) ->
     end,
     Openlines_bin = encode_int32s(OpenlinesFinal, <<>>),
     SizeOpenlinesFinal = erlang:length(OpenlinesFinal),
-    BinLen_openlines = erlang:byte_size(Openlines_bin),
-    <<Msg_idFinal:32/signed,SizeOpenlinesFinal:16, BinLen_openlines:32, Openlines_bin/binary>>;
+    <<Msg_idFinal:32/signed,SizeOpenlinesFinal:16, Openlines_bin/binary>>;
 
 encode_5012(_) -> <<>>.
 
@@ -954,8 +945,7 @@ encode_1105(Record) when is_record(Record, m__role__login__s2c) ->
             Role_info
     end,
     Role_info_bin = encode_p_role(Role_infoFinal),
-    BinLen_role_info = erlang:byte_size(Role_info_bin),
-    <<Msg_idFinal:32/signed,BinLen_role_info:32, Role_info_bin/binary>>;
+    <<Msg_idFinal:32/signed,Role_info_bin/binary>>;
 
 encode_1105(_) -> <<>>.
 
@@ -985,8 +975,7 @@ encode_5005(Record) when is_record(Record, m__scene__update_pos__s2c) ->
             Role_summary
     end,
     Role_summary_bin = encode_p_pos(Role_summaryFinal),
-    BinLen_role_summary = erlang:byte_size(Role_summary_bin),
-    <<Msg_idFinal:32/signed,BinLen_role_summary:32, Role_summary_bin/binary>>;
+    <<Msg_idFinal:32/signed,Role_summary_bin/binary>>;
 
 encode_5005(_) -> <<>>.
 
@@ -1015,8 +1004,7 @@ encode_1101(Record) when is_record(Record, m__role__list__s2c) ->
     end,
     Role_list_bin = encode_p_roles(Role_listFinal, <<>>),
     SizeRole_listFinal = erlang:length(Role_listFinal),
-    BinLen_role_list = erlang:byte_size(Role_list_bin),
-    <<Msg_idFinal:32/signed,SizeRole_listFinal:16, BinLen_role_list:32, Role_list_bin/binary>>;
+    <<Msg_idFinal:32/signed,SizeRole_listFinal:16, Role_list_bin/binary>>;
 
 encode_1101(_) -> <<>>.
 
@@ -1073,8 +1061,7 @@ encode_5001(Record) when is_record(Record, m__scene__neighbours__s2c) ->
     end,
     Roles_bin = encode_p_poss(RolesFinal, <<>>),
     SizeRolesFinal = erlang:length(RolesFinal),
-    BinLen_roles = erlang:byte_size(Roles_bin),
-    <<Msg_idFinal:32/signed,SizeRolesFinal:16, BinLen_roles:32, Roles_bin/binary>>;
+    <<Msg_idFinal:32/signed,SizeRolesFinal:16, Roles_bin/binary>>;
 
 encode_5001(_) -> <<>>.
 
@@ -1132,8 +1119,7 @@ encode_5003(Record) when is_record(Record, m__scene__move__s2c) ->
             Role_summary
     end,
     Role_summary_bin = encode_p_pos(Role_summaryFinal),
-    BinLen_role_summary = erlang:byte_size(Role_summary_bin),
-    <<Msg_idFinal:32/signed,BinLen_role_summary:32, Role_summary_bin/binary>>;
+    <<Msg_idFinal:32/signed,Role_summary_bin/binary>>;
 
 encode_5003(_) -> <<>>.
 
@@ -1297,20 +1283,17 @@ encode_p_roles([], Bin) ->
     Bin;
 encode_p_roles([H|T], Bin) ->
     NewBin = encode_p_role(H),
-     NewBinSize = erlang:byte_size(NewBin),
-    encode_p_roles(T, <<Bin/binary, NewBinSize:32, NewBin/binary>>).
+    encode_p_roles(T, <<Bin/binary, NewBin/binary>>).
 encode_p_poss([], Bin) ->
     Bin;
 encode_p_poss([H|T], Bin) ->
     NewBin = encode_p_pos(H),
-     NewBinSize = erlang:byte_size(NewBin),
-    encode_p_poss(T, <<Bin/binary, NewBinSize:32, NewBin/binary>>).
+    encode_p_poss(T, <<Bin/binary, NewBin/binary>>).
 encode_p_tests([], Bin) ->
     Bin;
 encode_p_tests([H|T], Bin) ->
     NewBin = encode_p_test(H),
-     NewBinSize = erlang:byte_size(NewBin),
-    encode_p_tests(T, <<Bin/binary, NewBinSize:32, NewBin/binary>>).
+    encode_p_tests(T, <<Bin/binary, NewBin/binary>>).
 decode_p_roles(<<>>, List) ->
     List;
 decode_p_roles(Bin, List) ->    <<SubBinSize:32, Bin2/binary>> = Bin,
