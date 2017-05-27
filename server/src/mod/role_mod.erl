@@ -114,12 +114,12 @@ get_myself_data(RoleId) ->
 %             get_user_data_by_db(RoleId)
 %     end.
 
-% %% @doc 离开游戏
-% leave_game() ->
-%     #game_info{role=Role} = role_api:get_user_data(),
-%     game_info:update(Role#role{online_state=?OFFLINE}),
-%     refresh_online_time(),
-%     put_user_data().
+%% @doc 离开游戏
+leave_game() ->
+    % #game_info{role=Role} = role_api:get_user_data(),
+    % game_info:update(Role#role{online_state=?OFFLINE}),
+    % refresh_online_time(),
+    put_user_data().
 
 % %% @doc 刷新今日在线时长
 % refresh_online_time() ->
@@ -127,106 +127,106 @@ get_myself_data(RoleId) ->
 %     NewOnlineTime = Daily#daily.online_time + (?NOW - Role#role.login_time),
 %     game_info:update(Daily#daily{online_time=NewOnlineTime}).
 
-% %% @doc 存储玩家数据
-% put_user_data() ->
-%     %% todo 发现数据变化了再存mysql
-%     GameInfo2 = role_api:get_user_data(),
+%% @doc 存储玩家数据
+put_user_data() ->
+    %% todo 发现数据变化了再存mysql
+    GameInfo = role_api:get_user_data(),
 
-%     title_api:check_valid(GameInfo2#game_info.role, GameInfo2#game_info.titles),
-%     UpdateFlag2 = GameInfo2#game_info.update_flag,
+    % title_api:check_valid(GameInfo2#game_info.role, GameInfo2#game_info.titles),
+    % UpdateFlag2 = GameInfo2#game_info.update_flag,
 
-%     case update_fight(GameInfo2) of
-%         {true, GameInfo} ->
-%             % 如果战力发生变化, 保证role存库
-%             UpdateFlag = [role|UpdateFlag2];
-%         {false, GameInfo} ->
-%             UpdateFlag = UpdateFlag2
-%     end,
+    % case update_fight(GameInfo2) of
+    %     {true, GameInfo} ->
+    %         % 如果战力发生变化, 保证role存库
+    %         UpdateFlag = [role|UpdateFlag2];
+    %     {false, GameInfo} ->
+    %         UpdateFlag = UpdateFlag2
+    % end,
 
-%     %% 全局online表更新删除操作
-%     Role = GameInfo#game_info.role,
+    % %% 全局online表更新删除操作
+    % Role = GameInfo#game_info.role,
     
-%     case Role#role.online_state of
-%         ?ONLINE ->
-%             game_info:update_online_ets(GameInfo, UpdateFlag);
-%         ?OFFLINE ->
-%             game_info:delete_online_ets(GameInfo);
-%         Other ->
-%             ?ERROR_MSG("wrong online state: ~p~n", [Other])
-%     end,
+    % case Role#role.online_state of
+    %     ?ONLINE ->
+    %         game_info:update_online_ets(GameInfo, UpdateFlag);
+    %     ?OFFLINE ->
+    %         game_info:delete_online_ets(GameInfo);
+    %     Other ->
+    %         ?ERROR_MSG("wrong online state: ~p~n", [Other])
+    % end,
 
-%     _SaveFun =
-%         fun({DbMod, Data}) when is_tuple(Data) ->
-%             Flag = erlang:element(1, Data),
-%             case lists:member(Flag, UpdateFlag) of
-%                 true -> DbMod:save(Data);
-%                 false -> ok
-%             end;
-%             ({DbMod, Data}) -> DbMod:save(Data)
-%         end,
+    % _SaveFun =
+    %     fun({DbMod, Data}) when is_tuple(Data) ->
+    %         Flag = erlang:element(1, Data),
+    %         case lists:member(Flag, UpdateFlag) of
+    %             true -> DbMod:save(Data);
+    %             false -> ok
+    %         end;
+    %         ({DbMod, Data}) -> DbMod:save(Data)
+    %     end,
 
-%     _SaveList = [
-%         {account_db, GameInfo#game_info.account},
-%         {role_db, GameInfo#game_info.role},
-%         {equip_db, GameInfo#game_info.equip},
-%         {package_db, GameInfo#game_info.package},
-%         {item_db, GameInfo#game_info.item},
-%         {mission_db, GameInfo#game_info.mission},
-%         {buff_db, GameInfo#game_info.buff},
-%         {shop_db, GameInfo#game_info.shop},
-%         {quest_db, GameInfo#game_info.quest},
-%         {daily_db, GameInfo#game_info.daily},
-%         {mail_db, GameInfo#game_info.mail},
-%         {skill_db, GameInfo#game_info.skills},
-%         {spirit_db, GameInfo#game_info.spiritinfo},
-%         {arena_db, GameInfo#game_info.arena},
-%         {universe_db, GameInfo#game_info.universe},
-%         {cultivate_db, GameInfo#game_info.cultivate},
-%         {gen_act, GameInfo#game_info.acts},
-%         {offline_db, GameInfo#game_info.offline},
-%         {boudoir_db, GameInfo#game_info.boudoir},
-%         {achievement_db, GameInfo#game_info.achievements},
-%         {contest_db, GameInfo#game_info.contest},
-%         {title_db, GameInfo#game_info.titles},
-%         {mall_db, GameInfo#game_info.mall}
-%     ],
+    % _SaveList = [
+    %     {account_db, GameInfo#game_info.account},
+    %     {role_db, GameInfo#game_info.role},
+    %     {equip_db, GameInfo#game_info.equip},
+    %     {package_db, GameInfo#game_info.package},
+    %     {item_db, GameInfo#game_info.item},
+    %     {mission_db, GameInfo#game_info.mission},
+    %     {buff_db, GameInfo#game_info.buff},
+    %     {shop_db, GameInfo#game_info.shop},
+    %     {quest_db, GameInfo#game_info.quest},
+    %     {daily_db, GameInfo#game_info.daily},
+    %     {mail_db, GameInfo#game_info.mail},
+    %     {skill_db, GameInfo#game_info.skills},
+    %     {spirit_db, GameInfo#game_info.spiritinfo},
+    %     {arena_db, GameInfo#game_info.arena},
+    %     {universe_db, GameInfo#game_info.universe},
+    %     {cultivate_db, GameInfo#game_info.cultivate},
+    %     {gen_act, GameInfo#game_info.acts},
+    %     {offline_db, GameInfo#game_info.offline},
+    %     {boudoir_db, GameInfo#game_info.boudoir},
+    %     {achievement_db, GameInfo#game_info.achievements},
+    %     {contest_db, GameInfo#game_info.contest},
+    %     {title_db, GameInfo#game_info.titles},
+    %     {mall_db, GameInfo#game_info.mall}
+    % ],
 
-%     %% [ SaveFun(Elem) || Elem <- SaveList],
+    %% [ SaveFun(Elem) || Elem <- SaveList],
 
-%     % 更新了战斗力,以及update_flag
-%     game_info:reset_update_flag(),
+    % 更新了战斗力,以及update_flag
+    % game_info:reset_update_flag(),
 
-%     account_db:save(GameInfo#game_info.account),
-%     role_db:save(GameInfo#game_info.role),
-%     equip_db:save(GameInfo#game_info.equip),
-%     package_db:save(GameInfo#game_info.package),
-%     item_db:save(GameInfo#game_info.item),
-%     mission_db:save(GameInfo#game_info.mission),
-%     buff_db:save(GameInfo#game_info.buff),
-%     shop_db:save(GameInfo#game_info.shop),
-%     quest_db:save(GameInfo#game_info.quest),
-%     daily_db:save(GameInfo#game_info.daily),
-%     mail_db:save(GameInfo#game_info.mail),
-%     skill_db:save(GameInfo#game_info.skills),
-%     spirit_db:save(GameInfo#game_info.spiritinfo),
-%     arena_db:save(GameInfo#game_info.arena),
-%     universe_db:save(GameInfo#game_info.universe),
-%     cultivate_db:save(GameInfo#game_info.cultivate),
-%     gen_act:save(GameInfo#game_info.acts),
-%     offline_db:save(GameInfo#game_info.offline),
-%     coin2exp_db:save(GameInfo#game_info.coin2exp),
-%     boudoir_db:save(GameInfo#game_info.boudoir),
-%     group_db:update_member(GameInfo#game_info.group_member),
-%     group_db:save_pool(GameInfo#game_info.group_pool),
-%     group_db:save_meeting(GameInfo#game_info.group_role_meeting),
-%     warrior_db:save_list(GameInfo#game_info.warrior),
-%     warrior_db:save_role(GameInfo#game_info.role_warrior),
-%     achievement_db:save(GameInfo#game_info.achievements),
-%     friend_db:save(GameInfo#game_info.friends),
-%     contest_db:save(GameInfo#game_info.contest),
-%     title_db:save(GameInfo#game_info.titles),
-%     mall_db:save(GameInfo#game_info.mall),
-%     ok.
+    account_db:save(GameInfo#game_info.account),
+    role_db:save(GameInfo#game_info.role),
+    % equip_db:save(GameInfo#game_info.equip),
+    % package_db:save(GameInfo#game_info.package),
+    % item_db:save(GameInfo#game_info.item),
+    % mission_db:save(GameInfo#game_info.mission),
+    % buff_db:save(GameInfo#game_info.buff),
+    % shop_db:save(GameInfo#game_info.shop),
+    % quest_db:save(GameInfo#game_info.quest),
+    % daily_db:save(GameInfo#game_info.daily),
+    % mail_db:save(GameInfo#game_info.mail),
+    % skill_db:save(GameInfo#game_info.skills),
+    % spirit_db:save(GameInfo#game_info.spiritinfo),
+    % arena_db:save(GameInfo#game_info.arena),
+    % universe_db:save(GameInfo#game_info.universe),
+    % cultivate_db:save(GameInfo#game_info.cultivate),
+    % gen_act:save(GameInfo#game_info.acts),
+    % offline_db:save(GameInfo#game_info.offline),
+    % coin2exp_db:save(GameInfo#game_info.coin2exp),
+    % boudoir_db:save(GameInfo#game_info.boudoir),
+    % group_db:update_member(GameInfo#game_info.group_member),
+    % group_db:save_pool(GameInfo#game_info.group_pool),
+    % group_db:save_meeting(GameInfo#game_info.group_role_meeting),
+    % warrior_db:save_list(GameInfo#game_info.warrior),
+    % warrior_db:save_role(GameInfo#game_info.role_warrior),
+    % achievement_db:save(GameInfo#game_info.achievements),
+    % friend_db:save(GameInfo#game_info.friends),
+    % contest_db:save(GameInfo#game_info.contest),
+    % title_db:save(GameInfo#game_info.titles),
+    % mall_db:save(GameInfo#game_info.mall),
+    ok.
 
 %% @doc 玩家角色列表
 list(AccountId) ->

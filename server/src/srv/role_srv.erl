@@ -130,10 +130,10 @@ terminate(_Reason, State) ->
 
     ets:delete(role_conn, State#state.role_id),
 
-    friend_api:offline(),
-    scene_api:cleanup(),
-    #game_info{hook=Hook} = role_api:get_user_data(),
-    lists:foreach(fun(Pid) -> Pid ! {offline, State#state.role_id} end, Hook),
+    % friend_api:offline(),
+    % scene_api:cleanup(),
+    % #game_info{hook=Hook} = role_api:get_user_data(),
+    % lists:foreach(fun(Pid) -> Pid ! {offline, State#state.role_id} end, Hook),
 
     try
         role_mod:leave_game()
