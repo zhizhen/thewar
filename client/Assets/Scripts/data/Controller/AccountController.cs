@@ -17,10 +17,10 @@ public class AccountController : Singleton<AccountController>
 		NetMgr.addCMD (ProtoMap.m__role__login__s2c, RoleLoginS2C);
 	}
 
-	public void AccountLogin()
+	public void AccountLogin(string account)
 	{
 		m__account__login__c2s proto = new m__account__login__c2s();
-		proto.account_id = "abc";
+		proto.account_id = account;
 		proto.ticket = "123";
 		proto.platform = 0;
 		proto.server_id = 1000;

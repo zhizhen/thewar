@@ -23,7 +23,11 @@ namespace Engine
         {
             Debug.Log("on button click");
 //			RoleMgr.Instance.LoginC2S ();
-			AccountController.Instance.AccountLogin();
+			GameObject rootcanvas = GameObject.Find("UIRootCanvas");
+			InputField input = rootcanvas.GetComponentInChildren<InputField>();
+
+			string account = input.text;
+			AccountController.Instance.AccountLogin(account);
 //			SceneMgr.Instance.Init();
             view.SetActive(false);
 //			MainMenuView.Instance.Init ();

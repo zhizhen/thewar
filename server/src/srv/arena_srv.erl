@@ -329,7 +329,7 @@ do_info(tick, #{match_list := MatchList, start_list := StartList} = State) ->
         [R1, R2 | Rest] ->
             SceneUid = id_srv:gen_scene_id(),
             SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
-            {ok, Pid} = scene_srv:start_link(SrvName, Cfg#boss_cfg.scene_id),
+            {ok, Pid} = scene_srv:start(SrvName, 1003),
             todo;
         _ ->
             {MatchList, StartList}
