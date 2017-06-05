@@ -22,10 +22,12 @@
 
 -define(SERVER, ?MODULE).
 -define(TICK_TIME, 10000).
--define(CLEAR_LOCK_TIME, 60 * 5).    %% 5分钟，这个是在前端他妈的bug的时候才搞的
 
 start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+
+add_match(Role) ->
+    gen_server:cast(?SERVER, {add_match, Role}).
 
 % %% @doc 入围竞技场
 % enter(#sys_arena_rank{}=ArenaRank) ->
@@ -74,9 +76,8 @@ start_link() ->
 
 init([]) ->
     % ArenaInfo = sys_arena_db:get(),
-    ArenaInfo = undefined,
     erlang:send_after(?TICK_TIME, self(), tick),
-    {ok, ArenaInfo}.
+    {ok, #{match_list => [], start_list => []}}.
 
 %% @private
 %% @doc Handling call messages
@@ -272,6 +273,15 @@ code_change(_OldVsn, State, _Extra) ->
 do_call(_Request, _From, State) ->
     {reply, ok, State}.
 
+do_cast({add_match, Role}, #{match_list := MatchList} = State) ->
+    ?INFO_MSG("add match! : ~p~n", [{Role}]),
+    case lists:keyfind(Role#role.role_id, #role.role_id, MatchList) of
+        false ->
+            {noreply, State#{match_list := [Role|MatchList]}};
+        _ ->
+            {noreply, State}
+    end;
+
 % do_cast({enter, #sys_arena_rank{}=ArenaRank}, State) ->
 %     NewRank = State#sys_arena.rank ++ [ArenaRank],
 %     sys_arena_db:save(ArenaRank),
@@ -313,37 +323,20 @@ do_call(_Request, _From, State) ->
 do_cast(_Msg, State) ->
     {noreply, State}.
 
-do_info(tick, State) ->
-    % Now = erlang:localtime(),
-    % {{NY, NM, ND}, {NH, _, _}} = Now,
-    % StateRet = case State#sys_arena.info#sys_arena_info.last_award_time of
-    %     0 ->
-    %         case lists:member(NH, ?ARENA_AWARD_TIME) of
-    %             false -> State;
-    %             true ->
-    %                 NewRank = arena_api:send_rank_award(1, State#sys_arena.rank),
-    %                 Info = State#sys_arena.info,
-    %                 NewInfo = Info#sys_arena_info{last_award_time=util:datetime_to_timestamp({{NY, NM, ND}, {NH, 0, 0}})},
-    %                 NewState = State#sys_arena{info=NewInfo, rank=NewRank},
-    %                 sys_arena_db:save(NewState),
-    %                 NewState
-    %         end;
-    %     _ ->
-    %         AwardTimes = util:to_integer((util:datetime_to_timestamp(Now) - State#sys_arena.info#sys_arena_info.last_award_time) / ?ARENA_AWARD_WAIT_TIME),
-    %         case AwardTimes of
-    %             0 -> State;
-    %             _ ->
-    %                 NewRank = arena_api:send_rank_award(AwardTimes, State#sys_arena.rank),
-    %                 Info = State#sys_arena.info,
-    %                 NewInfo = Info#sys_arena_info{last_award_time=Info#sys_arena_info.last_award_time+AwardTimes*?ARENA_AWARD_WAIT_TIME},
-    %                 NewState = State#sys_arena{info=NewInfo, rank=NewRank},
-    %                 sys_arena_db:save(NewState),
-    %                 NewState
-    %         end
-    % end,
+do_info(tick, #{match_list := MatchList, start_list := StartList} = State) ->
+    {MatchList1, StartList1} = 
+    case MatchList of
+        [R1, R2 | Rest] ->
+            SceneUid = id_srv:gen_scene_id(),
+            SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
+            {ok, Pid} = scene_srv:start_link(SrvName, Cfg#boss_cfg.scene_id),
+            todo;
+        _ ->
+            {MatchList, StartList}
+    end,
 
     erlang:send_after(?TICK_TIME, self(), tick),
-    {noreply, State};
+    {noreply, State#{}};
 
 do_info(_Info, State) ->
     {noreply, State}.

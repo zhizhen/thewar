@@ -13,18 +13,7 @@
 -include("logger.hrl").
 
 %% API
--export([
-    start_link/0,
-    gen_role_id/0,
-    gen_item_id/0,
-    gen_mail_id/0,
-    gen_spirit_id/0,
-    gen_arena_rank/0,
-    get_max_arena_rank/0,
-    gen_group_id/0,
-    gen_notice_id/0,
-    gen_treasure_id/0
-]).
+-compile(export_all).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -34,13 +23,7 @@
 
 -record(state, {
         max_role_id,
-        max_item_id,
-        max_mail_id,
-        max_spirit_id,
-        max_arena_rank,
-        max_group_id,
-        max_notice_id,
-        max_treasure_id
+        max_scene_id
     }).
 
 %%%===================================================================
@@ -55,34 +38,8 @@ start_link() ->
 gen_role_id() ->
     gen_server:call(?SERVER, gen_role_id).
 
-%% @doc 生成物品ID
-gen_item_id() ->
-    gen_server:call(?SERVER, gen_item_id).
-
-%% @doc 生成邮件ID
-gen_mail_id() ->
-    gen_server:call(?SERVER, gen_mail_id).
-
-%% @doc 生成神格ID
-gen_spirit_id() ->
-    gen_server:call(?SERVER, gen_spirit_id).
-
-%% @doc 生成当前最大排名
-gen_arena_rank() ->
-    gen_server:call(?SERVER, gen_arena_rank).
-
-get_max_arena_rank() ->
-    gen_server:call(?SERVER, get_max_arena_rank).
-
-gen_group_id() ->
-    gen_server:call(?SERVER, gen_group_id).
-
-gen_notice_id() ->
-    gen_server:call(?SERVER, gen_notice_id).
-
-
-gen_treasure_id() ->
-    gen_server:call(?SERVER, gen_treasure_id).
+gen_scene_id() ->
+    gen_server:call(?SERVER, gen_scene_id).
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
@@ -100,7 +57,8 @@ init([]) ->
     % MaxTreasureId = init_max_treasure_id(),
 
     State = #state{
-            max_role_id=MaxRoleId
+            max_role_id = MaxRoleId,
+            max_scene_id = 0
             % max_item_id=MaxItemId, 
             % max_mail_id=MaxMailId, 
             % max_arena_rank=MaxArenaRank, 
@@ -178,6 +136,10 @@ init_max_role_id() ->
 do_call(gen_role_id, _From, State) ->
     NewMaxRoleId = State#state.max_role_id + 1,
     {reply, NewMaxRoleId, State#state{max_role_id=NewMaxRoleId}};
+
+do_call(gen_scene_id, _From, State) ->
+    New = State#state.max_scene_id + 1,
+    {reply, New, State#state{max_scene_id = New}};
 
 do_call(Request, From, State) ->
     ?ERROR_MSG("Unhandled Call Warning, Request: ~p, From: ~p, State: ~p~n", [Request, From, State]),

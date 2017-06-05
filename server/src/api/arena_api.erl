@@ -23,6 +23,8 @@
 % %%% API
 % %%%===================================================================
 match(#m__arena__match__c2s{}, Sender) ->
+	#game_info{role=Role} = role_api:get_user_data(),
+	arena_srv:add_match(Role),
 	ok.
 % info(#m__arena__info__c2s{}, Sender) ->
 %     F = fun() ->
