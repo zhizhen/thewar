@@ -14,6 +14,7 @@ public class AccountController : Singleton<AccountController>
 	virtual protected void AddListener()
 	{
 		NetMgr.addCMD (ProtoMap.m__role__list__s2c, AccountLoginS2C);
+		NetMgr.addCMD (ProtoMap.m__role__login__s2c, RoleLoginS2C);
 	}
 
 	public void AccountLogin()
@@ -28,7 +29,7 @@ public class AccountController : Singleton<AccountController>
 
 	public void AccountLoginS2C(ProtoBase proto)
 	{
-		Debug.Log ("role list");
+		Debug.Log ("角色列表返回");
 		m__role__list__s2c p = proto as m__role__list__s2c;
 		if (p.role_list.Count == 0) {
 			m__role__create__c2s create_c2s = new m__role__create__c2s ();
@@ -39,5 +40,12 @@ public class AccountController : Singleton<AccountController>
 			login_c2s.id = p.role_list [0].id;
 			NetMgr.Instance.send (login_c2s);
 		}
+	}
+
+	public void RoleLoginS2C(ProtoBase proto)
+	{
+		Debug.Log ("角色登陆返回");
+		SceneMgr.Instance.Init();
+		MainMenuView.Instance.Init ();
 	}
 }

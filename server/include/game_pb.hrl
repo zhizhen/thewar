@@ -3,6 +3,7 @@
 -record(m__proto__test__c2s, {msg_id=998,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10}).
 -record(m__role__info__s2c, {msg_id=1107,role_info}).
 -record(m__system__heartbeat__c2s, {msg_id=1000}).
+-record(m__arena__match__c2s, {msg_id=6000}).
 -record(p_test, {v1,v2}).
 -record(m__scene__switch_line__c2s, {msg_id=5010,line_id}).
 -record(p_pos, {role_id,role_name,job,level,pos_x=0,pos_y=0,dest_x,dest_y,weapon,armor,wing,title_id}).

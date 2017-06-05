@@ -8,36 +8,22 @@
 %%%-------------------------------------------------------------------
 -module(arena_api).
 
-% -include("common.hrl").
-% -include("msg_code.hrl").
-% -include("logger.hrl").
-% -include("cfg_record.hrl").
-% -include("table_etc.hrl").
-% -include("table_record.hrl").
-% -include("game_pb.hrl").
+-include("common.hrl").
+-include("msg_code.hrl").
+-include("logger.hrl").
+-include("cfg_record.hrl").
+-include("table_etc.hrl").
+-include("table_record.hrl").
+-include("game_pb.hrl").
 
-% %% API
-% -export([
-%     info/2,
-%     award/2,
-%     challenge/2,
-%     start_challenge/2,
-%     rank/2,
-%     add_times/2
-% ]).
-
-% %% Process API
-% -export([
-%     send_rank_award/2,
-%     send_pk_award/3,
-%     open_function/1,
-%     add_pk_logs/2
-% ]).
+-compile(export_all).
 
 
 % %%%===================================================================
 % %%% API
 % %%%===================================================================
+match(#m__arena__match__c2s{}, Sender) ->
+	ok.
 % info(#m__arena__info__c2s{}, Sender) ->
 %     F = fun() ->
 %         #game_info{role=Role, equip = Equip, daily=Daily, arena=Arena} = role_api:get_user_data(),

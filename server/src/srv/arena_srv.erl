@@ -8,40 +8,24 @@
 %%%-------------------------------------------------------------------
 -module(arena_srv).
 
-% -behaviour(gen_server).
+-behaviour(gen_server).
 
-% -include("logger.hrl").
-% -include("common.hrl").
-% -include("table_etc.hrl").
-% -include("table_record.hrl").
+-include("logger.hrl").
+-include("common.hrl").
+-include("table_etc.hrl").
+-include("table_record.hrl").
 
-% %% API
-% -export([
-%     start_link/0,
-%     enter/1,
-%     swap/2,
-%     get_challenger/1,
-%     get_info_by_rank/1,
-%     get_info_by_role_id/1,
-%     award/1,
-%     clear_lock/2,
-%     start_challenge/2,
-%     get_challenger_state/1,
-%     change_level/2,
-%     change_armor/2,
-%     get_info_by_rank_list/1,
-%     change_fight/2
-% ]).
+-compile(export_all).
 
-% %% gen_server callbacks
-% -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
-% -define(SERVER, ?MODULE).
-% -define(TICK_TIME, 10000).
-% -define(CLEAR_LOCK_TIME, 60 * 5).    %% 5分钟，这个是在前端他妈的bug的时候才搞的
+-define(SERVER, ?MODULE).
+-define(TICK_TIME, 10000).
+-define(CLEAR_LOCK_TIME, 60 * 5).    %% 5分钟，这个是在前端他妈的bug的时候才搞的
 
-% start_link() ->
-%     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+start_link() ->
+    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 % %% @doc 入围竞技场
 % enter(#sys_arena_rank{}=ArenaRank) ->
@@ -84,69 +68,70 @@
 %     gen_server:call(?SERVER, {get_challenger_state, Rank}).
 
 
-% %%%===================================================================
-% %%% gen_server callbacks
-% %%%===================================================================
+%%%===================================================================
+%%% gen_server callbacks
+%%%===================================================================
 
-% init([]) ->
-%     ArenaInfo = sys_arena_db:get(),
-%     erlang:send_after(?TICK_TIME, self(), tick),
-%     {ok, ArenaInfo}.
+init([]) ->
+    % ArenaInfo = sys_arena_db:get(),
+    ArenaInfo = undefined,
+    erlang:send_after(?TICK_TIME, self(), tick),
+    {ok, ArenaInfo}.
 
-% %% @private
-% %% @doc Handling call messages
-% handle_call(Request, From, State) ->
-%     try
-%         do_call(Request, From, State)
-%     catch
-%         _:Reason ->
-%             ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
-%             [Request, State, Reason, erlang:get_stacktrace()]),
-%             {reply, ok, State}
-%     end.
+%% @private
+%% @doc Handling call messages
+handle_call(Request, From, State) ->
+    try
+        do_call(Request, From, State)
+    catch
+        _:Reason ->
+            ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
+            [Request, State, Reason, erlang:get_stacktrace()]),
+            {reply, ok, State}
+    end.
 
-% %% @private
-% %% @doc Handling cast messages
-% handle_cast(Msg, State) ->
-%     try
-%         do_cast(Msg, State)
-%     catch
-%         _:Reason ->
+%% @private
+%% @doc Handling cast messages
+handle_cast(Msg, State) ->
+    try
+        do_cast(Msg, State)
+    catch
+        _:Reason ->
 
-%             ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
-%                 [Msg, State, Reason, erlang:get_stacktrace()]),
-%             {noreply, State}
-%     end.
+            ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
+                [Msg, State, Reason, erlang:get_stacktrace()]),
+            {noreply, State}
+    end.
 
-% %% @private
-% %% @doc Handling all non call/cast messages
-% handle_info(Info, State) ->
-%     try
-%         do_info(Info, State)
-%     catch
-%         _:Reason ->
-%             ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
-%                 [Info, State, Reason, erlang:get_stacktrace()]),
-%             {noreply, State}
-%     end.
+%% @private
+%% @doc Handling all non call/cast messages
+handle_info(Info, State) ->
+    try
+        do_info(Info, State)
+    catch
+        _:Reason ->
+            ?ERROR_MSG("arena_srv handle_call exception:~nRequest: ~p~nState: ~p~nReason: ~p~nStacktrace: ~p~n",
+                [Info, State, Reason, erlang:get_stacktrace()]),
+            {noreply, State}
+    end.
 
-% %% @private
-% %% @doc
-% %% This function is called by a gen_server when it is about to
-% %% terminate. It should be the opposite of Module:init/1 and do any
-% %% necessary cleaning up. When it returns, the gen_server terminates
-% %% with Reason. The return value is ignored.
-% terminate(_Reason, _State) ->
-%     ok.
+%% @private
+%% @doc
+%% This function is called by a gen_server when it is about to
+%% terminate. It should be the opposite of Module:init/1 and do any
+%% necessary cleaning up. When it returns, the gen_server terminates
+%% with Reason. The return value is ignored.
+terminate(_Reason, _State) ->
+    ok.
 
-% %% @private
-% %% @doc Convert process state when code is changed
-% code_change(_OldVsn, State, _Extra) ->
-%     {ok, State}.
+%% @private
+%% @doc Convert process state when code is changed
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
 
-% %%%===================================================================
-% %%% Internal functions
-% %%%===================================================================
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
 
 % do_call({get_info_by_role_id, RoleId}, _From, State) ->
 %     ArenaInfo = lists:keyfind(RoleId, #sys_arena_rank.role_id, State#sys_arena.rank),
@@ -284,8 +269,8 @@
 %             end
 %     end;
 
-% do_call(_Request, _From, State) ->
-%     {reply, ok, State}.
+do_call(_Request, _From, State) ->
+    {reply, ok, State}.
 
 % do_cast({enter, #sys_arena_rank{}=ArenaRank}, State) ->
 %     NewRank = State#sys_arena.rank ++ [ArenaRank],
@@ -325,40 +310,40 @@
 %             {noreply, State#sys_arena{rank=AllRank}}
 %     end;
 
-% do_cast(_Msg, State) ->
-%     {noreply, State}.
+do_cast(_Msg, State) ->
+    {noreply, State}.
 
-% do_info(tick, State) ->
-%     Now = erlang:localtime(),
-%     {{NY, NM, ND}, {NH, _, _}} = Now,
-%     StateRet = case State#sys_arena.info#sys_arena_info.last_award_time of
-%         0 ->
-%             case lists:member(NH, ?ARENA_AWARD_TIME) of
-%                 false -> State;
-%                 true ->
-%                     NewRank = arena_api:send_rank_award(1, State#sys_arena.rank),
-%                     Info = State#sys_arena.info,
-%                     NewInfo = Info#sys_arena_info{last_award_time=util:datetime_to_timestamp({{NY, NM, ND}, {NH, 0, 0}})},
-%                     NewState = State#sys_arena{info=NewInfo, rank=NewRank},
-%                     sys_arena_db:save(NewState),
-%                     NewState
-%             end;
-%         _ ->
-%             AwardTimes = util:to_integer((util:datetime_to_timestamp(Now) - State#sys_arena.info#sys_arena_info.last_award_time) / ?ARENA_AWARD_WAIT_TIME),
-%             case AwardTimes of
-%                 0 -> State;
-%                 _ ->
-%                     NewRank = arena_api:send_rank_award(AwardTimes, State#sys_arena.rank),
-%                     Info = State#sys_arena.info,
-%                     NewInfo = Info#sys_arena_info{last_award_time=Info#sys_arena_info.last_award_time+AwardTimes*?ARENA_AWARD_WAIT_TIME},
-%                     NewState = State#sys_arena{info=NewInfo, rank=NewRank},
-%                     sys_arena_db:save(NewState),
-%                     NewState
-%             end
-%     end,
+do_info(tick, State) ->
+    % Now = erlang:localtime(),
+    % {{NY, NM, ND}, {NH, _, _}} = Now,
+    % StateRet = case State#sys_arena.info#sys_arena_info.last_award_time of
+    %     0 ->
+    %         case lists:member(NH, ?ARENA_AWARD_TIME) of
+    %             false -> State;
+    %             true ->
+    %                 NewRank = arena_api:send_rank_award(1, State#sys_arena.rank),
+    %                 Info = State#sys_arena.info,
+    %                 NewInfo = Info#sys_arena_info{last_award_time=util:datetime_to_timestamp({{NY, NM, ND}, {NH, 0, 0}})},
+    %                 NewState = State#sys_arena{info=NewInfo, rank=NewRank},
+    %                 sys_arena_db:save(NewState),
+    %                 NewState
+    %         end;
+    %     _ ->
+    %         AwardTimes = util:to_integer((util:datetime_to_timestamp(Now) - State#sys_arena.info#sys_arena_info.last_award_time) / ?ARENA_AWARD_WAIT_TIME),
+    %         case AwardTimes of
+    %             0 -> State;
+    %             _ ->
+    %                 NewRank = arena_api:send_rank_award(AwardTimes, State#sys_arena.rank),
+    %                 Info = State#sys_arena.info,
+    %                 NewInfo = Info#sys_arena_info{last_award_time=Info#sys_arena_info.last_award_time+AwardTimes*?ARENA_AWARD_WAIT_TIME},
+    %                 NewState = State#sys_arena{info=NewInfo, rank=NewRank},
+    %                 sys_arena_db:save(NewState),
+    %                 NewState
+    %         end
+    % end,
 
-%     erlang:send_after(?TICK_TIME, self(), tick),
-%     {noreply, StateRet};
+    erlang:send_after(?TICK_TIME, self(), tick),
+    {noreply, State};
 
-% do_info(_Info, State) ->
-%     {noreply, State}.
+do_info(_Info, State) ->
+    {noreply, State}.

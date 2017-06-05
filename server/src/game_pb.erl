@@ -33,10 +33,12 @@
     encode_5011/1,
     decode_p_roles/2,
     encode_p_role/1,
+    encode_6000/1,
     decode_p_poss/2
 ]).
 
 -export([
+    decode_6000/1,
     decode_5009/1,
     decode_5008/1,
     decode_5005/1,
@@ -380,6 +382,26 @@ decode_1000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
     {m__system__heartbeat__c2s, Msg_id};
 
 decode_1000(_) ->
+    undefined.
+
+encode_6000(Record) when is_record(Record, m__arena__match__c2s) ->
+    #m__arena__match__c2s{msg_id=Msg_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            6000;
+        false ->
+            Msg_id
+    end,
+    <<Msg_idFinal:32/signed>>;
+
+encode_6000(_) -> <<>>.
+
+decode_6000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed>> = Bin0,
+    {m__arena__match__c2s, Msg_id};
+
+decode_6000(_) ->
     undefined.
 
 encode_p_test(Record) when is_record(Record, p_test) ->

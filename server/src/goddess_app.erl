@@ -60,7 +60,7 @@ start(_StartType, _StartArgs) ->
     % ok = start_rand(),
     ok = start_scene(),
     % ok = start_mail(),
-    % ok = start_arena(),
+    ok = start_arena(),
     ok = start_id_srv(),
     % ok = start_rank_srv(),
     % ok = start_act_srv(),

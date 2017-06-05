@@ -24,6 +24,7 @@ namespace Engine
         public static readonly int m__proto__test__c2s = 998;
         public static readonly int m__role__info__s2c = 1107;
         public static readonly int m__system__heartbeat__c2s = 1000;
+        public static readonly int m__arena__match__c2s = 6000;
         public static readonly int m__scene__switch_line__c2s = 5010;
         public static readonly int m__proto__test__s2c = 999;
         public static readonly int m__scene__roleline__s2c = 5011;
@@ -51,6 +52,7 @@ namespace Engine
             m_DicProtoType[m__proto__test__c2s] = typeof(m__proto__test__c2s);
             m_DicProtoType[m__role__info__s2c] = typeof(m__role__info__s2c);
             m_DicProtoType[m__system__heartbeat__c2s] = typeof(m__system__heartbeat__c2s);
+            m_DicProtoType[m__arena__match__c2s] = typeof(m__arena__match__c2s);
             m_DicProtoType[m__scene__switch_line__c2s] = typeof(m__scene__switch_line__c2s);
             m_DicProtoType[m__proto__test__s2c] = typeof(m__proto__test__s2c);
             m_DicProtoType[m__scene__roleline__s2c] = typeof(m__scene__roleline__s2c);

@@ -201,3 +201,9 @@ message m__scene__lineinfo__s2c{
     required int32 msg_id [default = 5012];
     repeated int32 openlines;
 }
+
+//-----------------------------------------------------------------------------
+// 匹配
+message m__arena__match__c2s {
+    required int32 msg_id [default = 6000];
+}

@@ -185,18 +185,18 @@ do_cast(login, State=#state{client_sender=ClientSender}) ->
 %% @doc 玩家游戏业务路由转发
 do_cast({route, Mod, Fun, DataRecord}=R, State) ->
     #game_info{role=Role} = role_api:get_user_data(),
-    ActFuncTag = gen_act:get_all_open_mod(),
-    AllFuncTag = role_api:get_open_function_tag(Role),
+    % ActFuncTag = gen_act:get_all_open_mod(),
+    % AllFuncTag = role_api:get_open_function_tag(Role),
 
-    case lists:member(Mod, (ActFuncTag ++ AllFuncTag ++ [notice_api])) of
-        true ->
+    % case lists:member(Mod, (ActFuncTag ++ AllFuncTag ++ [notice_api])) of
+    %     true ->
             Args = [DataRecord, State#state.client_sender],
             ?DEBUG_MSG("Receive Log RoleId: ~p, Mod: ~p, Fun: ~p, Args: ~p~n", [State#state.role_id, Mod, Fun, Args]),
-            apply(Mod, Fun, Args);
-        false ->
-            ?DEBUG_MSG("module not open ===== ~p ~n", [R]),
-            State#state.client_sender ! {send, #m__system__notify__s2c{code = ?MODULE_NOT_OPEN}}
-    end,
+            apply(Mod, Fun, Args),
+    %     false ->
+    %         ?DEBUG_MSG("module not open ===== ~p ~n", [R]),
+    %         State#state.client_sender ! {send, #m__system__notify__s2c{code = ?MODULE_NOT_OPEN}}
+    % end,
     {noreply, State};
 
 do_cast(Msg, State) ->

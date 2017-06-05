@@ -158,8 +158,10 @@ client_process(DataRecord, State=#state{account_id=AccountId, sock=Sock, auth_st
 %% 玩家业务处理
 client_process(DataRecord, State=#state{auth_state=?ROLE_PASSED}) ->
     RolePid = goddess_misc:get_role_pid(State#state.role_id),
-    Mod = a,
-    Fun = b,
+    RecordName = erlang:element(1, DataRecord),
+    [_, M, F, _] = string:tokens(util:to_list(RecordName), "__"),
+    Mod = util:to_atom(M ++ "_api"),
+    Fun = util:to_atom(F),
     gen_server:cast(RolePid, {route, Mod, Fun, DataRecord}),
     start_client_process(State).
 
