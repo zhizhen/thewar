@@ -24,7 +24,7 @@ namespace Engine
         {
 			Debug.Log("on button click");
 			view.SetActive(false);
-			SceneMgr.Instance.EnterScene("1003");
+//			SceneMgr.Instance.EnterScene("1003");
 			ArenaController.Instance.ArenaMatch ();
 //			EntityMainRole.Instance.RoleUseSkill(1);
 			//加载玩家

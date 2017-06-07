@@ -137,47 +137,47 @@ message m__scene__neighbours__s2c{
     repeated p_pos roles;
 }
 
-// 开始移动
-message m__scene__move__c2s{
-    required int32  msg_id [default = 5002];
-    required int32  dest_x;
-    required int32  dest_y;
-}
+// // 开始移动
+// message m__scene__move__c2s{
+//     required int32  msg_id [default = 5002];
+//     required int32  dest_x;
+//     required int32  dest_y;
+// }
 
-// 周围人移动
-message m__scene__move__s2c{
-    required int32  msg_id [default = 5003];
-    required p_pos role_summary;
-}
+// // 周围人移动
+// message m__scene__move__s2c{
+//     required int32  msg_id [default = 5003];
+//     required p_pos role_summary;
+// }
 
-// 同步位置
-message m__scene__update_pos__c2s{
-    required int32  msg_id [default = 5004];
-    required int32 pos_x;
-    required int32 pos_y;
-}
+// // 同步位置
+// message m__scene__update_pos__c2s{
+//     required int32  msg_id [default = 5004];
+//     required int32 pos_x;
+//     required int32 pos_y;
+// }
 
-// 周围人同步位置
-message m__scene__update_pos__s2c{
-    required int32  msg_id [default = 5005];
-    required p_pos role_summary;
-}
+// // 周围人同步位置
+// message m__scene__update_pos__s2c{
+//     required int32  msg_id [default = 5005];
+//     required p_pos role_summary;
+// }
 
 // 有人离开
-message m__scene__leave__s2c{
-    required int32  msg_id [default = 5006];
-    required string role_id;
-}
+// message m__scene__leave__s2c{
+//     required int32  msg_id [default = 5006];
+//     required string role_id;
+// }
 
-// 停下来
-message m__scene__stop__c2s{
-    required int32  msg_id [default = 5007];
-}
+// // 停下来
+// message m__scene__stop__c2s{
+//     required int32  msg_id [default = 5007];
+// }
 
 // 离开
-message m__scene__leave__c2s{
-    required int32  msg_id [default = 5008];
-}
+// message m__scene__leave__c2s{
+//     required int32  msg_id [default = 5008];
+// }
 
 // 进入 + 切场景
 message m__scene__enter__c2s{
@@ -185,25 +185,30 @@ message m__scene__enter__c2s{
     required int32 scene_id;
 }
 
-// 切线
-message m__scene__switch_line__c2s{
-    required int32  msg_id [default = 5010];
-    required int32 line_id;
-}
+// // 切线
+// message m__scene__switch_line__c2s{
+//     required int32  msg_id [default = 5010];
+//     required int32 line_id;
+// }
 
-message m__scene__roleline__s2c{
-    required int32 msg_id [default = 5011];
-    required int32 line;
-    repeated int32 openlines;
-}
+// message m__scene__roleline__s2c{
+//     required int32 msg_id [default = 5011];
+//     required int32 line;
+//     repeated int32 openlines;
+// }
 
-message m__scene__lineinfo__s2c{
-    required int32 msg_id [default = 5012];
-    repeated int32 openlines;
-}
+// message m__scene__lineinfo__s2c{
+//     required int32 msg_id [default = 5012];
+//     repeated int32 openlines;
+// }
 
 //-----------------------------------------------------------------------------
 // 匹配
 message m__arena__match__c2s {
     required int32 msg_id [default = 6000];
+}
+
+message m__arena__match__s2c {
+    required int32 msg_id [default = 6001];
+    required int32 seed;
 }

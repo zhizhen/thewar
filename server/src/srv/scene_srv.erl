@@ -148,7 +148,8 @@ init([notrap, Ets, SceneId]) ->
 init(Ets, SceneId) ->
     cache:init(self()),
     Ets2 = util:to_list(Ets),
-    % scene_mod:init_scene(Ets2, SceneId),
+    scene_mod:init_scene(Ets2, SceneId),
+    ?INFO_MSG("scene srv init : ~p~n", [{Ets, SceneId}]),
     {ok, #state{scene_id=SceneId, ets=Ets2}}.
 
 
@@ -336,6 +337,6 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
-send_line_info(SceneId, OpenLines) ->
-    Msg = #m__scene__lineinfo__s2c{openlines=OpenLines},
-    broadcast_api:scene(SceneId, Msg).
+% send_line_info(SceneId, OpenLines) ->
+%     Msg = #m__scene__lineinfo__s2c{openlines=OpenLines},
+%     broadcast_api:scene(SceneId, Msg).

@@ -12,6 +12,7 @@
 
 -include("logger.hrl").
 -include("common.hrl").
+-include("game_pb.hrl").
 -include("table_etc.hrl").
 -include("table_record.hrl").
 
@@ -328,15 +329,26 @@ do_info(tick, #{match_list := MatchList, start_list := StartList} = State) ->
     case MatchList of
         [R1, R2 | Rest] ->
             SceneUid = id_srv:gen_scene_id(),
+            SceneCid = 1003,
             SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
-            {ok, Pid} = scene_srv:start(SrvName, 1003),
-            todo;
+            {ok, ScenePid} = scene_srv:start(SrvName, SceneCid),
+            Fun = fun(R) ->
+                RolePid = role_srv:get_role_pid_by_id(R#role.role_id),
+                case RolePid of
+                    false -> skip;
+                    _ ->
+                        RolePid ! {send, #m__arena__match__s2c{seed = 0}},
+                        role_srv:send2role(R#role.role_id, {arena_api, enter_battle_scene, [SceneUid, SceneCid, ScenePid]})
+                end
+            end,
+            lists:foreach(Fun, [R1, R2]),
+            {Rest, StartList};
         _ ->
             {MatchList, StartList}
     end,
 
     erlang:send_after(?TICK_TIME, self(), tick),
-    {noreply, State#{}};
+    {noreply, State#{match_list := MatchList1}};
 
 do_info(_Info, State) ->
     {noreply, State}.

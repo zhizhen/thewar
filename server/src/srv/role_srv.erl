@@ -19,7 +19,7 @@
 
 %% API
 -export([start_link/4]).
--export([send2role/2]).
+-export([send2role/2, get_role_pid_by_id/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -60,6 +60,12 @@ send2role(RoleId, {M, F, A}) ->
         Pid -> Pid  ! {process, M, F, A}, true
     end.
 
+get_role_pid_by_id(RoleId) ->
+    RoleProcessName = goddess_misc:role_process_name(RoleId),
+    case whereis(RoleProcessName) of
+        undefined -> false;
+        Pid -> Pid
+    end.
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================

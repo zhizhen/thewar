@@ -16,14 +16,7 @@
 % -include("common.hrl").
 
 
-% %% API
-% -export([init_scene/2]).
-
-% -export([entry/4, leave/4, move/4, sync/5, stop/4]).
-% -export([aoi_entry/4, aoi_leave/3, aoi_move/5, aoi_update_pos/6]).
-% %% -export([is_legal/4, reachable/2]).
-% -export([scene_name/1, tower_name/2, tower_where/2]).
-% -export([close_line/2, pick_line/2, pick_good_line/2, is_full/3]).
+-compile(export_all).
 
 % -define(CURR, 1).
 % -define(TARGET, 2).
@@ -279,27 +272,30 @@
 % %%% init
 % %%%===================================================================
 
-% init_scene(Ets, SceneId) ->
-%     %Opt = [named_table, ordered_set, {read_concurrency, true}],
-%     %PathName = path_name(SceneId),
-%     %ets:new(PathName, Opt),
-%     Cfg = scene_info_cfg:get(SceneId),
-%     LineCfg = line_cfg:get(SceneId),
+init_scene(Ets, SceneId) ->
+    %Opt = [named_table, ordered_set, {read_concurrency, true}],
+    %PathName = path_name(SceneId),
+    %ets:new(PathName, Opt),
+    % Cfg = scene_info_cfg:get(SceneId),
+    % LineCfg = line_cfg:get(SceneId),
 
-%     Cfg#scene_info_cfg.height,
+    % Cfg#scene_info_cfg.height,
 
-%     % M = SceneName:scene(),
-%     %[ets:insert(PathName,  {Y, lists:nth(Y, M)}) || Y <- lists:seq(1, SceneInfo#scene_info.height)],
+    % % M = SceneName:scene(),
+    % %[ets:insert(PathName,  {Y, lists:nth(Y, M)}) || Y <- lists:seq(1, SceneInfo#scene_info.height)],
 
-%     % 为每个线建立一个灯塔ets
-%     Size = {Cfg#scene_info_cfg.width, Cfg#scene_info_cfg.height, Cfg#scene_info_cfg.tower_width, Cfg#scene_info_cfg.tower_height},
-%     [begin
-%         Enable = if L == 1 -> ?YES; true -> ?NO end,
-%         K = tower_name(Ets, L),
-%         cache:insert_other(K, #scene_line{lineid=L, enable=Enable}),
-%         ets:new(K, [named_table, ordered_set, {read_concurrency, true}]),
-%         [ets:insert(K, {Tower, []}) || Tower <- tower_all(edge(Size))]
-%     end || L <- lists:seq(1, LineCfg#line_cfg.max_line)].
+    % % 为每个线建立一个灯塔ets
+    % Size = {Cfg#scene_info_cfg.width, Cfg#scene_info_cfg.height, Cfg#scene_info_cfg.tower_width, Cfg#scene_info_cfg.tower_height},
+    % [begin
+    %     Enable = if L == 1 -> ?YES; true -> ?NO end,
+    %     K = tower_name(Ets, L),
+    %     cache:insert_other(K, #scene_line{lineid=L, enable=Enable}),
+    %     ets:new(K, [named_table, ordered_set, {read_concurrency, true}]),
+    %     [ets:insert(K, {Tower, []}) || Tower <- tower_all(edge(Size))]
+    % end || L <- lists:seq(1, LineCfg#line_cfg.max_line)],
+
+    ets:new(util:to_atom(Ets), [named_table, public, ordered_set, {read_concurrency, true}]),
+    ok.
 
 % %%%===================================================================
 % %%% map util

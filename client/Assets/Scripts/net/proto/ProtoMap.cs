@@ -44,6 +44,7 @@ namespace Engine
         public static readonly int m__scene__move__c2s = 5002;
         public static readonly int m__scene__stop__c2s = 5007;
         public static readonly int m__scene__enter__c2s = 5009;
+        public static readonly int m__arena__match__s2c = 6001;
         public static readonly int m__scene__update_pos__c2s = 5004;
         public static readonly int m__system__notify__s2c = 1001;
         public ProtoMap()
@@ -72,6 +73,7 @@ namespace Engine
             m_DicProtoType[m__scene__move__c2s] = typeof(m__scene__move__c2s);
             m_DicProtoType[m__scene__stop__c2s] = typeof(m__scene__stop__c2s);
             m_DicProtoType[m__scene__enter__c2s] = typeof(m__scene__enter__c2s);
+            m_DicProtoType[m__arena__match__s2c] = typeof(m__arena__match__s2c);
             m_DicProtoType[m__scene__update_pos__c2s] = typeof(m__scene__update_pos__c2s);
             m_DicProtoType[m__system__notify__s2c] = typeof(m__system__notify__s2c);
         }

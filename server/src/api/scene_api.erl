@@ -8,14 +8,15 @@
 %%%-------------------------------------------------------------------
 -module(scene_api).
 
-% -include("logger.hrl").
-% -include("game_pb.hrl").
-% -include("msg_code.hrl").
-% -include("table_record.hrl").
-% -include("table_etc.hrl").
-% -include("cfg_record.hrl").
-% -include("common.hrl").
+-include("logger.hrl").
+-include("game_pb.hrl").
+-include("msg_code.hrl").
+-include("table_record.hrl").
+-include("table_etc.hrl").
+-include("cfg_record.hrl").
+-include("common.hrl").
 
+-compile(export_all).
 % %% API
 % -export([move/2, update_pos/2, leave/2, enter/2, stop/2, switch_line/2]).
 % -export([leave/3]).
@@ -33,79 +34,81 @@
 % leave(Role, SceneId, LineId) ->
 %     scene_srv:leave(Role#role.role_id, srv_name(SceneId), LineId).
 
-% %% @doc 进入地图 + 切换地图
-% enter(#m__scene__enter__c2s{scene_id=SceneId}, Sender) ->
-%     SceneCfg = scene_cfg:get(SceneId),
-%     #game_info{role=Role, scene_etc=SceneEtc} = role_api:get_user_data(),
+%% @doc 进入地图 + 切换地图
+enter(#m__scene__enter__c2s{scene_id=SceneId}, Sender) ->
+    % SceneCfg = scene_cfg:get(SceneId),
+    #game_info{role=Role} = role_api:get_user_data(),
 
-%     OpenScene = Role#role.open_scene,
-%     HasOpen = lists:member(SceneId, OpenScene),
-%     IsSame = SceneEtc#scene_etc.current_scene_id == SceneId,
+    % OpenScene = Role#role.open_scene,
+    % HasOpen = lists:member(SceneId, OpenScene),
+    % IsSame = SceneEtc#scene_etc.current_scene_id == SceneId,
 
-%     ?DEBUG_MSG("SceneEts ~p ~p ~n", [SceneEtc, SceneId]),
+    % ?DEBUG_MSG("SceneEts ~p ~p ~n", [SceneEtc, SceneId]),
 
 
-%     Cfg = scene_info_cfg:get(SceneId),
-%     {LineId, OpenLines} =
-%     case Cfg of
-%         #scene_info_cfg{type=Type} when Type == ?SCENE_CITY_TYPE ->
-%             case SceneCfg == false orelse HasOpen == false of
-%                 true ->
-%                     ?DEBUG_MSG("cfg: ~p hasopen: ~p issame: ~p~n", [SceneCfg, HasOpen, IsSame]),
-%                     {checkfail, []};
-%                 false when IsSame ->
-%                     {same, []};
-%                 false ->
-%                     % 进入新地图, pos传{0,0}, 会自动修正为出生点
-%                     scene_srv:entry(Role#role.role_id, {0, 0}, srv_name(SceneId), SceneId)
-%             end;
-%         #scene_info_cfg{type = Type} when Type == ?SCENE_SPECIAL_TYPE ->
-%             case IsSame of
-%                 true ->
-%                     {same, []};
-%                 false ->
-%                     % 进入新地图, pos传{0,0}, 会自动修正为出生点
-%                     scene_srv:entry(Role#role.role_id, {0, 0}, srv_name(SceneId), SceneId)
-%             end;
-%         _ ->
-%             % 单人副本
-%             {pass, []}
-%     end,
+    % Cfg = scene_info_cfg:get(SceneId),
+    % {LineId, OpenLines} =
+    % case Cfg of
+    %     #scene_info_cfg{type=Type} when Type == ?SCENE_CITY_TYPE ->
+    %         case SceneCfg == false orelse HasOpen == false of
+    %             true ->
+    %                 ?DEBUG_MSG("cfg: ~p hasopen: ~p issame: ~p~n", [SceneCfg, HasOpen, IsSame]),
+    %                 {checkfail, []};
+    %             false when IsSame ->
+    %                 {same, []};
+    %             false ->
+    %                 % 进入新地图, pos传{0,0}, 会自动修正为出生点
+    %                 scene_srv:entry(Role#role.role_id, {0, 0}, srv_name(SceneId), SceneId)
+    %         end;
+    %     #scene_info_cfg{type = Type} when Type == ?SCENE_SPECIAL_TYPE ->
+    %         case IsSame of
+    %             true ->
+    %                 {same, []};
+    %             false ->
+    %                 % 进入新地图, pos传{0,0}, 会自动修正为出生点
+    %                 scene_srv:entry(Role#role.role_id, {0, 0}, srv_name(SceneId), SceneId)
+    %         end;
+    %     _ ->
+    %         % 单人副本
+    %         {pass, []}
+    % end,
 
-%     case LineId of
-%         checkfail ->
-%             % 配置问题 或者 未开放
-%             Sender ! {send, #m__system__notify__s2c{code=?SCENE_FAIL}};
-%         false ->
-%             % 进入srv失败
-%             Sender ! {send, #m__system__notify__s2c{code=?SCENE_FAIL}};
-%         same ->
-%             % 本来就在场景里
-%             fuck;
-%         _ ->
-%             % leave old scene
-%             case SceneEtc#scene_etc.current_scene_id of
-%                 0 -> ok;
-%                 OldSceneId ->
-%                     scene_srv:leave(Role#role.role_id, srv_name(OldSceneId), SceneEtc#scene_etc.line_id)
-%             end,
+    % case LineId of
+    %     checkfail ->
+    %         % 配置问题 或者 未开放
+    %         Sender ! {send, #m__system__notify__s2c{code=?SCENE_FAIL}};
+    %     false ->
+    %         % 进入srv失败
+    %         Sender ! {send, #m__system__notify__s2c{code=?SCENE_FAIL}};
+    %     same ->
+    %         % 本来就在场景里
+    %         fuck;
+    %     _ ->
+    %         % leave old scene
+    %         case SceneEtc#scene_etc.current_scene_id of
+    %             0 -> ok;
+    %             OldSceneId ->
+    %                 scene_srv:leave(Role#role.role_id, srv_name(OldSceneId), SceneEtc#scene_etc.line_id)
+    %         end,
 
-%             NeedSave = Cfg#scene_info_cfg.type == ?SCENE_CITY_TYPE,
+    %         NeedSave = Cfg#scene_info_cfg.type == ?SCENE_CITY_TYPE,
 
-%             game_info:update(#scene_etc{current_scene_id=SceneId,
-%                 need_save=NeedSave, line_id=LineId,
-%                 target_x=0, target_y=0}),
+    %         game_info:update(#scene_etc{current_scene_id=SceneId,
+    %             need_save=NeedSave, line_id=LineId,
+    %             target_x=0, target_y=0}),
 
-%             case LineId of
-%                 pass ->
-%                     Sender ! {send, #m__scene__roleline__s2c{line=0, openlines=[]}};
-%                 _ when NeedSave ->
-%                     game_info:update(Role#role{scene_id=SceneId, pos_x=Cfg#scene_info_cfg.born_x, pos_y=Cfg#scene_info_cfg.born_y}),
-%                     Sender ! {send, #m__scene__roleline__s2c{line=LineId, openlines=OpenLines}};
-%                 _ ->
-%                     Sender ! {send, #m__scene__roleline__s2c{line=LineId, openlines=OpenLines}}
-%             end
-%     end.
+    %         case LineId of
+    %             pass ->
+    %                 Sender ! {send, #m__scene__roleline__s2c{line=0, openlines=[]}};
+    %             _ when NeedSave ->
+    %                 game_info:update(Role#role{scene_id=SceneId, pos_x=Cfg#scene_info_cfg.born_x, pos_y=Cfg#scene_info_cfg.born_y}),
+    %                 Sender ! {send, #m__scene__roleline__s2c{line=LineId, openlines=OpenLines}};
+    %             _ ->
+    %                 Sender ! {send, #m__scene__roleline__s2c{line=LineId, openlines=OpenLines}}
+    %         end
+    % end.
+    scene_srv:entry(Role#role.role_id, SceneId),
+    ok.
 
 % %% @doc 开始移动
 % move(#m__scene__move__c2s{dest_x=Dx, dest_y=Dy}, _Sender) ->

@@ -5,6 +5,7 @@ using Engine;
 
 public class AccountController : Singleton<AccountController>
 {
+	public string acc;
 
 	public AccountController()
 	{
@@ -14,11 +15,11 @@ public class AccountController : Singleton<AccountController>
 	virtual protected void AddListener()
 	{
 		NetMgr.addCMD (ProtoMap.m__role__list__s2c, AccountLoginS2C);
-		NetMgr.addCMD (ProtoMap.m__role__login__s2c, RoleLoginS2C);
 	}
 
 	public void AccountLogin(string account)
 	{
+		acc = account;
 		m__account__login__c2s proto = new m__account__login__c2s();
 		proto.account_id = account;
 		proto.ticket = "123";
@@ -32,20 +33,11 @@ public class AccountController : Singleton<AccountController>
 		Debug.Log ("角色列表返回");
 		m__role__list__s2c p = proto as m__role__list__s2c;
 		if (p.role_list.Count == 0) {
-			m__role__create__c2s create_c2s = new m__role__create__c2s ();
-			create_c2s.name = "我叫金三胖";
-			NetMgr.Instance.send (create_c2s);
+			// 创建角色
+			RoleController.Instance.CreateRoleC2S (acc);
 		} else {
-			m__role__login__c2s login_c2s = new m__role__login__c2s();
-			login_c2s.id = p.role_list [0].id;
-			NetMgr.Instance.send (login_c2s);
+			// 登陆角色
+			RoleController.Instance.LoginC2S (p.role_list [0].id);
 		}
-	}
-
-	public void RoleLoginS2C(ProtoBase proto)
-	{
-		Debug.Log ("角色登陆返回");
-		SceneMgr.Instance.Init();
-		MainMenuView.Instance.Init ();
 	}
 }

@@ -17,4 +17,12 @@ public class SceneController : Singleton<SceneController>
     {
 
     }
+
+	public void EnterSceneC2S()
+	{
+		m__scene__enter__c2s proto = new m__scene__enter__c2s ();
+		proto.scene_id = 1003;
+		NetMgr.Instance.send (proto);
+		SceneMgr.Instance.EnterScene("1003");
+	}
 }
