@@ -69,6 +69,7 @@
 }).
 
 -record(role_etc, {
+    other_pid,
     mission_id = 0,              % 当前所在副本
     mission_process = 0,         % 副本进度  未进入副本,进入副本,战斗完毕,宝箱领取完毕
     clifford = 0,                % 上次祈福获得物品ID

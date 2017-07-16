@@ -134,6 +134,8 @@ class ProtoNifGenerator:
 			return 'Int64'
 		elif dataType == 'uint64':
 			return 'UInt64'
+		elif dataType == 'bytes':
+			return 'byte[]'
 		else:
 			return dataType
 
@@ -208,12 +210,18 @@ class ProtoNifGenerator:
 					code += "        k%s.read(byteArray);\n" % dataType
 					code += "        %s.Add(k%s);\n" % (field.name, dataType)
 				else:
-					code += "        %s.Add(byteArray.Read%s());\n" % (field.name, dataType)
+					if field.dataType == 'bytes':
+						code += "        %s.Add(byteArray.Read%s());\n" % (field.name, field.dataType)
+					else:
+						code += "        %s.Add(byteArray.Read%s());\n" % (field.name, dataType)
 				code += "        }\n"
 			elif dataType.split("_")[0] == "p":
 				code += "        %s.read(byteArray);\n" % field.name
 			else:
-				code += "        %s = byteArray.Read%s();\n" % (field.name, dataType)
+				if field.dataType == 'bytes':
+					code += "        %s = byteArray.Read%s();\n" % (field.name, field.dataType)
+				else:
+					code += "        %s = byteArray.Read%s();\n" % (field.name, dataType)
 		code += "    }\n"
 
 
@@ -236,12 +244,18 @@ class ProtoNifGenerator:
 				if dataType.split("_")[0] == "p":
 					code += "            %s[i].write(byteArray);\n" % field.name
 				else:
-					code += "            byteArray.Write%s(%s[i]);\n" % (dataType, field.name)
+					if field.dataType == 'bytes':
+						code += "            byteArray.Write%s(%s[i]);\n" % (field.dataType, field.name)
+					else:
+						code += "            byteArray.Write%s(%s[i]);\n" % (dataType, field.name)
 				code += "        }\n"
 			elif dataType.split("_")[0] == "p":
 				code += "\n        %s.write(byteArray);\n" % field.name
 			else:
-				code += "        byteArray.Write%s(%s);\n" % (dataType, field.name)
+				if field.dataType == 'bytes':
+					code += "            byteArray.Write%s(%s);\n" % (field.dataType, field.name)
+				else:
+					code += "        byteArray.Write%s(%s);\n" % (dataType, field.name)
 		code += "    }\n"
 
 		code += "}\n"
@@ -312,12 +326,18 @@ class ProtoNifGenerator:
 					if dataType.split("_")[0] == "p":
 						code += "            %s[i].write(byteArray);\n" % field.name
 					else:
-						code += "            byteArray.Write%s(%s[i]);\n" % (dataType, field.name)
+						if field.dataType == 'bytes':
+							code += "            byteArray.Write%s(%s[i]);\n" % (field.dataType, field.name)
+						else:
+							code += "            byteArray.Write%s(%s[i]);\n" % (dataType, field.name)
 					code += "        }"
 				elif dataType.split("_")[0] == "p":
 					code += "\n        %s.write(byteArray);\n" % field.name
 				else:
-					code += "        byteArray.Write%s(%s);\n" % (dataType, field.name)
+					if field.dataType == 'bytes':
+						code += "            byteArray.Write%s(%s);\n" % (field.dataType, field.name)
+					else:
+						code += "        byteArray.Write%s(%s);\n" % (dataType, field.name)
 			elif types[3] == "s2c":
 				if field.type == 'repeated':
 					if has_repeated == False:
@@ -333,12 +353,18 @@ class ProtoNifGenerator:
 						code += "            k%s.read(byteArray);\n" % dataType
 						code += "            %s.Add(k%s);\n" % (field.name, dataType)
 					else:
-						code += "            %s.Add(byteArray.Read%s());\n" % (field.name, dataType)
+						if field.dataType == 'bytes':
+							code += "        %s.Add(byteArray.Read%s());\n" % (field.name, field.dataType)
+						else:
+							code += "            %s.Add(byteArray.Read%s());\n" % (field.name, dataType)
 					code += "        }\n"
 				elif dataType.split("_")[0] == "p":
 					code += "        %s.read(byteArray);\n" % field.name
 				else:
-					code += "        %s = byteArray.Read%s();\n" % (field.name, dataType)
+					if field.dataType == 'bytes':
+						code += "        %s = byteArray.Read%s();\n" % (field.name, field.dataType)
+					else:
+						code += "        %s = byteArray.Read%s();\n" % (field.name, dataType)
 		code += "    }\n"
 		code += "}\n"
 

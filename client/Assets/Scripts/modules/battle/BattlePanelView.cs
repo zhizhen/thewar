@@ -35,7 +35,9 @@ public class BattlePanelView : Singleton<BattlePanelView>
 
 			GameObject m_CurSceneGO = SceneManager.GetActiveScene().GetRootGameObjects()[0];
 			Vector3 pos = m_CurSceneGO.transform.FindChild("Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-			SceneMgr.Instance.GetCurSceneView().addMonster(100101, new Vector3(pos.x, pos.y, 0));
+//			SceneMgr.Instance.GetCurSceneView().addMonster(100101, new Vector3(pos.x, pos.y, 0));
+			CreateAction action = new CreateAction(pos);
+			LockStepMgr.Instance.AddAction(action);
 		});
     }
 

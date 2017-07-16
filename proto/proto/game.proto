@@ -212,3 +212,50 @@ message m__arena__match__s2c {
     required int32 msg_id [default = 6001];
     required int32 seed;
 }
+//-----------------------------------------------------------------------------
+// Action
+message m__action__ready_to_start__c2s{
+    required int32 msg_id [default = 7000];
+    required int32 role_id;
+}
+
+message m__action__ready_to_start__s2c{
+    required int32 msg_id [default = 7001];
+    required int32 role_id;
+}
+
+message m__action__confirm_start__c2s{
+    required int32 msg_id [default = 7002];
+    required int32 role_id;
+}
+
+message m__action__confirm_start__s2c{
+    required int32 msg_id [default = 7003];
+    required int32 role_id;
+}
+
+message m__action__sync__c2s {
+    required int32 msg_id [default = 7004];
+    required int32 turn_id;
+    required int32 role_id;
+    required bytes action;
+}
+
+message m__action__sync__s2c {
+    required int32 msg_id [default = 7005];
+    required int32 turn_id;
+    required int32 role_id;
+    required bytes action;
+}
+
+message m__action__confirm__c2s {
+    required int32 msg_id [default = 7006];
+    required int32 turn_id;
+    required int32 role_id;
+}
+
+message m__action__confirm__s2c {
+    required int32 msg_id [default = 7007];
+    required int32 turn_id;
+    required int32 role_id;
+}

@@ -18,10 +18,16 @@
     encode_999/1,
     encode_998/1,
     encode_p_test/1,
+    encode_7004/1,
     encode_1001/1,
     encode_1000/1,
     encode_p_pos/1,
     decode_p_roles/2,
+    encode_7001/1,
+    encode_7000/1,
+    encode_7007/1,
+    encode_7006/1,
+    encode_7005/1,
     encode_p_role/1,
     encode_6000/1,
     encode_6001/1,
@@ -32,11 +38,8 @@
     decode_6000/1,
     decode_6001/1,
     decode_5009/1,
-    decode_p_pos/1,
-    decode_999/1,
-    decode_998/1,
     decode_5001/1,
-    decode_p_role/1,
+    decode_p_pos/1,
     decode_1100/1,
     decode_1101/1,
     decode_1102/1,
@@ -47,7 +50,16 @@
     decode_1107/1,
     decode_1001/1,
     decode_1000/1,
-    decode_p_test/1
+    decode_p_test/1,
+    decode_999/1,
+    decode_998/1,
+    decode_7001/1,
+    decode_7000/1,
+    decode_7007/1,
+    decode_7006/1,
+    decode_7005/1,
+    decode_7004/1,
+    decode_p_role/1
 ]).
 
 
@@ -205,34 +217,6 @@ decode_bools(Bin, List) ->
             Bool = false
     end,
     decode_bools(Bin2, [Bool|List]).
-encode_1104(Record) when is_record(Record, m__role__login__c2s) ->
-    #m__role__login__c2s{msg_id=Msg_id,id=Id} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1104;
-        false ->
-            Msg_id
-    end,
-    IdFinal =
-    case Id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__role__login__c2s, id}),
-            undefined;
-        false ->
-            Id
-    end,
-    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
-
-encode_1104(_) -> <<>>.
-
-decode_1104(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
-    {m__role__login__c2s, Msg_id,Id};
-
-decode_1104(_) ->
-    undefined.
-
 encode_998(Record) when is_record(Record, m__proto__test__c2s) ->
     #m__proto__test__c2s{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
     Msg_idFinal =
@@ -344,212 +328,32 @@ decode_998(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 
 decode_998(_) ->
     undefined.
 
-encode_6001(Record) when is_record(Record, m__arena__match__s2c) ->
-    #m__arena__match__s2c{msg_id=Msg_id,seed=Seed} = Record,
+encode_7001(Record) when is_record(Record, m__action__ready_to_start__s2c) ->
+    #m__action__ready_to_start__s2c{msg_id=Msg_id,role_id=Role_id} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            6001;
+            7001;
         false ->
             Msg_id
     end,
-    SeedFinal =
-    case Seed =:= undefined of
+    Role_idFinal =
+    case Role_id =:= undefined of
         true ->
-            throw({required_field_not_assigned, m__arena__match__s2c, seed}),
+            throw({required_field_not_assigned, m__action__ready_to_start__s2c, role_id}),
             undefined;
         false ->
-            Seed
+            Role_id
     end,
-    <<Msg_idFinal:32/signed,SeedFinal:32/signed>>;
+    <<Msg_idFinal:32/signed,Role_idFinal:32/signed>>;
 
-encode_6001(_) -> <<>>.
+encode_7001(_) -> <<>>.
 
-decode_6001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Seed:32/signed>> = Bin0,
-    {m__arena__match__s2c, Msg_id,Seed};
+decode_7001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Role_id:32/signed>> = Bin0,
+    {m__action__ready_to_start__s2c, Msg_id,Role_id};
 
-decode_6001(_) ->
-    undefined.
-
-encode_999(Record) when is_record(Record, m__proto__test__s2c) ->
-    #m__proto__test__s2c{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            999;
-        false ->
-            Msg_id
-    end,
-    V1Final =
-    case V1 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v1}),
-            undefined;
-        false ->
-            V1
-    end,
-    V2Final =
-    case V2 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v2}),
-            undefined;
-        false ->
-            V2
-    end,
-    V3Final =
-    case V3 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v3}),
-            undefined;
-        false ->
-            V3
-    end,
-    V4Final =
-    case V4 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v4}),
-            undefined;
-        false ->
-            V4
-    end,
-    V5Final =
-    case V5 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v5}),
-            undefined;
-        false ->
-            V5
-    end,
-    V6Final =
-    case V6 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v6}),
-            undefined;
-        false ->
-            V6
-    end,
-    V7Final =
-    case V7 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v7}),
-            undefined;
-        false ->
-            V7
-    end,
-    V8Final =
-    case V8 =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__proto__test__s2c, v8}),
-            undefined;
-        false ->
-            V8
-    end,
-    case V9 =:= undefined of
-        true ->
-            V9Final = [];
-        false ->
-            V9Final = V9
-    end,
-    case V10 =:= undefined of
-        true ->
-            V10Final = [];
-        false ->
-            V10Final = V10
-    end,
-    V72 = if is_bitstring(V7Final) -> V7Final; true -> list_to_binary(V7Final) end,
-    V7Len = erlang:byte_size(V72),
-    V8_bin = encode_p_test(V8Final),
-    V9_bin = encode_int32s(V9Final, <<>>),
-    SizeV9Final = erlang:length(V9Final),
-    V10_bin = encode_p_tests(V10Final, <<>>),
-    SizeV10Final = erlang:length(V10Final),
-    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,V8_bin/binary,SizeV9Final:16, V9_bin/binary,SizeV10Final:16, V10_bin/binary>>;
-
-encode_999(_) -> <<>>.
-
-decode_999(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,V1:8/signed,V2:16/signed,V3:16/unsigned,V4:32/signed,V5:32/unsigned,V6:64/signed,V7Len:16, Bin1/binary>> = Bin0,
-    <<V7:V7Len/binary,SubBinSizev8:32, Bin2/binary>> = Bin1,
-    <<SubBinv8:SubBinSizev8/binary, Bin3/binary>> = Bin2,
-    V8 = decode_p_test(SubBinv8),
-    <<_Sizev9:16, BinLenv9:32, Bin4/binary>> = Bin3,
-    <<SubBinv9:BinLenv9/binary, Bin5/binary>> = Bin4, 
-    V9 = lists:reverse(decode_int32s(SubBinv9, [])),
-    <<_Sizev10:16, _BinLenv10:32, SubBinv10/binary>> = Bin5,
-    V10 = lists:reverse(decode_p_tests(SubBinv10, [])),
-    {m__proto__test__s2c, Msg_id,V1,V2,V3,V4,V5,V6,V7,V8,V9,V10};
-
-decode_999(_) ->
-    undefined.
-
-encode_1106(Record) when is_record(Record, m__role__info__c2s) ->
-    #m__role__info__c2s{msg_id=Msg_id,id=Id} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1106;
-        false ->
-            Msg_id
-    end,
-    IdFinal =
-    case Id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__role__info__c2s, id}),
-            undefined;
-        false ->
-            Id
-    end,
-    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
-
-encode_1106(_) -> <<>>.
-
-decode_1106(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
-    {m__role__info__c2s, Msg_id,Id};
-
-decode_1106(_) ->
-    undefined.
-
-encode_6000(Record) when is_record(Record, m__arena__match__c2s) ->
-    #m__arena__match__c2s{msg_id=Msg_id} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            6000;
-        false ->
-            Msg_id
-    end,
-    <<Msg_idFinal:32/signed>>;
-
-encode_6000(_) -> <<>>.
-
-decode_6000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed>> = Bin0,
-    {m__arena__match__c2s, Msg_id};
-
-decode_6000(_) ->
-    undefined.
-
-encode_p_role(Record) when is_record(Record, p_role) ->
-    #p_role{id=Id} = Record,
-    IdFinal =
-    case Id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, p_role, id}),
-            undefined;
-        false ->
-            Id
-    end,
-    <<IdFinal:32/signed>>;
-
-encode_p_role(_) -> <<>>.
-
-decode_p_role(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Id:32/signed>> = Bin0,
-    {p_role, Id};
-
-decode_p_role(_) ->
+decode_7001(_) ->
     undefined.
 
 encode_1107(Record) when is_record(Record, m__role__info__s2c) ->
@@ -602,149 +406,60 @@ decode_1000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
 decode_1000(_) ->
     undefined.
 
-encode_1105(Record) when is_record(Record, m__role__login__s2c) ->
-    #m__role__login__s2c{msg_id=Msg_id,role_info=Role_info} = Record,
+encode_7007(Record) when is_record(Record, m__action__confirm__s2c) ->
+    #m__action__confirm__s2c{msg_id=Msg_id,turn_id=Turn_id,role_id=Role_id} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            1105;
+            7007;
         false ->
             Msg_id
     end,
-    Role_infoFinal =
-    case Role_info =:= undefined of
+    Turn_idFinal =
+    case Turn_id =:= undefined of
         true ->
-            throw({required_field_not_assigned, m__role__login__s2c, role_info}),
+            throw({required_field_not_assigned, m__action__confirm__s2c, turn_id}),
             undefined;
         false ->
-            Role_info
+            Turn_id
     end,
-    Role_info_bin = encode_p_role(Role_infoFinal),
-    <<Msg_idFinal:32/signed,Role_info_bin/binary>>;
+    Role_idFinal =
+    case Role_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__confirm__s2c, role_id}),
+            undefined;
+        false ->
+            Role_id
+    end,
+    <<Msg_idFinal:32/signed,Turn_idFinal:32/signed,Role_idFinal:32/signed>>;
 
-encode_1105(_) -> <<>>.
+encode_7007(_) -> <<>>.
 
-decode_1105(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,_SubBinSizerole_info:32, SubBinrole_info/binary>> = Bin0,
-    Role_info = decode_p_role(SubBinrole_info),
-    {m__role__login__s2c, Msg_id,Role_info};
+decode_7007(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Turn_id:32/signed,Role_id:32/signed>> = Bin0,
+    {m__action__confirm__s2c, Msg_id,Turn_id,Role_id};
 
-decode_1105(_) ->
+decode_7007(_) ->
     undefined.
 
-encode_1100(Record) when is_record(Record, m__account__login__c2s) ->
-    #m__account__login__c2s{msg_id=Msg_id,account_id=Account_id,ticket=Ticket,platform=Platform,server_id=Server_id} = Record,
+encode_6000(Record) when is_record(Record, m__arena__match__c2s) ->
+    #m__arena__match__c2s{msg_id=Msg_id} = Record,
     Msg_idFinal =
     case Msg_id =:= undefined of
         true ->
-            1100;
+            6000;
         false ->
             Msg_id
     end,
-    Account_idFinal =
-    case Account_id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__account__login__c2s, account_id}),
-            undefined;
-        false ->
-            Account_id
-    end,
-    TicketFinal =
-    case Ticket =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__account__login__c2s, ticket}),
-            undefined;
-        false ->
-            Ticket
-    end,
-    PlatformFinal =
-    case Platform =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__account__login__c2s, platform}),
-            undefined;
-        false ->
-            Platform
-    end,
-    Server_idFinal =
-    case Server_id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__account__login__c2s, server_id}),
-            undefined;
-        false ->
-            Server_id
-    end,
-    Account_id2 = if is_bitstring(Account_idFinal) -> Account_idFinal; true -> list_to_binary(Account_idFinal) end,
-    Account_idLen = erlang:byte_size(Account_id2),
-    Ticket2 = if is_bitstring(TicketFinal) -> TicketFinal; true -> list_to_binary(TicketFinal) end,
-    TicketLen = erlang:byte_size(Ticket2),
-    <<Msg_idFinal:32/signed,Account_idLen:16, Account_id2/binary,TicketLen:16, Ticket2/binary,PlatformFinal:32/signed,Server_idFinal:32/signed>>;
+    <<Msg_idFinal:32/signed>>;
 
-encode_1100(_) -> <<>>.
+encode_6000(_) -> <<>>.
 
-decode_1100(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Account_idLen:16, Bin1/binary>> = Bin0,
-    <<Account_id:Account_idLen/binary,TicketLen:16, Bin2/binary>> = Bin1,
-    <<Ticket:TicketLen/binary,Platform:32/signed,Server_id:32/signed>> = Bin2,
-    {m__account__login__c2s, Msg_id,Account_id,Ticket,Platform,Server_id};
+decode_6000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed>> = Bin0,
+    {m__arena__match__c2s, Msg_id};
 
-decode_1100(_) ->
-    undefined.
-
-encode_1103(Record) when is_record(Record, m__role__create__s2c) ->
-    #m__role__create__s2c{msg_id=Msg_id,id=Id} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1103;
-        false ->
-            Msg_id
-    end,
-    IdFinal =
-    case Id =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__role__create__s2c, id}),
-            undefined;
-        false ->
-            Id
-    end,
-    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
-
-encode_1103(_) -> <<>>.
-
-decode_1103(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
-    {m__role__create__s2c, Msg_id,Id};
-
-decode_1103(_) ->
-    undefined.
-
-encode_1101(Record) when is_record(Record, m__role__list__s2c) ->
-    #m__role__list__s2c{msg_id=Msg_id,role_list=Role_list} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1101;
-        false ->
-            Msg_id
-    end,
-    case Role_list =:= undefined of
-        true ->
-            Role_listFinal = [];
-        false ->
-            Role_listFinal = Role_list
-    end,
-    Role_list_bin = encode_p_roles(Role_listFinal, <<>>),
-    SizeRole_listFinal = erlang:length(Role_listFinal),
-    <<Msg_idFinal:32/signed,SizeRole_listFinal:16, Role_list_bin/binary>>;
-
-encode_1101(_) -> <<>>.
-
-decode_1101(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,_Sizerole_list:16, _BinLenrole_list:32, SubBinrole_list/binary>> = Bin0,
-    Role_list = lists:reverse(decode_p_roles(SubBinrole_list, [])),
-    {m__role__list__s2c, Msg_id,Role_list};
-
-decode_1101(_) ->
+decode_6000(_) ->
     undefined.
 
 encode_p_test(Record) when is_record(Record, p_test) ->
@@ -774,94 +489,6 @@ decode_p_test(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) >
     {p_test, V1,V2};
 
 decode_p_test(_) ->
-    undefined.
-
-encode_1102(Record) when is_record(Record, m__role__create__c2s) ->
-    #m__role__create__c2s{msg_id=Msg_id,name=Name} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1102;
-        false ->
-            Msg_id
-    end,
-    NameFinal =
-    case Name =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__role__create__c2s, name}),
-            undefined;
-        false ->
-            Name
-    end,
-    Name2 = if is_bitstring(NameFinal) -> NameFinal; true -> list_to_binary(NameFinal) end,
-    NameLen = erlang:byte_size(Name2),
-    <<Msg_idFinal:32/signed,NameLen:16, Name2/binary>>;
-
-encode_1102(_) -> <<>>.
-
-decode_1102(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,NameLen:16, Bin1/binary>> = Bin0,
-    <<Name:NameLen/binary>> = Bin1,
-    {m__role__create__c2s, Msg_id,Name};
-
-decode_1102(_) ->
-    undefined.
-
-encode_5001(Record) when is_record(Record, m__scene__neighbours__s2c) ->
-    #m__scene__neighbours__s2c{msg_id=Msg_id,roles=Roles} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            5001;
-        false ->
-            Msg_id
-    end,
-    case Roles =:= undefined of
-        true ->
-            RolesFinal = [];
-        false ->
-            RolesFinal = Roles
-    end,
-    Roles_bin = encode_p_poss(RolesFinal, <<>>),
-    SizeRolesFinal = erlang:length(RolesFinal),
-    <<Msg_idFinal:32/signed,SizeRolesFinal:16, Roles_bin/binary>>;
-
-encode_5001(_) -> <<>>.
-
-decode_5001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,_Sizeroles:16, _BinLenroles:32, SubBinroles/binary>> = Bin0,
-    Roles = lists:reverse(decode_p_poss(SubBinroles, [])),
-    {m__scene__neighbours__s2c, Msg_id,Roles};
-
-decode_5001(_) ->
-    undefined.
-
-encode_1001(Record) when is_record(Record, m__system__notify__s2c) ->
-    #m__system__notify__s2c{msg_id=Msg_id,code=Code} = Record,
-    Msg_idFinal =
-    case Msg_id =:= undefined of
-        true ->
-            1001;
-        false ->
-            Msg_id
-    end,
-    CodeFinal =
-    case Code =:= undefined of
-        true ->
-            throw({required_field_not_assigned, m__system__notify__s2c, code}),
-            undefined;
-        false ->
-            Code
-    end,
-    <<Msg_idFinal:32/signed,CodeFinal:32/signed>>;
-
-encode_1001(_) -> <<>>.
-
-decode_1001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
-    <<Msg_id:32/signed,Code:32/signed>> = Bin0,
-    {m__system__notify__s2c, Msg_id,Code};
-
-decode_1001(_) ->
     undefined.
 
 encode_p_pos(Record) when is_record(Record, p_pos) ->
@@ -986,6 +613,509 @@ decode_p_pos(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 
 decode_p_pos(_) ->
     undefined.
 
+encode_999(Record) when is_record(Record, m__proto__test__s2c) ->
+    #m__proto__test__s2c{msg_id=Msg_id,v1=V1,v2=V2,v3=V3,v4=V4,v5=V5,v6=V6,v7=V7,v8=V8,v9=V9,v10=V10} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            999;
+        false ->
+            Msg_id
+    end,
+    V1Final =
+    case V1 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v1}),
+            undefined;
+        false ->
+            V1
+    end,
+    V2Final =
+    case V2 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v2}),
+            undefined;
+        false ->
+            V2
+    end,
+    V3Final =
+    case V3 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v3}),
+            undefined;
+        false ->
+            V3
+    end,
+    V4Final =
+    case V4 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v4}),
+            undefined;
+        false ->
+            V4
+    end,
+    V5Final =
+    case V5 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v5}),
+            undefined;
+        false ->
+            V5
+    end,
+    V6Final =
+    case V6 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v6}),
+            undefined;
+        false ->
+            V6
+    end,
+    V7Final =
+    case V7 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v7}),
+            undefined;
+        false ->
+            V7
+    end,
+    V8Final =
+    case V8 =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__proto__test__s2c, v8}),
+            undefined;
+        false ->
+            V8
+    end,
+    case V9 =:= undefined of
+        true ->
+            V9Final = [];
+        false ->
+            V9Final = V9
+    end,
+    case V10 =:= undefined of
+        true ->
+            V10Final = [];
+        false ->
+            V10Final = V10
+    end,
+    V72 = if is_bitstring(V7Final) -> V7Final; true -> list_to_binary(V7Final) end,
+    V7Len = erlang:byte_size(V72),
+    V8_bin = encode_p_test(V8Final),
+    V9_bin = encode_int32s(V9Final, <<>>),
+    SizeV9Final = erlang:length(V9Final),
+    V10_bin = encode_p_tests(V10Final, <<>>),
+    SizeV10Final = erlang:length(V10Final),
+    <<Msg_idFinal:32/signed,V1Final:8/signed,V2Final:16/signed,V3Final:16/unsigned,V4Final:32/signed,V5Final:32/unsigned,V6Final:64/signed,V7Len:16, V72/binary,V8_bin/binary,SizeV9Final:16, V9_bin/binary,SizeV10Final:16, V10_bin/binary>>;
+
+encode_999(_) -> <<>>.
+
+decode_999(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,V1:8/signed,V2:16/signed,V3:16/unsigned,V4:32/signed,V5:32/unsigned,V6:64/signed,V7Len:16, Bin1/binary>> = Bin0,
+    <<V7:V7Len/binary,SubBinSizev8:32, Bin2/binary>> = Bin1,
+    <<SubBinv8:SubBinSizev8/binary, Bin3/binary>> = Bin2,
+    V8 = decode_p_test(SubBinv8),
+    <<_Sizev9:16, BinLenv9:32, Bin4/binary>> = Bin3,
+    <<SubBinv9:BinLenv9/binary, Bin5/binary>> = Bin4, 
+    V9 = lists:reverse(decode_int32s(SubBinv9, [])),
+    <<_Sizev10:16, _BinLenv10:32, SubBinv10/binary>> = Bin5,
+    V10 = lists:reverse(decode_p_tests(SubBinv10, [])),
+    {m__proto__test__s2c, Msg_id,V1,V2,V3,V4,V5,V6,V7,V8,V9,V10};
+
+decode_999(_) ->
+    undefined.
+
+encode_1102(Record) when is_record(Record, m__role__create__c2s) ->
+    #m__role__create__c2s{msg_id=Msg_id,name=Name} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1102;
+        false ->
+            Msg_id
+    end,
+    NameFinal =
+    case Name =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__role__create__c2s, name}),
+            undefined;
+        false ->
+            Name
+    end,
+    Name2 = if is_bitstring(NameFinal) -> NameFinal; true -> list_to_binary(NameFinal) end,
+    NameLen = erlang:byte_size(Name2),
+    <<Msg_idFinal:32/signed,NameLen:16, Name2/binary>>;
+
+encode_1102(_) -> <<>>.
+
+decode_1102(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,NameLen:16, Bin1/binary>> = Bin0,
+    <<Name:NameLen/binary>> = Bin1,
+    {m__role__create__c2s, Msg_id,Name};
+
+decode_1102(_) ->
+    undefined.
+
+encode_7006(Record) when is_record(Record, m__action__confirm__c2s) ->
+    #m__action__confirm__c2s{msg_id=Msg_id,turn_id=Turn_id,role_id=Role_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            7006;
+        false ->
+            Msg_id
+    end,
+    Turn_idFinal =
+    case Turn_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__confirm__c2s, turn_id}),
+            undefined;
+        false ->
+            Turn_id
+    end,
+    Role_idFinal =
+    case Role_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__confirm__c2s, role_id}),
+            undefined;
+        false ->
+            Role_id
+    end,
+    <<Msg_idFinal:32/signed,Turn_idFinal:32/signed,Role_idFinal:32/signed>>;
+
+encode_7006(_) -> <<>>.
+
+decode_7006(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Turn_id:32/signed,Role_id:32/signed>> = Bin0,
+    {m__action__confirm__c2s, Msg_id,Turn_id,Role_id};
+
+decode_7006(_) ->
+    undefined.
+
+encode_1100(Record) when is_record(Record, m__account__login__c2s) ->
+    #m__account__login__c2s{msg_id=Msg_id,account_id=Account_id,ticket=Ticket,platform=Platform,server_id=Server_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1100;
+        false ->
+            Msg_id
+    end,
+    Account_idFinal =
+    case Account_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__account__login__c2s, account_id}),
+            undefined;
+        false ->
+            Account_id
+    end,
+    TicketFinal =
+    case Ticket =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__account__login__c2s, ticket}),
+            undefined;
+        false ->
+            Ticket
+    end,
+    PlatformFinal =
+    case Platform =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__account__login__c2s, platform}),
+            undefined;
+        false ->
+            Platform
+    end,
+    Server_idFinal =
+    case Server_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__account__login__c2s, server_id}),
+            undefined;
+        false ->
+            Server_id
+    end,
+    Account_id2 = if is_bitstring(Account_idFinal) -> Account_idFinal; true -> list_to_binary(Account_idFinal) end,
+    Account_idLen = erlang:byte_size(Account_id2),
+    Ticket2 = if is_bitstring(TicketFinal) -> TicketFinal; true -> list_to_binary(TicketFinal) end,
+    TicketLen = erlang:byte_size(Ticket2),
+    <<Msg_idFinal:32/signed,Account_idLen:16, Account_id2/binary,TicketLen:16, Ticket2/binary,PlatformFinal:32/signed,Server_idFinal:32/signed>>;
+
+encode_1100(_) -> <<>>.
+
+decode_1100(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Account_idLen:16, Bin1/binary>> = Bin0,
+    <<Account_id:Account_idLen/binary,TicketLen:16, Bin2/binary>> = Bin1,
+    <<Ticket:TicketLen/binary,Platform:32/signed,Server_id:32/signed>> = Bin2,
+    {m__account__login__c2s, Msg_id,Account_id,Ticket,Platform,Server_id};
+
+decode_1100(_) ->
+    undefined.
+
+encode_1106(Record) when is_record(Record, m__role__info__c2s) ->
+    #m__role__info__c2s{msg_id=Msg_id,id=Id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1106;
+        false ->
+            Msg_id
+    end,
+    IdFinal =
+    case Id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__role__info__c2s, id}),
+            undefined;
+        false ->
+            Id
+    end,
+    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
+
+encode_1106(_) -> <<>>.
+
+decode_1106(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
+    {m__role__info__c2s, Msg_id,Id};
+
+decode_1106(_) ->
+    undefined.
+
+encode_p_role(Record) when is_record(Record, p_role) ->
+    #p_role{id=Id} = Record,
+    IdFinal =
+    case Id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, p_role, id}),
+            undefined;
+        false ->
+            Id
+    end,
+    <<IdFinal:32/signed>>;
+
+encode_p_role(_) -> <<>>.
+
+decode_p_role(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Id:32/signed>> = Bin0,
+    {p_role, Id};
+
+decode_p_role(_) ->
+    undefined.
+
+encode_1105(Record) when is_record(Record, m__role__login__s2c) ->
+    #m__role__login__s2c{msg_id=Msg_id,role_info=Role_info} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1105;
+        false ->
+            Msg_id
+    end,
+    Role_infoFinal =
+    case Role_info =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__role__login__s2c, role_info}),
+            undefined;
+        false ->
+            Role_info
+    end,
+    Role_info_bin = encode_p_role(Role_infoFinal),
+    <<Msg_idFinal:32/signed,Role_info_bin/binary>>;
+
+encode_1105(_) -> <<>>.
+
+decode_1105(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,_SubBinSizerole_info:32, SubBinrole_info/binary>> = Bin0,
+    Role_info = decode_p_role(SubBinrole_info),
+    {m__role__login__s2c, Msg_id,Role_info};
+
+decode_1105(_) ->
+    undefined.
+
+encode_1101(Record) when is_record(Record, m__role__list__s2c) ->
+    #m__role__list__s2c{msg_id=Msg_id,role_list=Role_list} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1101;
+        false ->
+            Msg_id
+    end,
+    case Role_list =:= undefined of
+        true ->
+            Role_listFinal = [];
+        false ->
+            Role_listFinal = Role_list
+    end,
+    Role_list_bin = encode_p_roles(Role_listFinal, <<>>),
+    SizeRole_listFinal = erlang:length(Role_listFinal),
+    <<Msg_idFinal:32/signed,SizeRole_listFinal:16, Role_list_bin/binary>>;
+
+encode_1101(_) -> <<>>.
+
+decode_1101(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,_Sizerole_list:16, _BinLenrole_list:32, SubBinrole_list/binary>> = Bin0,
+    Role_list = lists:reverse(decode_p_roles(SubBinrole_list, [])),
+    {m__role__list__s2c, Msg_id,Role_list};
+
+decode_1101(_) ->
+    undefined.
+
+encode_1103(Record) when is_record(Record, m__role__create__s2c) ->
+    #m__role__create__s2c{msg_id=Msg_id,id=Id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1103;
+        false ->
+            Msg_id
+    end,
+    IdFinal =
+    case Id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__role__create__s2c, id}),
+            undefined;
+        false ->
+            Id
+    end,
+    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
+
+encode_1103(_) -> <<>>.
+
+decode_1103(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
+    {m__role__create__s2c, Msg_id,Id};
+
+decode_1103(_) ->
+    undefined.
+
+encode_5001(Record) when is_record(Record, m__scene__neighbours__s2c) ->
+    #m__scene__neighbours__s2c{msg_id=Msg_id,roles=Roles} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            5001;
+        false ->
+            Msg_id
+    end,
+    case Roles =:= undefined of
+        true ->
+            RolesFinal = [];
+        false ->
+            RolesFinal = Roles
+    end,
+    Roles_bin = encode_p_poss(RolesFinal, <<>>),
+    SizeRolesFinal = erlang:length(RolesFinal),
+    <<Msg_idFinal:32/signed,SizeRolesFinal:16, Roles_bin/binary>>;
+
+encode_5001(_) -> <<>>.
+
+decode_5001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,_Sizeroles:16, _BinLenroles:32, SubBinroles/binary>> = Bin0,
+    Roles = lists:reverse(decode_p_poss(SubBinroles, [])),
+    {m__scene__neighbours__s2c, Msg_id,Roles};
+
+decode_5001(_) ->
+    undefined.
+
+encode_7004(Record) when is_record(Record, m__action__sync__c2s) ->
+    #m__action__sync__c2s{msg_id=Msg_id,turn_id=Turn_id,role_id=Role_id,action=Action} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            7004;
+        false ->
+            Msg_id
+    end,
+    Turn_idFinal =
+    case Turn_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__c2s, turn_id}),
+            undefined;
+        false ->
+            Turn_id
+    end,
+    Role_idFinal =
+    case Role_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__c2s, role_id}),
+            undefined;
+        false ->
+            Role_id
+    end,
+    ActionFinal =
+    case Action =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__c2s, action}),
+            undefined;
+        false ->
+            Action
+    end,
+    ActionLen = erlang:byte_size(ActionFinal),
+    <<Msg_idFinal:32/signed,Turn_idFinal:32/signed,Role_idFinal:32/signed,ActionLen:16, Action/binary>>;
+
+encode_7004(_) -> <<>>.
+
+decode_7004(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Turn_id:32/signed,Role_id:32/signed,ActionLen:16, Bin1/binary>> = Bin0,
+    <<Action:ActionLen/binary>> = Bin1,
+    {m__action__sync__c2s, Msg_id,Turn_id,Role_id,Action};
+
+decode_7004(_) ->
+    undefined.
+
+encode_1104(Record) when is_record(Record, m__role__login__c2s) ->
+    #m__role__login__c2s{msg_id=Msg_id,id=Id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1104;
+        false ->
+            Msg_id
+    end,
+    IdFinal =
+    case Id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__role__login__c2s, id}),
+            undefined;
+        false ->
+            Id
+    end,
+    <<Msg_idFinal:32/signed,IdFinal:32/signed>>;
+
+encode_1104(_) -> <<>>.
+
+decode_1104(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Id:32/signed>> = Bin0,
+    {m__role__login__c2s, Msg_id,Id};
+
+decode_1104(_) ->
+    undefined.
+
+encode_7000(Record) when is_record(Record, m__action__ready_to_start__c2s) ->
+    #m__action__ready_to_start__c2s{msg_id=Msg_id,role_id=Role_id} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            7000;
+        false ->
+            Msg_id
+    end,
+    Role_idFinal =
+    case Role_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__ready_to_start__c2s, role_id}),
+            undefined;
+        false ->
+            Role_id
+    end,
+    <<Msg_idFinal:32/signed,Role_idFinal:32/signed>>;
+
+encode_7000(_) -> <<>>.
+
+decode_7000(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Role_id:32/signed>> = Bin0,
+    {m__action__ready_to_start__c2s, Msg_id,Role_id};
+
+decode_7000(_) ->
+    undefined.
+
 encode_5009(Record) when is_record(Record, m__scene__enter__c2s) ->
     #m__scene__enter__c2s{msg_id=Msg_id,scene_id=Scene_id} = Record,
     Msg_idFinal =
@@ -1012,6 +1142,108 @@ decode_5009(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0
     {m__scene__enter__c2s, Msg_id,Scene_id};
 
 decode_5009(_) ->
+    undefined.
+
+encode_6001(Record) when is_record(Record, m__arena__match__s2c) ->
+    #m__arena__match__s2c{msg_id=Msg_id,seed=Seed} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            6001;
+        false ->
+            Msg_id
+    end,
+    SeedFinal =
+    case Seed =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__arena__match__s2c, seed}),
+            undefined;
+        false ->
+            Seed
+    end,
+    <<Msg_idFinal:32/signed,SeedFinal:32/signed>>;
+
+encode_6001(_) -> <<>>.
+
+decode_6001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Seed:32/signed>> = Bin0,
+    {m__arena__match__s2c, Msg_id,Seed};
+
+decode_6001(_) ->
+    undefined.
+
+encode_7005(Record) when is_record(Record, m__action__sync__s2c) ->
+    #m__action__sync__s2c{msg_id=Msg_id,turn_id=Turn_id,role_id=Role_id,action=Action} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            7005;
+        false ->
+            Msg_id
+    end,
+    Turn_idFinal =
+    case Turn_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__s2c, turn_id}),
+            undefined;
+        false ->
+            Turn_id
+    end,
+    Role_idFinal =
+    case Role_id =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__s2c, role_id}),
+            undefined;
+        false ->
+            Role_id
+    end,
+    ActionFinal =
+    case Action =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__action__sync__s2c, action}),
+            undefined;
+        false ->
+            Action
+    end,
+    ActionLen = erlang:byte_size(ActionFinal),
+    <<Msg_idFinal:32/signed,Turn_idFinal:32/signed,Role_idFinal:32/signed,ActionLen:16, Action/binary>>;
+
+encode_7005(_) -> <<>>.
+
+decode_7005(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Turn_id:32/signed,Role_id:32/signed,ActionLen:16, Bin1/binary>> = Bin0,
+    <<Action:ActionLen/binary>> = Bin1,
+    {m__action__sync__s2c, Msg_id,Turn_id,Role_id,Action};
+
+decode_7005(_) ->
+    undefined.
+
+encode_1001(Record) when is_record(Record, m__system__notify__s2c) ->
+    #m__system__notify__s2c{msg_id=Msg_id,code=Code} = Record,
+    Msg_idFinal =
+    case Msg_id =:= undefined of
+        true ->
+            1001;
+        false ->
+            Msg_id
+    end,
+    CodeFinal =
+    case Code =:= undefined of
+        true ->
+            throw({required_field_not_assigned, m__system__notify__s2c, code}),
+            undefined;
+        false ->
+            Code
+    end,
+    <<Msg_idFinal:32/signed,CodeFinal:32/signed>>;
+
+encode_1001(_) -> <<>>.
+
+decode_1001(Bin0) when erlang:is_binary(Bin0) andalso erlang:byte_size(Bin0) > 0 ->
+    <<Msg_id:32/signed,Code:32/signed>> = Bin0,
+    {m__system__notify__s2c, Msg_id,Code};
+
+decode_1001(_) ->
     undefined.
 
 encode_p_roles([], Bin) ->

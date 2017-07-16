@@ -713,11 +713,17 @@ class ProtoNifGenerator:
                     assignCode += "        %s = false\n" % (vName)
                     assignCode += "end,\n"
                 elif dataType == 'bytes':
+                    strLenVName = "%sLen" % (vName)
+                    j = i+1
                     if ifBreak:
-                        code += "  <<%s/binary," % (vName)
+                        code += "  <<%s:16, Bin%s/binary>> = Bin%s,\n" % (strLenVName, j, i)
+                        # code += "  <<%s/binary," % (vName)
                         ifBreak = False
                     else:
-                        code += "%s/binary," % (vName)
+                        code += "%s:16, Bin%s/binary>> = Bin%s,\n" % (strLenVName, j, i)
+                        # code += "%s/binary," % (vName)
+                    i += 1
+                    code += "    <<%s:%s/binary," % (vName, strLenVName)
                 else:
                     #复杂结构体类型，先读取长度(为什么读取长度，而不是直接传入二进制匹配？性能!)
                     subBinVName = "SubBin" + name

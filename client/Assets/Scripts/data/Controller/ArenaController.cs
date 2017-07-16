@@ -26,5 +26,6 @@ public class ArenaController : Singleton<ArenaController>
 	{
 		m__arena__match__s2c p = proto as m__arena__match__s2c;
 		SceneController.Instance.EnterSceneC2S ();
+		GameApp.Instance.gameObject.AddComponent<LockStepMgr> ();
 	}
 }

@@ -17,6 +17,7 @@
 -include("common.hrl").
 
 -compile(export_all).
+
 % %% API
 % -export([move/2, update_pos/2, leave/2, enter/2, stop/2, switch_line/2]).
 % -export([leave/3]).
@@ -107,7 +108,7 @@ enter(#m__scene__enter__c2s{scene_id=SceneId}, Sender) ->
     %                 Sender ! {send, #m__scene__roleline__s2c{line=LineId, openlines=OpenLines}}
     %         end
     % end.
-    scene_srv:entry(Role#role.role_id, SceneId),
+    scene_srv:entry(Role#role.role_id, srv_name(SceneId), SceneId),
     ok.
 
 % %% @doc 开始移动
@@ -191,15 +192,15 @@ enter(#m__scene__enter__c2s{scene_id=SceneId}, Sender) ->
 %     end.
 
 
-% srv_name(SceneId) ->
-%     Cfg = line_cfg:get(SceneId),
-%     case catch (Cfg#line_cfg.namemod):scene_name(SceneId) of
-%         {'EXIT', _Reason} ->
-% %%             ?DEBUG_MSG("EXIT: sceneid: ~p ~nCfg: ~p~n, Reason:~p~n", [SceneId, Cfg, Reason]),
-%             ?DEBUG_MSG("leave sceneId: ~p ~n", [SceneId]),
-%             false;
-%         O -> O
-%     end.
+srv_name(SceneId) ->
+    Cfg = line_cfg:get(SceneId),
+    case catch scene_mod:scene_name(SceneId) of
+        {'EXIT', _Reason} ->
+%%             ?DEBUG_MSG("EXIT: sceneid: ~p ~nCfg: ~p~n, Reason:~p~n", [SceneId, Cfg, Reason]),
+            ?DEBUG_MSG("leave sceneId: ~p ~n", [SceneId]),
+            false;
+        O -> O
+    end.
 
 % open_function(_FuncId) ->
 %     ok.

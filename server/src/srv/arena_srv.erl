@@ -328,20 +328,27 @@ do_info(tick, #{match_list := MatchList, start_list := StartList} = State) ->
     {MatchList1, StartList1} = 
     case MatchList of
         [R1, R2 | Rest] ->
-            SceneUid = id_srv:gen_scene_id(),
-            SceneCid = 1003,
-            SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
-            {ok, ScenePid} = scene_srv:start(SrvName, SceneCid),
-            Fun = fun(R) ->
-                RolePid = role_srv:get_role_pid_by_id(R#role.role_id),
-                case RolePid of
+            % SceneUid = id_srv:gen_scene_id(),
+            % SceneCid = 1003,
+            % SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
+            % {ok, ScenePid} = scene_srv:start(SrvName, SceneCid),
+            % Fun = fun(R) ->
+                RolePid1 = role_srv:get_role_pid_by_id(R1#role.role_id),
+                RolePid2 = role_srv:get_role_pid_by_id(R2#role.role_id),
+                case RolePid1 of
                     false -> skip;
                     _ ->
-                        RolePid ! {send, #m__arena__match__s2c{seed = 0}},
-                        role_srv:send2role(R#role.role_id, {arena_api, enter_battle_scene, [SceneUid, SceneCid, ScenePid]})
-                end
-            end,
-            lists:foreach(Fun, [R1, R2]),
+                        RolePid1 ! {send, #m__arena__match__s2c{seed = 0}},
+                        role_srv:send2role(R1#role.role_id, {arena_api, enter_battle_scene, [RolePid2]})
+                end,
+                case RolePid2 of
+                    false -> skip;
+                    _ ->
+                        RolePid2 ! {send, #m__arena__match__s2c{seed = 0}},
+                        role_srv:send2role(R2#role.role_id, {arena_api, enter_battle_scene, [RolePid1]})
+                end,
+            % end,
+            % lists:foreach(Fun, [R1, R2]),
             {Rest, StartList};
         _ ->
             {MatchList, StartList}

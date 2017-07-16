@@ -95,6 +95,8 @@ start_link(Name, SceneId) ->
 %         {LineId, OpenLines} ->
 %             {LineId, [LineId | lists:filter(fun(Id) -> Id /= LineId end, OpenLines)]}
 %     end.
+entry(RoleId, SceneName, _SceneId) ->
+    gen_server:cast(SceneName, {entry, RoleId}).
 
 % %% @doc 移动
 % move(_, false, _, _) -> false;
@@ -250,6 +252,10 @@ handle_cast(Msg, State) ->
                 [Msg, State, Reason, erlang:get_stacktrace()]),
             {noreply, State}
     end.
+
+do_cast({entry, RoleId}, #state{scene_id=SceneId, ets=Ets}=State) ->
+    scene_mod:entry(RoleId, SceneId, Ets),
+    {noreply, State};
 
 % do_cast({leave, RoleId, LineId}, #state{scene_id=SceneId, ets=Ets}=State) ->
 %     scene_mod:leave(RoleId, SceneId, LineId, Ets),

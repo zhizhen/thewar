@@ -99,7 +99,7 @@ namespace Engine
 		private void connectedCallback(IAsyncResult ar) {
 			if (connected ()) {
 				_socket.EndConnect (ar);
-				Debug.LogError ("connect success!");
+				Debug.Log ("connect success!");
 				if (this.callBack != null)
 					this.callBack (true);
 				startRecv ();

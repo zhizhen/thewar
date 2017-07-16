@@ -15,9 +15,12 @@ public class GameApp : MonoBehaviour
     private readonly int otherTotal = 2 + aspet;
     private readonly Action[] frameActions = {SoundUtils.OnInitSound};
 
+	public static GameApp Instance;
+
     // Use this for initialization
     void Start () {
-		NetMgr.Instance.connect ("127.0.0.1", 8888);
+		Instance = this;
+		NetMgr.Instance.connect ("192.168.0.110", 8888);
         gameObject.AddComponent<GlobalTimer>();
         GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
         ShowLoadingBar();

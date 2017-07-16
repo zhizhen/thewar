@@ -27,11 +27,12 @@ match(#m__arena__match__c2s{}, Sender) ->
 	arena_srv:add_match(Role),
 	ok.
 
-enter_battle_scene(SceneUid, SceneCid, ScenePid, Sender) ->
+enter_battle_scene(RolePid, Sender) ->
 	?INFO_MSG("process enter battle scene"),
-	#game_info{role=Role} = role_api:get_user_data(),
-	SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
-	ets:insert(SrvName, {Role#role.role_id, self()}),
+	#game_info{role_etc=RoleEtc} = role_api:get_user_data(),
+	% SrvName = util:to_atom("arena_"++util:to_list(SceneUid)),
+	% ets:insert(SrvName, {Role#role.role_id, self()}),
+	game_info:update(RoleEtc#role_etc{other_pid = RolePid}),
 	ok.
 	
 % info(#m__arena__info__c2s{}, Sender) ->

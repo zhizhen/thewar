@@ -122,6 +122,18 @@ namespace Engine
 			return value;
 		}
 
+		public byte[] Readbytes() {
+			if (position + 2 > dataBuff.Length) {
+				Debug.LogError ("Readbytes read out of limit: " + dataBuff.Length);
+			}
+			ushort bigValue = Readushort ();
+			byte[] value = new byte[bigValue];
+			Array.Copy (dataBuff, position, value, 0, bigValue);
+//			Array.Copy (value, 0, dataBuff, position, strLen);
+			position += bigValue;
+			return value;
+		}
+
 		public void Writebyte(byte value) {
 			CheckBuffSize (position + 1);
 			dataBuff [position] = value;
@@ -175,6 +187,15 @@ namespace Engine
 			CheckBuffSize (position + 2 + strLen);
 			Writeushort (strLen);
 			Array.Copy (bytes, 0, dataBuff, position, strLen);
+			position += strLen;
+			length = position;
+		}
+
+		public void Writebytes(byte[] value) {
+			ushort strLen = (ushort)value.Length;
+			CheckBuffSize (position + 2 + strLen);
+			Writeushort (strLen);
+			Array.Copy (value, 0, dataBuff, position, strLen);
 			position += strLen;
 			length = position;
 		}

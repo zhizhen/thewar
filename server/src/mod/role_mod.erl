@@ -82,7 +82,8 @@ get_user_data_by_db(RoleId) ->
 
     #game_info{
         account =   Account,
-        role    =   Role
+        role    =   Role,
+        role_etc = #role_etc{}
     }.
 
 get_myself_data(RoleId) ->

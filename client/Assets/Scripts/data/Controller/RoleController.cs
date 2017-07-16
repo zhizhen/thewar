@@ -31,6 +31,8 @@ public class RoleController : Singleton<RoleController>
 	public void LoginS2C(ProtoBase proto)
 	{
 		Debug.Log ("角色登陆返回");
+		m__role__login__s2c p = proto as m__role__login__s2c;
+		RoleMgr.Instance.RoleId = p.role_info.id;
 		SceneMgr.Instance.Init();
 		MainMenuView.Instance.Init ();
 	}
