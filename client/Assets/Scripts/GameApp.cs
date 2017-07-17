@@ -20,7 +20,7 @@ public class GameApp : MonoBehaviour
     // Use this for initialization
     void Start () {
 		Instance = this;
-		NetMgr.Instance.connect ("192.168.0.110", 8888);
+		NetMgr.Instance.connect ("192.168.0.100", 8888);
         gameObject.AddComponent<GlobalTimer>();
         GameObjectExt.Instantiate(Resources.Load<UnityEngine.Object>("UILoading"));
         ShowLoadingBar();

@@ -41,29 +41,35 @@ public class PendingActions
 		//add action for processing later
 		if(actionsLockStepTurn == currentLockStepTurn + 1) {
 			//if action is for next turn, add for processing 3 turns away
-			if(NextNextNextActions[playerID] != null) {
+			if (NextNextNextActions.ContainsKey(playerID)){
+//			if(NextNextNextActions[playerID] != null) {
 				//TODO: Error Handling
 				Debug.Log ("WARNING!!!! Recieved multiple actions for player " + playerID + " for turn "  + actionsLockStepTurn);
 			}
-			NextNextNextActions[playerID] = action;
+//			NextNextNextActions[playerID] = action;
+			NextNextNextActions.Add (playerID, action);
 			nextNextNextActionsCount++;
 		} else if(actionsLockStepTurn == currentLockStepTurn) {
 			//if recieved action during our current turn
 			//add for processing 2 turns away
-			if(NextNextActions[playerID] != null) {
+			if (NextNextActions.ContainsKey(playerID)){
+//			if(NextNextActions[playerID] != null) {
 				//TODO: Error Handling
 				Debug.Log ("WARNING!!!! Recieved multiple actions for player " + playerID + " for turn "  + actionsLockStepTurn);
 			}
-			NextNextActions[playerID] = action;
+//			NextNextActions[playerID] = action;
+			NextNextActions.Add (playerID, action);
 			nextNextActionsCount++;
 		} else if(actionsLockStepTurn == currentLockStepTurn - 1) {
 			//if recieved action for last turn
 			//add for processing 1 turn away
-			if(NextActions[playerID] != null) {
+			if (NextActions.ContainsKey(playerID)){
+//			if(NextActions[playerID] != null) {
 				//TODO: Error Handling
 				Debug.Log ("WARNING!!!! Recieved multiple actions for player " + playerID + " for turn "  + actionsLockStepTurn);
 			}
-			NextActions[playerID] = action;
+//			NextActions[playerID] = action;
+			NextActions.Add(playerID, action);
 			nextActionsCount++;
 		} else {
 			//TODO: Error Handling
